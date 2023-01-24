@@ -1,0 +1,45 @@
+name: Docker Image build latest
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  # name of docker image
+  DOCKER_HUB_USER: sinlov
+  IMAGE_NAME: drone-feishu-group-robot
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: |
+        docker build . --file Dockerfile --tag $IMAGE_NAME
+    - name: "Login into registry as user: $DOCKER_HUB_USER"
+      run: echo "${{ secrets.ACCESS_TOKEN }}" | docker login -u $DOCKER_HUB_USER --password-stdin
+    - name: Push image
+      run: |
+        # parse docker image id
+        IMAGE_ID=$DOCKER_HUB_USER/$IMAGE_NAME
+        # lower case all
+        IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+        # ref get version
+        VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+        # replace v chat at tag
+        [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+        # Use Docker `latest` tag convention when get main
+        [ "$VERSION" == "main" ] && VERSION=latest
+
+        echo IMAGE_ID=$IMAGE_ID
+        echo VERSION=$VERSION
+        # setting tag
+        docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+
+        # docker push
+        docker push $IMAGE_ID:$VERSION

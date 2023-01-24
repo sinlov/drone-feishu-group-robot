@@ -96,7 +96,6 @@ jobs:
       run: |
         # now pwd
         echo $PWD
-        cd $IMAGE_BUILD_OS_NAME
 
         # parse docker image id
         IMAGE_ID=$DOCKER_HUB_USER/$IMAGE_NAME
