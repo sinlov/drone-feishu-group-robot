@@ -78,32 +78,32 @@ func main() {
 			EnvVars: []string{"PLUGIN_TIMEOUT_SECOND"},
 		},
 		&cli.StringFlag{
-			Name:    "config.webhook,webhook",
+			Name:    "config.webhook,feishu_webhook",
 			Usage:   "feishu webhook for send message",
 			EnvVars: []string{"PLUGIN_FEISHU_WEBHOOK"},
 		},
 		&cli.StringFlag{
-			Name:    "config.secret,secret",
+			Name:    "config.secret,feishu_secret",
 			Usage:   "feishu secret",
 			EnvVars: []string{"PLUGIN_FEISHU_SECRET"},
 		},
 		&cli.StringFlag{
-			Name:    "config.msg_type,msg_type",
+			Name:    "config.msg_type,feishu_msg_type",
 			Usage:   "feishu message type",
 			EnvVars: []string{"PLUGIN_FEISHU_MSG_TYPE"},
 		},
 		&cli.StringFlag{
-			Name:    "config.msg_title,msg_title",
+			Name:    "config.msg_title,feishu_msg_title",
 			Usage:   "feishu message title",
 			EnvVars: []string{"PLUGIN_FEISHU_MSG_TITLE"},
 		},
 		&cli.StringFlag{
-			Name:    "config.msg_powered_by_image_key,msg_powered_by_image_key",
+			Name:    "config.msg_powered_by_image_key,feishu_msg_powered_by_image_key",
 			Usage:   "feishu message powered by image key",
 			EnvVars: []string{"PLUGIN_FEISHU_MSG_POWERED_BY_IMAGE_KEY"},
 		},
 		&cli.StringFlag{
-			Name:    "config.msg_powered_by_image_alt,msg_powered_by_image_alt",
+			Name:    "config.msg_powered_by_image_alt,feishu_msg_powered_by_image_alt",
 			Usage:   "feishu message powered by image alt",
 			EnvVars: []string{"PLUGIN_FEISHU_MSG_POWERED_BY_IMAGE_ALT"},
 		},

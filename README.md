@@ -15,16 +15,16 @@
 steps:
 
   - name: notification-feishu-group-robot
-    image: sinlov/drone-feishu-group-robot:1.0.1
+    image: sinlov/drone-feishu-group-robot:1.0.1-alpine
     pull: if-not-exists
     settings:
       debug: false
-      webhook:
+      feishu_webhook:
         # https://docs.drone.io/pipeline/environment/syntax/#from-secrets
         from_secret: feishu_group_bot_token
-      secret:
+      feishu_secret:
         from_secret: feishu_group_secret_bot
-      msg_title: your-group-message-title # default [Drone CI Notification]
+      feishu_msg_title: your-group-message-title # default [Drone CI Notification]
       timeout_second: 10 # default 10
     when:
       event: # https://docs.drone.io/pipeline/exec/syntax/conditions/#by-event
@@ -35,7 +35,7 @@ steps:
         - tag
       status: # only support failure/success,  both open will send anything
         - failure
-        # - success
+        - success
 ```
 
 # dev
@@ -148,4 +148,6 @@ $ make dockerTestPruneLatest
 
 # see how to use
 $ docker run --rm sinlov/drone-feishu-group-robot:latest -h
+# or version
+$ docker run --rm sinlov/drone-feishu-group-robot:1.0.1-alpine -h
 ```
