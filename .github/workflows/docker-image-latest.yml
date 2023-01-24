@@ -1,4 +1,4 @@
-name: Docker Image build latest
+name: Docker Image buildx latest
 
 on:
   push:
@@ -18,11 +18,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Build the Docker image
-      run: |
-        docker build . --file Dockerfile --tag $IMAGE_NAME
     - name: "Login into registry as user: $DOCKER_HUB_USER"
       run: echo "${{ secrets.ACCESS_TOKEN }}" | docker login -u $DOCKER_HUB_USER --password-stdin
+    - name: Docker buildx ready
+      run: |
+        DOCKER_CLI_EXPERIMENTAL=enabled
+        docker run --privileged --rm tonistiigi/binfmt --install all
+        docker buildx create --use --name mybuilder
+        docker buildx inspect mybuilder --bootstrap
     - name: Push image
       run: |
         # parse docker image id
@@ -38,8 +41,5 @@ jobs:
 
         echo IMAGE_ID=$IMAGE_ID
         echo VERSION=$VERSION
-        # setting tag
-        docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
-
-        # docker push
-        docker push $IMAGE_ID:$VERSION
+        # build
+        docker buildx build -t $IMAGE_ID:$VERSION --platform=linux/arm,linux/arm64,linux/amd64 . --push
