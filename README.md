@@ -15,7 +15,7 @@
 steps:
 
   - name: notification-feishu-group-robot
-    image: sinlov/drone-feishu-group-robot:1.0.1-alpine
+    image: sinlov/drone-feishu-group-robot:1.0.2-alpine
     pull: if-not-exists
     settings:
       debug: false
@@ -149,5 +149,5 @@ $ make dockerTestPruneLatest
 # see how to use
 $ docker run --rm sinlov/drone-feishu-group-robot:latest -h
 # or version
-$ docker run --rm sinlov/drone-feishu-group-robot:1.0.1-alpine -h
+$ docker run --rm sinlov/drone-feishu-group-robot:1.0.2-alpine -h
 ```

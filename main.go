@@ -13,7 +13,7 @@ import (
 )
 
 // Version of cli
-var Version = "v1.0.1"
+var Version = "v1.0.2"
 
 func action(c *cli.Context) error {
 
