@@ -5,7 +5,7 @@
 
 ## for what
 
-- this project used to 
+- this project used to drone CI
 
 ## Pipeline Settings (.drone.yml)
 
@@ -16,6 +16,7 @@ steps:
 
 - name: notification-feishu-group-robot
   image: sinlov/drone-feishu-group-robot:latest
+  pull: if-not-exists
   settings:
     debug: false
     webhook:
