@@ -14,19 +14,28 @@
 ```yaml
 steps:
 
-- name: notification-feishu-group-robot
-  image: sinlov/drone-feishu-group-robot:latest
-  pull: if-not-exists
-  settings:
-    debug: false
-    webhook:
-      from_secret: feishu_group_bot_token
-    secret:
-      from_secret: feishu_group_secret_bot
-    msg_title: your-group-message-title # default [Drone CI Notification]
-    timeout_second: 10 # default 10
-  when:
-    status: [failure, success]
+  - name: notification-feishu-group-robot
+    image: sinlov/drone-feishu-group-robot:1.0.1
+    pull: if-not-exists
+    settings:
+      debug: false
+      webhook:
+        # https://docs.drone.io/pipeline/environment/syntax/#from-secrets
+        from_secret: feishu_group_bot_token
+      secret:
+        from_secret: feishu_group_secret_bot
+      msg_title: your-group-message-title # default [Drone CI Notification]
+      timeout_second: 10 # default 10
+    when:
+      event: # https://docs.drone.io/pipeline/exec/syntax/conditions/#by-event
+        - promote
+        - rollback
+        - push
+        - pull_request
+        - tag
+      status: # only support failure/success,  both open will send anything
+        - failure
+        # - success
 ```
 
 # dev
