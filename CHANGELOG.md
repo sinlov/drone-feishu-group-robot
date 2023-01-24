@@ -1,3 +1,10 @@
+## <small>1.0.2 (2023-01-24)</small>
+
+* fix: fix env not use settings feishu_webhook and feishu_secret, and update document ([ec76622](https://github.com/sinlov/drone-feishu-group-robot/commit/ec76622))
+* feat: change settings of set ([3d508c4](https://github.com/sinlov/drone-feishu-group-robot/commit/3d508c4))
+
+
+
 ## <small>1.0.1 (2023-01-24)</small>
 
 * feat: add build tag and codecov config ([92a4e2c](https://github.com/sinlov/drone-feishu-group-robot/commit/92a4e2c))
