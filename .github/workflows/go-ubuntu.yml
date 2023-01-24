@@ -44,7 +44,7 @@ jobs:
         PLUGIN_FEISHU_WEBHOOK: ${{ secrets.PLUGIN_FEISHU_WEBHOOK }}
         PLUGIN_FEISHU_SECRET: ${{ secrets.PLUGIN_FEISHU_SECRET }}
 
-#    - name: Codecov
-#      uses: codecov/codecov-action@v1.0.6
-#      with:
-#        token: ${{secrets.CODECOV_TOKEN}}
+    - name: Codecov
+      uses: codecov/codecov-action@v1.0.6
+      with:
+        token: ${{secrets.CODECOV_TOKEN}}
