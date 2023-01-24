@@ -24,7 +24,7 @@ steps:
         from_secret: feishu_group_bot_token
       feishu_secret:
         from_secret: feishu_group_secret_bot
-      ntp_target: "pool.ntp.org"
+      ntp_target: "pool.ntp.org" # if not set will not sync
       feishu_msg_title: your-group-message-title # default [Drone CI Notification]
       timeout_second: 10 # default 10
     when:

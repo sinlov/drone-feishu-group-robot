@@ -61,6 +61,12 @@ func (p *Plugin) Exec() error {
 
 	// try use ntpd to sync time
 	if p.Config.NtpTarget != "" {
+
+		if p.Config.Debug {
+			log.Printf("NtpTarget sync before by [%v] Unix time: %v\n", p.Config.NtpTarget, time.Now().Unix())
+		}
+
+		log.Printf("try to sync ntp by taget [%v]\n", p.Config.NtpTarget)
 		command := exec.Command("ntpd", "-d", "-q", "-n", "-p", p.Config.NtpTarget)
 		var stdOut bytes.Buffer
 		var stdErr bytes.Buffer
@@ -70,6 +76,10 @@ func (p *Plugin) Exec() error {
 		err = command.Run()
 		if err != nil {
 			return fmt.Errorf("run ntpd target %v stderr %v\nerr: %v", p.Config.NtpTarget, stdErr.String(), err)
+		}
+
+		if p.Config.Debug {
+			log.Printf("NtpTarget sync after by [%v] Unix time: %v\n", p.Config.NtpTarget, time.Now().Unix())
 		}
 	}
 
