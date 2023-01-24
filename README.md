@@ -15,7 +15,7 @@
 steps:
 
   - name: notification-feishu-group-robot
-    image: sinlov/drone-feishu-group-robot:1.0.2-alpine
+    image: sinlov/drone-feishu-group-robot:1.1.0-alpine
     pull: if-not-exists
     settings:
       debug: false
@@ -24,6 +24,7 @@ steps:
         from_secret: feishu_group_bot_token
       feishu_secret:
         from_secret: feishu_group_secret_bot
+      ntp_target: "pool.ntp.org"
       feishu_msg_title: your-group-message-title # default [Drone CI Notification]
       timeout_second: 10 # default 10
     when:
@@ -149,5 +150,5 @@ $ make dockerTestPruneLatest
 # see how to use
 $ docker run --rm sinlov/drone-feishu-group-robot:latest -h
 # or version
-$ docker run --rm sinlov/drone-feishu-group-robot:1.0.2-alpine -h
+$ docker run --rm sinlov/drone-feishu-group-robot:1.1.0-alpine -h
 ```

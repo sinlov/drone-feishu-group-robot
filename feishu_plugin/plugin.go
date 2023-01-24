@@ -11,6 +11,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"os/exec"
 	"time"
 )
 
@@ -57,6 +58,20 @@ func (p *Plugin) Exec() error {
 	}
 
 	p.SendTarget = sendTarget
+
+	// try use ntpd to sync time
+	if p.Config.NtpTarget != "" {
+		command := exec.Command("ntpd", "-d", "-q", "-n", "-p", p.Config.NtpTarget)
+		var stdOut bytes.Buffer
+		var stdErr bytes.Buffer
+		command.Stdout = &stdOut
+		command.Stderr = &stdErr
+
+		err = command.Run()
+		if err != nil {
+			return fmt.Errorf("run ntpd target %v stderr %v\nerr: %v", p.Config.NtpTarget, stdErr.String(), err)
+		}
+	}
 
 	err = p.sendMessage()
 	if err != nil {

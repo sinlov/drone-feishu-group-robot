@@ -27,6 +27,7 @@ type (
 		Debug             bool
 		Webhook           string
 		Secret            string
+		NtpTarget         string
 		TimeoutSecond     int
 		MsgType           string
 		Title             string

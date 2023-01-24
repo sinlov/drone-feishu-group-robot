@@ -27,6 +27,7 @@ func action(c *cli.Context) error {
 	config := feishu_plugin.Config{
 		Debug:             c.Bool("config.debug"),
 		TimeoutSecond:     c.Int("config.timeout_second"),
+		NtpTarget:         c.String("config.ntp_target"),
 		Webhook:           c.String("config.webhook"),
 		Secret:            c.String("config.secret"),
 		MsgType:           c.String("config.msg_type"),
@@ -76,6 +77,11 @@ func main() {
 			Name:    "config.timeout_second,timeout_second",
 			Usage:   "do request timeout setting second",
 			EnvVars: []string{"PLUGIN_TIMEOUT_SECOND"},
+		},
+		&cli.StringFlag{
+			Name:    "config.ntp_target,ntp_target",
+			Usage:   "ntp target like: pool.ntp.org, time1.google.com,time.pool.aliyun.com, default not use ntpd to sync",
+			EnvVars: []string{"PLUGIN_NTP_TARGET"},
 		},
 		&cli.StringFlag{
 			Name:    "config.webhook,feishu_webhook",
