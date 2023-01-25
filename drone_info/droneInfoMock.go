@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"strings"
 )
 
 const (
@@ -25,7 +26,7 @@ const (
 	mockEnvDroneBuildStatusSuccess = "success"
 	mockEnvDroneBuildStatusFailure = "failure"
 
-	mockEnvDroneCommitMessage = "mock message commit"
+	mockEnvDroneCommitMessage = "mock message commit\n"
 	mockEnvDroneCommitSha     = "68e3d62dd69f06077a243a1db1460109377add64"
 )
 
@@ -43,6 +44,9 @@ func MockDroneInfo(status string) *Drone {
 	branch := mockEnvDroneCommitBranch
 	droneBaseUrl := mockEnvDroneUrlBase
 	buildNumber := mockEnvDroneBuildNumber
+	commitMessage := mockEnvDroneCommitMessage
+	commitMessage = strings.Trim(commitMessage, "\n")
+	commitMessage = strings.Trim(commitMessage, "\r")
 
 	var drone = Drone{
 		//  repo info
@@ -65,7 +69,7 @@ func MockDroneInfo(status string) *Drone {
 		Commit: Commit{
 			Sha:     commitSHA,
 			Branch:  branch,
-			Message: mockEnvDroneCommitMessage,
+			Message: commitMessage,
 			Link:    fmt.Sprintf("%s/commit/%s", gitUrl, commitSHA),
 			Author: CommitAuthor{
 				Avatar:   "",
@@ -94,6 +98,10 @@ func MockDroneInfoEnvFull(debug bool) {
 	branch := mockEnvDroneCommitBranch
 	droneBaseUrl := mockEnvDroneUrlBase
 
+	commitMessage := mockEnvDroneCommitMessage
+	commitMessage = strings.Trim(commitMessage, "\n")
+	commitMessage = strings.Trim(commitMessage, "\r")
+
 	setEnvStr(EnvDroneRepo, fmt.Sprintf("%s/%s", owner, repoName))
 	setEnvStr(EnvDroneRepoName, repoName)
 	setEnvStr(EnvDroneRepoNamespace, owner)
@@ -106,7 +114,7 @@ func MockDroneInfoEnvFull(debug bool) {
 	setEnvStr(EnvDroneCommitLink, fmt.Sprintf("%s/commit/%s", gitUrl, commitSHA))
 	setEnvStr(EnvDroneCommitSha, commitSHA)
 	setEnvStr(EnvDroneCommitRef, fmt.Sprintf("refs/heads/%s", branch))
-	setEnvStr(EnvDroneCommitMessage, mockEnvDroneCommitMessage)
+	setEnvStr(EnvDroneCommitMessage, commitMessage)
 	setEnvU64(EnvDroneStageStarted, mockEnvDroneStageStarted)
 	setEnvU64(EnvDroneStageFinished, mockEnvDroneStageFinished)
 	setEnvStr(EnvDroneBuildStatus, mockEnvDroneBuildStatusSuccess)
