@@ -5,7 +5,14 @@
 
 ## for what
 
-- this project used to drone CI
+- this project used to drone CI use [Custom bot guide](https://open.feishu.cn/document/ukTMukTMukTM/ucTM5YjL3ETO24yNxkjN?lang=en-US)
+
+## before use
+
+- Configure webhook like `https://open.feishu.cn/open-apis/bot/v2/hook/{web_hook}` end `{web_hook}`
+- `{web_hook}` must settings at `settings.feishu_webhook`or `PLUGIN_FEISHU_WEBHOOK`
+- if set `Custom keywords` you can change `settings.feishu_msg_title` or `PLUGIN_FEISHU_MSG_TITLE`
+- or set `Signature validation` by `settings.feishu_secret` or `PLUGIN_FEISHU_SECRET`
 
 ## Pipeline Settings (.drone.yml)
 
@@ -19,16 +26,16 @@ steps:
     pull: if-not-exists
     settings:
       debug: false
+#      ntp_target: "pool.ntp.org" # if not set will not sync
+      timeout_second: 10 # default 10
       feishu_webhook:
         # https://docs.drone.io/pipeline/environment/syntax/#from-secrets
         from_secret: feishu_group_bot_token
       feishu_secret:
         from_secret: feishu_group_secret_bot
-      ntp_target: "pool.ntp.org" # if not set will not sync
       # let notification card change more info see https://open.feishu.cn/document/ukTMukTMukTM/uAjNwUjLwYDM14CM2ATN
+      feishu_msg_title: "Drone CI Notification" # default [Drone CI Notification]
       feishu_enable_forward: true
-      feishu_msg_title: your-group-message-title # default [Drone CI Notification]
-      timeout_second: 10 # default 10
     when:
       event: # https://docs.drone.io/pipeline/exec/syntax/conditions/#by-event
         - promote
@@ -45,19 +52,21 @@ steps:
 - env:EXEC_DRONE_FEISHU_GROUP_ROBOT_FULL_PATH can set at file which define as [DRONE_RUNNER_ENVFILE](https://docs.drone.io/runner/exec/configuration/reference/drone-runner-envfile/)  
 
 ```yaml
+steps:
+
   - name: notification-feishu-group-robot-exec # must has env EXEC_DRONE_FEISHU_GROUP_ROBOT_FULL_PATH and exec tools
     environment:
       PLUGIN_DEBUG: false
       # PLUGIN_NTP_TARGET: "pool.ntp.org" # if not set will not sync
+      PLUGIN_TIMEOUT_SECOND: 10 # default 10
       PLUGIN_FEISHU_WEBHOOK:
         from_secret: feishu_group_bot_token
       PLUGIN_FEISHU_SECRET:
         from_secret: feishu_group_secret_bot
       # let notification card change more info see https://open.feishu.cn/document/ukTMukTMukTM/uAjNwUjLwYDM14CM2ATN
+      PLUGIN_FEISHU_MSG_TITLE: "Drone CI Notification" # default [Drone CI Notification]
       PLUGIN_FEISHU_ENABLE_FORWARD: true
-      PLUGIN_TIMEOUT_SECOND: 10 # default 10
     commands:
-      - chcp 65001 # change encoding to utf-8 at powershell
       - ${EXEC_DRONE_FEISHU_GROUP_ROBOT_FULL_PATH} `
         ""
     when:
@@ -71,6 +80,16 @@ steps:
         - failure
         - success
 ```
+
+### custom settings
+
+- `settings.debug` or `PLUGIN_DEBUG` can open plugin debug mode
+- `settings.timeout_second` or `PLUGIN_TIMEOUT_SECOND` can set send message timeout
+- `settings.ntp_target` or `PLUGIN_NTP_TARGET` set ntp server to sync time for `Signature validation` by error code 19021
+- `settings.feishu_msg_title` or `PLUGIN_FEISHU_MSG_TITLE` can change message card title
+- `settings.feishu_enable_forward` or `PLUGIN_FEISHU_ENABLE_FORWARD` can change message share way
+- `settings.feishu_msg_powered_by_image_key` or `PLUGIN_FEISHU_MSG_POWERED_BY_IMAGE_KEY` can change card img by feishu-image-key
+- `settings.feishu_msg_powered_by_image_alt` or `PLUGIN_FEISHU_MSG_POWERED_BY_IMAGE_ALT` can change card img alt tag name
 
 # dev
 

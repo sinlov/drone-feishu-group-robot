@@ -88,7 +88,7 @@ func (p *Plugin) Exec() error {
 	if err != nil {
 		return err
 	}
-
+	log.Printf("send feishu group robot message finish.\n")
 	return err
 }
 
