@@ -9,7 +9,7 @@
 
 ## Pipeline Settings (.drone.yml)
 
-`1.x`
+- `1.x` docker
 
 ```yaml
 steps:
@@ -29,6 +29,37 @@ steps:
       feishu_enable_forward: true
       feishu_msg_title: your-group-message-title # default [Drone CI Notification]
       timeout_second: 10 # default 10
+    when:
+      event: # https://docs.drone.io/pipeline/exec/syntax/conditions/#by-event
+        - promote
+        - rollback
+        - push
+        - pull_request
+        - tag
+      status: # only support failure/success,  both open will send anything
+        - failure
+        - success
+```
+
+- `1.x` drone-exec only support env
+- env:EXEC_DRONE_FEISHU_GROUP_ROBOT_FULL_PATH can set at file which define as [DRONE_RUNNER_ENVFILE](https://docs.drone.io/runner/exec/configuration/reference/drone-runner-envfile/)  
+
+```yaml
+  - name: notification-feishu-group-robot-exec # must has env EXEC_DRONE_FEISHU_GROUP_ROBOT_FULL_PATH and exec tools
+    environment:
+      PLUGIN_DEBUG: false
+      # PLUGIN_NTP_TARGET: "pool.ntp.org" # if not set will not sync
+      PLUGIN_FEISHU_WEBHOOK:
+        from_secret: feishu_group_bot_token
+      PLUGIN_FEISHU_SECRET:
+        from_secret: feishu_group_secret_bot
+      # let notification card change more info see https://open.feishu.cn/document/ukTMukTMukTM/uAjNwUjLwYDM14CM2ATN
+      PLUGIN_FEISHU_ENABLE_FORWARD: true
+      PLUGIN_TIMEOUT_SECOND: 10 # default 10
+    commands:
+      - chcp 65001 # change encoding to utf-8 at powershell
+      - ${EXEC_DRONE_FEISHU_GROUP_ROBOT_FULL_PATH} `
+        ""
     when:
       event: # https://docs.drone.io/pipeline/exec/syntax/conditions/#by-event
         - promote
