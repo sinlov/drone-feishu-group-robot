@@ -31,7 +31,7 @@ const defaultCardTemplate string = `
             },
             {
                 "tag": "markdown",
-                "content": "📝 Commit by {{ Drone.Commit.Author.AuthorName }} on **{{ Drone.Commit.Branch }}**\nCommitCode: {{ Drone.Commit.Sha }}"
+                "content": "📝 Commit by {{ Drone.Commit.Author.Username }} on **{{ Drone.Commit.Branch }}**\nCommitCode: {{ Drone.Commit.Sha }}"
             },
             {
                 "tag": "markdown",

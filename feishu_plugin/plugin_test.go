@@ -47,7 +47,7 @@ func TestPlugin(t *testing.T) {
 	err = p.Exec()
 
 	if err != nil {
-		t.Fatalf("send success error at %v", err)
+		t.Fatalf("send error at %v", err)
 	}
 
 	p.Drone = *drone_info.MockDroneInfo("failure")

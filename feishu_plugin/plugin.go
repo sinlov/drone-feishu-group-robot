@@ -171,6 +171,10 @@ func (p *Plugin) sendMessage() error {
 	}()
 	statusCode := resp.StatusCode
 	if statusCode != http.StatusOK {
+		errBody, _ := ioutil.ReadAll(resp.Body)
+		if errBody != nil {
+			return fmt.Errorf("sendMessage http status code: %v , body: %v", statusCode, string(errBody))
+		}
 		return fmt.Errorf("sendMessage http status code: %v", statusCode)
 	}
 	body, errRead := ioutil.ReadAll(resp.Body)
