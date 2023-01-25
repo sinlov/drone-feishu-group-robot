@@ -126,6 +126,7 @@ func (p *Plugin) fetchSendTarget() (SendTarget, error) {
 			p.Config.PoweredByImageAlt,
 		)
 
+		cardTemp.EnableForward = p.Config.FeishuEnableForward
 		ctxTemp.CardTemp = cardTemp
 		robotMsgTemplate.CtxTemp = ctxTemp
 		p.FeishuRobotMsgTemplate = robotMsgTemplate

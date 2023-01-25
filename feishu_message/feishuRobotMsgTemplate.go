@@ -13,6 +13,10 @@ type (
 	// CardTemp
 	// @doc https://open.feishu.cn/document/ukTMukTMukTM/uMjNwUjLzYDM14yM2ATN
 	CardTemp struct {
+		// EnableForward
+		// @doc https://open.feishu.cn/document/ukTMukTMukTM/uAjNwUjLwYDM14CM2ATN
+		EnableForward bool
+
 		// @doc https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/im-v1/image/create
 		LogoImgKey string
 		LogoAltStr string

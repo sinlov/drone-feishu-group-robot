@@ -24,14 +24,15 @@ type (
 
 	// Config plugin private config
 	Config struct {
-		Debug             bool
-		Webhook           string
-		Secret            string
-		NtpTarget         string
-		TimeoutSecond     int
-		MsgType           string
-		Title             string
-		PoweredByImageKey string
-		PoweredByImageAlt string
+		Debug               bool
+		NtpTarget           string
+		Webhook             string
+		Secret              string
+		FeishuEnableForward bool
+		TimeoutSecond       int
+		MsgType             string
+		Title               string
+		PoweredByImageKey   string
+		PoweredByImageAlt   string
 	}
 )

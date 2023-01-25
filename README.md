@@ -25,6 +25,8 @@ steps:
       feishu_secret:
         from_secret: feishu_group_secret_bot
       ntp_target: "pool.ntp.org" # if not set will not sync
+      # # let notification card change more info see https://open.feishu.cn/document/ukTMukTMukTM/uAjNwUjLwYDM14CM2ATN
+      feishu_enable_forward: true
       feishu_msg_title: your-group-message-title # default [Drone CI Notification]
       timeout_second: 10 # default 10
     when:

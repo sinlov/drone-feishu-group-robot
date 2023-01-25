@@ -40,7 +40,7 @@ func TestPlugin(t *testing.T) {
 	if os.Getenv("PLUGIN_DEBUG") == "true" {
 		p.Config.Debug = true
 	}
-
+	p.Config.FeishuEnableForward = false
 	p.Drone = *drone_info.MockDroneInfo("success")
 	assert.Equal(t, "sinlov", p.Drone.Repo.OwnerName)
 	// verify Plugin
@@ -50,6 +50,7 @@ func TestPlugin(t *testing.T) {
 		t.Fatalf("send error at %v", err)
 	}
 
+	p.Config.FeishuEnableForward = true
 	p.Drone = *drone_info.MockDroneInfo("failure")
 	// verify Plugin
 	err = p.Exec()

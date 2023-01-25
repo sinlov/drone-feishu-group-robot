@@ -25,15 +25,16 @@ func action(c *cli.Context) error {
 		log.Printf("load droneInfo finish at link: %v\n", drone.Build.Link)
 	}
 	config := feishu_plugin.Config{
-		Debug:             c.Bool("config.debug"),
-		TimeoutSecond:     c.Int("config.timeout_second"),
-		NtpTarget:         c.String("config.ntp_target"),
-		Webhook:           c.String("config.webhook"),
-		Secret:            c.String("config.secret"),
-		MsgType:           c.String("config.msg_type"),
-		Title:             c.String("config.msg_title"),
-		PoweredByImageKey: c.String("config.msg_powered_by_image_key"),
-		PoweredByImageAlt: c.String("config.msg_powered_by_image_alt"),
+		Debug:               c.Bool("config.debug"),
+		TimeoutSecond:       c.Int("config.timeout_second"),
+		NtpTarget:           c.String("config.ntp_target"),
+		Webhook:             c.String("config.webhook"),
+		Secret:              c.String("config.secret"),
+		FeishuEnableForward: c.Bool("config.feishu_enable_forward"),
+		MsgType:             c.String("config.msg_type"),
+		Title:               c.String("config.msg_title"),
+		PoweredByImageKey:   c.String("config.msg_powered_by_image_key"),
+		PoweredByImageAlt:   c.String("config.msg_powered_by_image_alt"),
 	}
 
 	p := feishu_plugin.Plugin{
@@ -92,6 +93,11 @@ func main() {
 			Name:    "config.secret,feishu_secret",
 			Usage:   "feishu secret",
 			EnvVars: []string{"PLUGIN_FEISHU_SECRET"},
+		},
+		&cli.BoolFlag{
+			Name:    "config.feishu_enable_forward,feishu_enable_forward",
+			Usage:   "feishu message enable forward, default false",
+			EnvVars: []string{"PLUGIN_FEISHU_ENABLE_FORWARD"},
 		},
 		&cli.StringFlag{
 			Name:    "config.msg_type,feishu_msg_type",
