@@ -53,7 +53,9 @@ steps:
 ```
 
 - `1.x` drone-exec only support env
-- env:EXEC_DRONE_FEISHU_GROUP_ROBOT_FULL_PATH can set at file which define as [DRONE_RUNNER_ENVFILE](https://docs.drone.io/runner/exec/configuration/reference/drone-runner-envfile/)  
+- download by [https://github.com/sinlov/drone-feishu-group-robot/releases](https://github.com/sinlov/drone-feishu-group-robot/releases) to get platform binary, then has local path
+- binary path like `C:\Drone\drone-runner-exec\plugins\drone-feishu-group-robot.exe` can be drone run env like `EXEC_DRONE_FEISHU_GROUP_ROBOT_FULL_PATH`
+- env:EXEC_DRONE_FEISHU_GROUP_ROBOT_FULL_PATH can set at file which define as [DRONE_RUNNER_ENVFILE](https://docs.drone.io/runner/exec/configuration/reference/drone-runner-envfile/) to support each platform to send feishu message
 
 ```yaml
 steps:
