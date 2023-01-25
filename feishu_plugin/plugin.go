@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/sinlov/drone-feishu-group-robot/drone_info"
 	"github.com/sinlov/drone-feishu-group-robot/feishu_message"
+	"github.com/sinlov/drone-feishu-group-robot/tools"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -47,7 +48,7 @@ func (p *Plugin) Exec() error {
 		p.Config.MsgType = msgTypeInteractive
 	}
 
-	if !(StrInArr(p.Config.MsgType, supportMsgType)) {
+	if !(tools.StrInArr(p.Config.MsgType, supportMsgType)) {
 		return fmt.Errorf("feishu msg type only support %v", supportMsgType)
 	}
 	var err error

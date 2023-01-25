@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"github.com/sinlov/drone-feishu-group-robot/drone_info"
 	"github.com/sinlov/drone-feishu-group-robot/feishu_plugin"
+	"github.com/sinlov/drone-feishu-group-robot/tools"
 	"log"
 	"os"
-	"strings"
 	"time"
 
 	"github.com/joho/godotenv"
@@ -268,8 +268,8 @@ func main() {
 
 func bindDroneInfo(c *cli.Context) *drone_info.Drone {
 	commitMessage := c.String("commit.message")
-	commitMessage = strings.Trim(commitMessage, "\n")
-	commitMessage = strings.Trim(commitMessage, "\r")
+	commitMessage = tools.Str2LineRaw(commitMessage)
+
 	var drone = drone_info.Drone{
 		//  repo info
 		Repo: drone_info.Repo{

@@ -2,10 +2,10 @@ package drone_info
 
 import (
 	"fmt"
+	"github.com/sinlov/drone-feishu-group-robot/tools"
 	"log"
 	"os"
 	"strconv"
-	"strings"
 )
 
 const (
@@ -26,7 +26,7 @@ const (
 	mockEnvDroneBuildStatusSuccess = "success"
 	mockEnvDroneBuildStatusFailure = "failure"
 
-	mockEnvDroneCommitMessage = "mock message commit\n"
+	mockEnvDroneCommitMessage = "mock message commit\nmore line\nand more line\r\n"
 	mockEnvDroneCommitSha     = "68e3d62dd69f06077a243a1db1460109377add64"
 )
 
@@ -44,9 +44,7 @@ func MockDroneInfo(status string) *Drone {
 	branch := mockEnvDroneCommitBranch
 	droneBaseUrl := mockEnvDroneUrlBase
 	buildNumber := mockEnvDroneBuildNumber
-	commitMessage := mockEnvDroneCommitMessage
-	commitMessage = strings.Trim(commitMessage, "\n")
-	commitMessage = strings.Trim(commitMessage, "\r")
+	commitMessage := tools.Str2LineRaw(mockEnvDroneCommitMessage)
 
 	var drone = Drone{
 		//  repo info
@@ -98,9 +96,7 @@ func MockDroneInfoEnvFull(debug bool) {
 	branch := mockEnvDroneCommitBranch
 	droneBaseUrl := mockEnvDroneUrlBase
 
-	commitMessage := mockEnvDroneCommitMessage
-	commitMessage = strings.Trim(commitMessage, "\n")
-	commitMessage = strings.Trim(commitMessage, "\r")
+	commitMessage := tools.Str2LineRaw(mockEnvDroneCommitMessage)
 
 	setEnvStr(EnvDroneRepo, fmt.Sprintf("%s/%s", owner, repoName))
 	setEnvStr(EnvDroneRepoName, repoName)
