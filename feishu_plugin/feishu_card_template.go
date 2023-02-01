@@ -16,13 +16,13 @@ const defaultCardTemplate string = `{
       "template": "{{#success Drone.Build.Status }}blue{{/success}}{{#failure Drone.Build.Status}}red{{/failure}}",
       "title": {
         "tag": "plain_text",
-        "content": "{{ FeishuRobotMsgTemplate.CtxTemp.CardTemp.CardTitle }}"
+        "content": "{{#failure Drone.Build.Status}}[Failure]{{/failure}}{{ Drone.Repo.FullName }}"
       }
     },
     "elements": [
       {
         "tag": "markdown",
-        "content": "**{{ Drone.Repo.FullName }}**"
+        "content": "**{{ FeishuRobotMsgTemplate.CtxTemp.CardTemp.CardTitle }}**"
       },
       {
         "tag": "hr"
@@ -33,7 +33,7 @@ const defaultCardTemplate string = `{
       },
       {
         "tag": "markdown",
-        "content": "{{#success Drone.Build.Status }}✅{{/success}}{{#failure Drone.Build.Status}}❌{{/failure}} Build [#{{ Drone.Build.Number }}]({{ Drone.Build.Link }}) {{ Drone.Build.Status }}."
+        "content": "{{#success Drone.Build.Status }}✅{{/success}}{{#failure Drone.Build.Status}}❌{{/failure}} Build [#{{ Drone.Build.Number }}]({{ Drone.Build.Link }}) {{ Drone.Build.Status }} {{#failure Drone.Build.Status}} FailedStages: {{Drone.Build.FailedStages}} FailedSteps: {{Drone.Build.FailedSteps}} {{/failure}}"
       },
       {
         "tag": "markdown",
@@ -42,6 +42,13 @@ const defaultCardTemplate string = `{
       {
         "tag": "markdown",
         "content": "[See Commit Details]({{ Drone.Commit.Link }}) | [See Build Details]({{ Drone.Build.Link }})"
+      },
+      {
+        "tag": "hr"
+      },
+      {
+        "tag": "markdown",
+        "content": "**Stage**\nMachine: {{ Drone.Stage.Machine }}\nOS     : {{ Drone.Stage.Os }}\nArch   : {{ Drone.Stage.Arch }}\nType   : {{ Drone.Stage.Type }}\nKind   : {{ Drone.Stage.Kind }}\nName   : {{ Drone.Stage.Name }}"
       },
       {
         "tag": "hr"

@@ -104,7 +104,7 @@ steps:
 in go mod project
 
 ```bash
-# warning use privte git host must set
+# warning use private git host must set
 # global set for once
 # add private git host like github.com to evn GOPRIVATE
 $ go env -w GOPRIVATE='github.com'
@@ -122,7 +122,7 @@ $ git config --global url."ssh://github.com/".insteadOf "https://github.com/"
 $ git ls-remote -q http://github.com/sinlov/drone-feishu-group-robot.git
 
 # test depends see full version
-$ go list -v -m -versions github.com/sinlov/drone-feishu-group-robot
+$ go list -mod=readonly -v -m -versions github.com/sinlov/drone-feishu-group-robot
 # or use last version add go.mod by script
 $ echo "go mod edit -require=$(go list -m -versions github.com/sinlov/drone-feishu-group-robot | awk '{print $1 "@" $NF}')"
 $ echo "go mod vendor"
