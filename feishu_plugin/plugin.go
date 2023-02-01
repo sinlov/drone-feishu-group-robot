@@ -19,6 +19,7 @@ import (
 type (
 	// Plugin plugin all config
 	Plugin struct {
+		Version                string
 		Drone                  drone_info.Drone
 		Config                 Config
 		SendTarget             SendTarget
@@ -88,6 +89,7 @@ func (p *Plugin) Exec() error {
 	if err != nil {
 		return err
 	}
+	log.Printf("drone-feishu-group-robot version %s", p.Version)
 	log.Printf("send feishu group robot message finish.\n")
 	return err
 }

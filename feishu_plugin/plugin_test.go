@@ -7,10 +7,16 @@ import (
 	"testing"
 )
 
+const (
+	mockVersion = "v0.0.0"
+)
+
 func TestPlugin(t *testing.T) {
 	// mock Plugin
 	t.Logf("~> mock Plugin")
-	p := Plugin{}
+	p := Plugin{
+		Version: mockVersion,
+	}
 	// do Plugin
 	t.Logf("~> do Plugin")
 	err := p.Exec()

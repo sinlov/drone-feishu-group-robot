@@ -46,8 +46,9 @@ func action(c *cli.Context) error {
 	}
 
 	p := feishu_plugin.Plugin{
-		Drone:  drone,
-		Config: config,
+		Version: Version,
+		Drone:   drone,
+		Config:  config,
 	}
 	err := p.Exec()
 
