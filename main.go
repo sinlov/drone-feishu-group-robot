@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/sinlov/drone-feishu-group-robot/drone_info"
 	"github.com/sinlov/drone-feishu-group-robot/feishu_plugin"
-	"github.com/sinlov/drone-feishu-group-robot/tools"
 	"log"
 	"net/url"
 	"os"
@@ -160,6 +159,13 @@ func droneInfoFlag() []cli.Flag {
 			Usage:   "Provides the ssh url that should be used to clone the repository",
 			EnvVars: []string{drone_info.EnvDroneGitSshUrl},
 		},
+
+		// drone_info.Build
+		&cli.StringFlag{
+			Name:    "build.workspace",
+			Usage:   "drone’s working directory for a pipeline",
+			EnvVars: []string{drone_info.EnvDroneBuildWorkSpace},
+		},
 		&cli.StringFlag{
 			Name:    "build.status",
 			Usage:   "build status",
@@ -175,6 +181,11 @@ func droneInfoFlag() []cli.Flag {
 			Name:    "build.tag",
 			Usage:   "build tag",
 			EnvVars: []string{drone_info.EnvDroneTag},
+		},
+		&cli.StringFlag{
+			Name:    "build.target_branch",
+			Usage:   "This environment variable can be used in conjunction with the source branch variable to get the pull request base and head branch.",
+			EnvVars: []string{drone_info.EnvDroneTargetBranch},
 		},
 		&cli.StringFlag{
 			Name:    "build.link",
@@ -264,6 +275,7 @@ func droneInfoFlag() []cli.Flag {
 			EnvVars: []string{drone_info.EnvDroneCommitRef},
 		},
 
+		// drone_info.Stage
 		&cli.Uint64Flag{
 			Name:    "stage.started",
 			Usage:   "stage started ",
@@ -310,6 +322,27 @@ func droneInfoFlag() []cli.Flag {
 			EnvVars: []string{drone_info.EnvDroneStageName},
 		},
 
+		// drone_info.DroneSystem
+		&cli.StringFlag{
+			Name:    "drone.system.version",
+			Usage:   "Provides the version of the Drone server.",
+			EnvVars: []string{drone_info.EnvDroneSystemVersion},
+		},
+		&cli.StringFlag{
+			Name:    "drone.system.host",
+			Usage:   "Provides the host used by the Drone server. This can be combined with the protocol to construct to the server url.",
+			EnvVars: []string{drone_info.EnvDroneSystemHost},
+		},
+		&cli.StringFlag{
+			Name:    "drone.system.hostname",
+			Usage:   "Provides the hostname used by the Drone server. This can be combined with the protocol to construct to the server url.",
+			EnvVars: []string{drone_info.EnvDroneSystemHostName},
+		},
+		&cli.StringFlag{
+			Name:    "drone.system.proto",
+			Usage:   "Provides the protocol used by the Drone server. This can be combined with the hostname to construct to the server url.",
+			EnvVars: []string{drone_info.EnvDroneSystemProto},
+		},
 		// droneInfo end
 	}
 }
@@ -325,8 +358,10 @@ func bindDroneInfo(c *cli.Context) drone_info.Drone {
 		repoHost = parse.Host
 		repoHostName = parse.Hostname()
 	}
-	commitMessage := c.String("commit.message")
-	commitMessage = tools.Str2LineRaw(commitMessage)
+	stageStartT := c.Uint64("stage.started")
+	stageStartTime := time.Unix(int64(stageStartT), 0).Format(drone_info.DroneTimeFormatDefault)
+	stageFinishedT := c.Uint64("stage.finished")
+	stageFinishedTime := time.Unix(int64(stageStartT), 0).Format(drone_info.DroneTimeFormatDefault)
 	var drone = drone_info.Drone{
 		//  repo info
 		Repo: drone_info.Repo{
@@ -341,11 +376,13 @@ func bindDroneInfo(c *cli.Context) drone_info.Drone {
 			Host:      repoHost,
 			HostName:  repoHostName,
 		},
-		//  build info
+		//  drone_info.Build
 		Build: drone_info.Build{
+			WorkSpace:    c.String("build.workspace"),
 			Status:       c.String("build.status"),
 			Number:       c.Uint64("build.number"),
 			Tag:          c.String("build.tag"),
+			TargetBranch: c.String("build.target_branch"),
 			Link:         c.String("build.link"),
 			Event:        c.String("build.event"),
 			StartAt:      c.Uint64("build.started"),
@@ -358,7 +395,7 @@ func bindDroneInfo(c *cli.Context) drone_info.Drone {
 		Commit: drone_info.Commit{
 			Link:    c.String("commit.link"),
 			Branch:  c.String("commit.branch"),
-			Message: commitMessage,
+			Message: c.String("commit.message"),
 			Sha:     c.String("commit.sha"),
 			Ref:     c.String("commit.ref"),
 			Author: drone_info.CommitAuthor{
@@ -369,15 +406,23 @@ func bindDroneInfo(c *cli.Context) drone_info.Drone {
 			},
 		},
 		Stage: drone_info.Stage{
-			StartedAt:  c.Uint64("stage.started"),
-			FinishedAt: c.Uint64("stage.finished"),
-			Machine:    c.String("stage.machine"),
-			Os:         c.String("stage.os"),
-			Arch:       c.String("stage.arch"),
-			Variant:    c.String("stage.variant"),
-			Type:       c.String("stage.type"),
-			Kind:       c.String("stage.kind"),
-			Name:       c.String("stage.name"),
+			StartedAt:    stageStartT,
+			StartedTime:  stageStartTime,
+			FinishedAt:   stageFinishedT,
+			FinishedTime: stageFinishedTime,
+			Machine:      c.String("stage.machine"),
+			Os:           c.String("stage.os"),
+			Arch:         c.String("stage.arch"),
+			Variant:      c.String("stage.variant"),
+			Type:         c.String("stage.type"),
+			Kind:         c.String("stage.kind"),
+			Name:         c.String("stage.name"),
+		},
+		DroneSystem: drone_info.DroneSystem{
+			Version:  c.String("drone.system.version"),
+			Host:     c.String("drone.system.host"),
+			HostName: c.String("drone.system.hostname"),
+			Proto:    c.String("drone.system.proto"),
 		},
 	}
 	return drone

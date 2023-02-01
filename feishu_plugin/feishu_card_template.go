@@ -1,6 +1,12 @@
 package feishu_plugin
 
-import "github.com/sinlov/drone-feishu-group-robot/template"
+import (
+	"bytes"
+	"encoding/gob"
+	"encoding/json"
+	"github.com/sinlov/drone-feishu-group-robot/template"
+	"github.com/sinlov/drone-feishu-group-robot/tools"
+)
 
 // defaultCardTemplate
 // use Plugin and feishu_message.FeishuRobotMsgTemplate
@@ -33,7 +39,7 @@ const defaultCardTemplate string = `{
       },
       {
         "tag": "markdown",
-        "content": "{{#success Drone.Build.Status }}✅{{/success}}{{#failure Drone.Build.Status}}❌{{/failure}} Build [#{{ Drone.Build.Number }}]({{ Drone.Build.Link }}) {{ Drone.Build.Status }} {{#failure Drone.Build.Status}} FailedStages: {{Drone.Build.FailedStages}} FailedSteps: {{Drone.Build.FailedSteps}} {{/failure}}"
+        "content": "{{#success Drone.Build.Status }}✅{{/success}}{{#failure Drone.Build.Status}}❌{{/failure}} Build [#{{ Drone.Build.Number }}]({{ Drone.Build.Link }}) {{ Drone.Build.Status }}{{#failure Drone.Build.Status}}\n failedStages: {{Drone.Build.FailedStages}}\n failedSteps: {{Drone.Build.FailedSteps}} {{/failure}}"
       },
       {
         "tag": "markdown",
@@ -58,7 +64,7 @@ const defaultCardTemplate string = `{
         "elements": [
           {
             "tag": "plain_text",
-            "content": "Powered By"
+            "content": "drone {{ Drone.DroneSystem.Version }} . Powered By"
           },
           {
             "tag": "img",
@@ -75,9 +81,34 @@ const defaultCardTemplate string = `{
 }`
 
 func RenderFeishuCard(tpl string, p *Plugin) (string, error) {
-	message, err := template.RenderTrim(tpl, &p)
+	var renderPlugin Plugin
+	err := deepCopyByPlugin(p, &renderPlugin)
+	if err != nil {
+		return "", err
+	}
+
+	renderPlugin.Drone.Commit.Message = tools.Str2LineRaw(renderPlugin.Drone.Commit.Message)
+
+	message, err := template.RenderTrim(tpl, &renderPlugin)
 	if err != nil {
 		return "", err
 	}
 	return message, nil
+}
+
+func deepCopyByGob(src, dst interface{}) error {
+	var buffer bytes.Buffer
+	if err := gob.NewEncoder(&buffer).Encode(src); err != nil {
+		return err
+	}
+	return gob.NewDecoder(&buffer).Decode(dst)
+}
+
+func deepCopyByPlugin(src, dst *Plugin) error {
+	if tmp, err := json.Marshal(&src); err != nil {
+		return err
+	} else {
+		err = json.Unmarshal(tmp, dst)
+		return err
+	}
 }
