@@ -13,8 +13,10 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-// Version of cli
-var Version = "v1.1.0"
+const (
+	// Version of cli
+	Version = "v1.1.0"
+)
 
 func action(c *cli.Context) error {
 
@@ -23,7 +25,8 @@ func action(c *cli.Context) error {
 	drone := bindDroneInfo(c)
 
 	if isDebug {
-		log.Printf("load droneInfo finish at link: %v\n", drone.Build.Link)
+		log.Printf("debug: cli version is %s", Version)
+		log.Printf("debug: load droneInfo finish at link: %v\n", drone.Build.Link)
 	}
 	config := feishu_plugin.Config{
 		Debug:               c.Bool("config.debug"),

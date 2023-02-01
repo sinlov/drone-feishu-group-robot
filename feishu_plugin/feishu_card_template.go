@@ -54,7 +54,7 @@ const defaultCardTemplate string = `{
       },
       {
         "tag": "markdown",
-        "content": "**Stage**\nMachine: {{ Drone.Stage.Machine }}\nOS     : {{ Drone.Stage.Os }}\nArch   : {{ Drone.Stage.Arch }}\nType   : {{ Drone.Stage.Type }}\nKind   : {{ Drone.Stage.Kind }}\nName   : {{ Drone.Stage.Name }}"
+        "content": "**Stage**\nName: {{ Drone.Stage.Name }}\nMachine: {{ Drone.Stage.Machine }}\nOS: {{ Drone.Stage.Os }}\nArch: {{ Drone.Stage.Arch }}\nType: {{ Drone.Stage.Type }}\nKind: {{ Drone.Stage.Kind }}"
       },
       {
         "tag": "hr"
