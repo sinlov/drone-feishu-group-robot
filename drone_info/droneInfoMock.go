@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	mockEnvDroneRepo              = "drone-file-browser-plugin"
+	mockEnvDroneRepo              = "drone-feishu-group-robot"
 	mockEnvDroneCommitAuthorEmail = "sinlovgmppt@gmail.com"
 	mockEnvDroneRepoOwner         = "sinlov"
 	mockEnvDroneCommitBranch      = "main"

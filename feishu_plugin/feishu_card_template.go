@@ -64,7 +64,7 @@ const defaultCardTemplate string = `{
         "elements": [
           {
             "tag": "plain_text",
-            "content": "drone {{ Drone.DroneSystem.Version }} . Powered By"
+            "content": "From drone {{ Drone.DroneSystem.Version }}@{{Drone.DroneSystem.HostName}}. Powered By"
           },
           {
             "tag": "img",
