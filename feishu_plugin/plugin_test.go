@@ -8,6 +8,7 @@ import (
 )
 
 const (
+	mockName           = "drone-feishu-group-robot"
 	mockVersion        = "v0.0.0"
 	mockOssHost        = "https://docs.aws.amazon.com/s3/index.html"
 	mockOssUser        = "ossAdmin"
@@ -21,6 +22,7 @@ func TestPlugin(t *testing.T) {
 	// mock FeishuPlugin
 	t.Logf("~> mock FeishuPlugin")
 	p := FeishuPlugin{
+		Name:    mockName,
 		Version: mockVersion,
 	}
 	// do FeishuPlugin

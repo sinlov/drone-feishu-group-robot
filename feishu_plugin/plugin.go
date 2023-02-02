@@ -35,6 +35,7 @@ const (
 type (
 	// FeishuPlugin plugin all config
 	FeishuPlugin struct {
+		Name                   string
 		Version                string
 		Drone                  drone_info.Drone
 		Config                 Config
@@ -105,7 +106,7 @@ func (p *FeishuPlugin) Exec() error {
 	if err != nil {
 		return err
 	}
-	log.Printf("drone-feishu-group-robot version %s", p.Version)
+	log.Printf("=> plugin %s version %s", p.Name, p.Version)
 	log.Printf("send feishu group robot message finish.\n")
 	return err
 }

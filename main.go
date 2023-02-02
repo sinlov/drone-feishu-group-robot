@@ -15,6 +15,7 @@ import (
 const (
 	// Version of cli
 	Version = "v1.1.0"
+	Name    = "drone-feishu-group-robot"
 )
 
 func action(c *cli.Context) error {
@@ -65,6 +66,7 @@ func action(c *cli.Context) error {
 	}
 
 	p := feishu_plugin.FeishuPlugin{
+		Name:    Name,
 		Version: Version,
 		Drone:   drone,
 		Config:  config,
