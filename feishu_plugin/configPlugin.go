@@ -1,6 +1,9 @@
 package feishu_plugin
 
 const (
+	RenderStatusShow = "success"
+	RenderStatusHide = "failure"
+
 	msgTypeText        = "text"
 	msgTypePost        = "post"
 	msgTypeInteractive = "interactive"
@@ -22,6 +25,17 @@ type (
 		FeishuRobotMeg []byte
 	}
 
+	CardOss struct {
+		Host     string
+		InfoUser string
+		InfoPath string
+
+		RenderResourceUrl string
+		ResourceUrl       string
+		PageUrl           string
+		PagePasswd        string
+	}
+
 	// Config plugin private config
 	Config struct {
 		Debug               bool
@@ -34,5 +48,8 @@ type (
 		Title               string
 		PoweredByImageKey   string
 		PoweredByImageAlt   string
+
+		RenderOssCard string
+		CardOss       CardOss
 	}
 )

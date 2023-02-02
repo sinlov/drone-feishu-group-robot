@@ -9,7 +9,7 @@ import (
 )
 
 // defaultCardTemplate
-// use Plugin and feishu_message.FeishuRobotMsgTemplate
+// use FeishuPlugin and feishu_message.FeishuRobotMsgTemplate
 const defaultCardTemplate string = `{
   "timestamp": {{ FeishuRobotMsgTemplate.Timestamp }},
   "sign": "{{ FeishuRobotMsgTemplate.Sign }}",
@@ -52,6 +52,15 @@ const defaultCardTemplate string = `{
       {
         "tag": "hr"
       },
+{{#success Config.RenderOssCard }}
+      {
+        "tag": "markdown",
+        "content": "[OSS {{ Config.CardOss.InfoUser }} ]({{ Config.CardOss.Host }})\nPath: {{ Config.CardOss.InfoPath }}\nPage: [{{ Config.CardOss.PageUrl }}]({{ Config.CardOss.PageUrl }}){{#failure Config.CardOss.RenderResourceUrl }}\nPassword: {{ Config.CardOss.PagePasswd }}\n{{/failure}}{{#success Config.CardOss.RenderResourceUrl }}\nDownload: [click me]({{ Config.CardOss.ResourceUrl }})\n{{/success}}"
+      },
+      {
+        "tag": "hr"
+      },
+{{/success}}
       {
         "tag": "markdown",
         "content": "**Stage**\nName: {{ Drone.Stage.Name }}\nMachine: {{ Drone.Stage.Machine }}\nOS: {{ Drone.Stage.Os }}\nArch: {{ Drone.Stage.Arch }}\nType: {{ Drone.Stage.Type }}\nKind: {{ Drone.Stage.Kind }}"
@@ -80,8 +89,8 @@ const defaultCardTemplate string = `{
   }
 }`
 
-func RenderFeishuCard(tpl string, p *Plugin) (string, error) {
-	var renderPlugin Plugin
+func RenderFeishuCard(tpl string, p *FeishuPlugin) (string, error) {
+	var renderPlugin FeishuPlugin
 	err := deepCopyByPlugin(p, &renderPlugin)
 	if err != nil {
 		return "", err
@@ -104,7 +113,7 @@ func deepCopyByGob(src, dst interface{}) error {
 	return gob.NewDecoder(&buffer).Decode(dst)
 }
 
-func deepCopyByPlugin(src, dst *Plugin) error {
+func deepCopyByPlugin(src, dst *FeishuPlugin) error {
 	if tmp, err := json.Marshal(&src); err != nil {
 		return err
 	} else {

@@ -7,7 +7,7 @@ import (
 
 func Test_RenderFeishuCard(t *testing.T) {
 	// mock _RenderFeishuCard
-	plugin := Plugin{}
+	plugin := FeishuPlugin{}
 	t.Logf("~> mock _RenderFeishuCard")
 	// do _RenderFeishuCard
 	renderFeishuCard, err := RenderFeishuCard("abc", &plugin)

@@ -40,6 +40,12 @@ steps:
       # let notification card change more info see https://open.feishu.cn/document/ukTMukTMukTM/uAjNwUjLwYDM14CM2ATN
       feishu_msg_title: "Drone CI Notification" # default [Drone CI Notification]
       feishu_enable_forward: true
+      feishu_oss_host: "https://xxx.com" # OSS host for show oss info, if empty will not show oss info
+      feishu_oss_info_user: "admin" # OSS user for show at card
+      feishu_oss_info_path: "dist/foo/bar" # OSS path for show at card
+      feishu_oss_resource_url: "https://xxx.com/s/xxx" # OSS resource url
+      feishu_oss_page_url: "https://xxx.com/p/xxx" # OSS page url
+      feishu_oss_page_passwd: "abc_xyz" # OSS password at page url, will hide PLUGIN_FEISHU_OSS_RESOURCE_URL when PAGE_PASSWD not empty 
     when:
       event: # https://docs.drone.io/pipeline/exec/syntax/conditions/#by-event
         - promote
@@ -72,6 +78,12 @@ steps:
       # let notification card change more info see https://open.feishu.cn/document/ukTMukTMukTM/uAjNwUjLwYDM14CM2ATN
       PLUGIN_FEISHU_MSG_TITLE: "Drone CI Notification" # default [Drone CI Notification]
       PLUGIN_FEISHU_ENABLE_FORWARD: true
+      PLUGIN_FEISHU_OSS_HOST: "https://xxx.com" # OSS host for show oss info, if empty will not show oss info
+      PLUGIN_FEISHU_OSS_INFO_USER: "admin" # OSS user for show at card
+      PLUGIN_FEISHU_OSS_INFO_PATH: "dist/foo/bar" # OSS path for show at card 
+      PLUGIN_FEISHU_OSS_RESOURCE_URL: "https://xxx.com/s/xxx" # OSS resource url
+      PLUGIN_FEISHU_OSS_PAGE_URL: "https://xxx.com/p/xxx" # OSS page url
+      PLUGIN_FEISHU_OSS_PAGE_PASSWD: "abc_xyz" # OSS password at page url, will hide PLUGIN_FEISHU_OSS_RESOURCE_URL when PAGE_PASSWD not empty
     commands:
       - ${EXEC_DRONE_FEISHU_GROUP_ROBOT_FULL_PATH} `
         ""

@@ -5,9 +5,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/sinlov/drone-feishu-group-robot/drone_info"
 	"github.com/sinlov/drone-feishu-group-robot/feishu_message"
 	"github.com/sinlov/drone-feishu-group-robot/tools"
+	"github.com/sinlov/drone-info-tools/drone_info"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -16,9 +16,25 @@ import (
 	"time"
 )
 
+const (
+	EnvPluginFeishuWebhook              = "PLUGIN_FEISHU_WEBHOOK"
+	EnvPluginFeishuSecret               = "PLUGIN_FEISHU_SECRET"
+	EnvPluginFeishuMsgTitle             = "PLUGIN_FEISHU_MSG_TITLE"
+	EnvPluginFeishuEnableForward        = "PLUGIN_FEISHU_ENABLE_FORWARD"
+	EnvPluginFeishuMsgType              = "PLUGIN_FEISHU_MSG_TYPE"
+	EnvPluginFeishuMsgPoweredByImageKey = "PLUGIN_FEISHU_MSG_POWERED_BY_IMAGE_KEY"
+	EnvPluginFeishuMsgPoweredByImageAlt = "PLUGIN_FEISHU_MSG_POWERED_BY_IMAGE_ALT"
+	EnvPluginFeishuOssHost              = "PLUGIN_FEISHU_OSS_HOST"
+	EnvPluginFeishuOssInfoUser          = "PLUGIN_FEISHU_OSS_INFO_USER"
+	EnvPluginFeishuOssInfoPath          = "PLUGIN_FEISHU_OSS_INFO_PATH"
+	EnvPluginFeishuOssResourceUrl       = "PLUGIN_FEISHU_OSS_RESOURCE_URL"
+	EnvPluginFeishuOssPageUrl           = "PLUGIN_FEISHU_OSS_PAGE_URL"
+	EnvPluginFeishuOssPagePasswd        = "PLUGIN_FEISHU_OSS_PAGE_PASSWD"
+)
+
 type (
-	// Plugin plugin all config
-	Plugin struct {
+	// FeishuPlugin plugin all config
+	FeishuPlugin struct {
 		Version                string
 		Drone                  drone_info.Drone
 		Config                 Config
@@ -27,7 +43,7 @@ type (
 	}
 )
 
-func (p *Plugin) Exec() error {
+func (p *FeishuPlugin) Exec() error {
 	if p.Config.Debug {
 		for _, e := range os.Environ() {
 			log.Println(e)
@@ -94,7 +110,7 @@ func (p *Plugin) Exec() error {
 	return err
 }
 
-func (p *Plugin) fetchSendTarget() (SendTarget, error) {
+func (p *FeishuPlugin) fetchSendTarget() (SendTarget, error) {
 	nowTimestamp := time.Now().Unix()
 	if p.Config.Debug {
 		log.Printf("fetchSendTarget nowTimestamp: %v\n", nowTimestamp)
@@ -149,7 +165,7 @@ func (p *Plugin) fetchSendTarget() (SendTarget, error) {
 	return sendTarget, nil
 }
 
-func (p *Plugin) sendMessage() error {
+func (p *FeishuPlugin) sendMessage() error {
 	sendTarget := p.SendTarget
 	var feishuUrl = fmt.Sprintf("%s/%s", feishu_message.ApiFeishuBotV2(), sendTarget.Webhook)
 	if p.Config.Debug {
