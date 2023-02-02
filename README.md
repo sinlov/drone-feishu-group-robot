@@ -41,7 +41,7 @@
 steps:
 
   - name: notification-feishu-group-robot
-    image: sinlov/drone-feishu-group-robot:1.1.0-alpine
+    image: sinlov/drone-feishu-group-robot:1.2.0-alpine
     pull: if-not-exists
     settings:
       debug: false
