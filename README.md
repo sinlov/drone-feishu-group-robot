@@ -9,7 +9,22 @@
 ## for what
 
 - this project used to drone CI use [Custom bot guide](https://open.feishu.cn/document/ukTMukTMukTM/ucTM5YjL3ETO24yNxkjN?lang=en-US)
-- support `platform=linux/arm,linux/arm64,linux/amd64`
+- support drone-docker `platform=linux/arm,linux/arm64,linux/amd64`
+- support drone-exec
+
+## Features
+
+- more see [features/README.md](features/README.md)
+
+### v1.2.0
+
+- failure notification
+
+![img.png](features/release-v1.2.0/img-v1.2.0-failure.png)
+
+- success notification
+
+![img.png](features/release-v1.2.0/img-v1.2.0-success.png)
 
 ## before use
 
