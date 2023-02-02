@@ -14,7 +14,7 @@ import (
 
 const (
 	// Version of cli
-	Version = "v1.1.0"
+	Version = "v1.2.0"
 	Name    = "drone-feishu-group-robot"
 )
 

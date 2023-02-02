@@ -1,3 +1,11 @@
+## 1.2.0 (2023-02-02)
+
+* feat: add feishu_plugin can support OSS info to show ([11ab740](https://github.com/sinlov/drone-feishu-group-robot/commit/11ab740))
+* feat: add more info to show drone at template ([52c05cd](https://github.com/sinlov/drone-feishu-group-robot/commit/52c05cd))
+* feat: add print plugin by name ([7118042](https://github.com/sinlov/drone-feishu-group-robot/commit/7118042))
+* feat: add show cli version at debug ([ed8f3c5](https://github.com/sinlov/drone-feishu-group-robot/commit/ed8f3c5))
+* docs: update docker hub status to show ([735f598](https://github.com/sinlov/drone-feishu-group-robot/commit/735f598))
+
 ## <small>1.0.2 (2023-01-24)</small>
 
 * fix: fix env not use settings feishu_webhook and feishu_secret, and update document ([ec76622](https://github.com/sinlov/drone-feishu-group-robot/commit/ec76622))
