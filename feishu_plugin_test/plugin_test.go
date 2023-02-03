@@ -56,11 +56,11 @@ func TestPlugin(t *testing.T) {
 		p.Config.Debug = true
 	}
 	p.Config.FeishuEnableForward = false
-	p.Config.RenderOssCard = feishu_plugin.RenderStatusShow
 	pagePasswd := mockOssPagePasswd
 
 	p.Drone = *drone_info.MockDroneInfo("success")
 	checkCardOssRenderByPlugin(&p, pagePasswd, false)
+	p.Config.CardOss.InfoSendResult = ""
 	// verify FeishuPlugin
 	err = p.Exec()
 
@@ -68,8 +68,20 @@ func TestPlugin(t *testing.T) {
 		t.Fatalf("send failure error at %v", err)
 	}
 
-	checkCardOssRenderByPlugin(&p, pagePasswd, true)
 	p.Drone = *drone_info.MockDroneInfo("success")
+	p.Config.RenderOssCard = feishu_plugin.RenderStatusShow
+	checkCardOssRenderByPlugin(&p, pagePasswd, false)
+	p.Drone.Commit.Message = "build success but oss send failure and render RenderOssCard show"
+	// verify FeishuPlugin
+	err = p.Exec()
+
+	if err != nil {
+		t.Fatalf("send failure error at %v", err)
+	}
+
+	p.Drone = *drone_info.MockDroneInfo("success")
+	checkCardOssRenderByPlugin(&p, pagePasswd, true)
+	p.Drone.Commit.Message = "send success and render OssStatus"
 
 	assert.Equal(t, "sinlov", p.Drone.Repo.OwnerName)
 	// verify FeishuPlugin
@@ -79,11 +91,12 @@ func TestPlugin(t *testing.T) {
 		t.Fatalf("send error at %v", err)
 	}
 
+	p.Drone = *drone_info.MockDroneInfo("failure")
 	p.Config.FeishuEnableForward = true
-	p.Config.RenderOssCard = feishu_plugin.RenderStatusShow
+	p.Config.RenderOssCard = feishu_plugin.RenderStatusHide
 	pagePasswd = ""
 	checkCardOssRenderByPlugin(&p, pagePasswd, true)
-	p.Drone = *drone_info.MockDroneInfo("failure")
+	p.Drone.Commit.Message = "build failure and hide Oss settings and render OssStatus"
 	// verify FeishuPlugin
 	err = p.Exec()
 

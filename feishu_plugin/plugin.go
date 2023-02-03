@@ -72,6 +72,9 @@ func (p *FeishuPlugin) Exec() error {
 
 	// change p.Config.CardOss.InfoSendResult to default
 	if p.Config.RenderOssCard == RenderStatusShow {
+		if !(tools.StrInArr(p.Config.CardOss.InfoSendResult, drone_info.DroneBuildStatusStatusOptSupport())) {
+			return fmt.Errorf("config [ feishu_oss_info_send_result ] only support %v", supportRenderStatus)
+		}
 		if p.Config.CardOss.InfoSendResult != RenderStatusShow {
 			if p.Config.Debug {
 				log.Printf("debug: in p.Config.RenderOssCard mode [ %s ] will set p.Config.CardOss.InfoSendResult to [ %s ] and change p.Drone.Build.Status to [ %s ]\n",
@@ -81,10 +84,6 @@ func (p *FeishuPlugin) Exec() error {
 			p.Config.CardOss.InfoSendResult = RenderStatusHide
 			p.Drone.Build.Status = RenderStatusHide
 		}
-	}
-
-	if !(tools.StrInArr(p.Config.CardOss.InfoSendResult, supportRenderStatus)) {
-		return fmt.Errorf("config [ feishu_oss_info_send_result ] only support %v", supportRenderStatus)
 	}
 
 	var err error
