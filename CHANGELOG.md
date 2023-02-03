@@ -1,3 +1,14 @@
+# Changelog
+
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [1.3.0](https://github.com/sinlov/drone-feishu-group-robot/compare/v1.2.0...v1.3.0) (2023-02-03)
+
+
+### Features
+
+* change to use github.com/sinlov/drone-info-tools v1.2.0 and remove useless code ([b00f07e](https://github.com/sinlov/drone-feishu-group-robot/commit/b00f07e93d2f484a0bbac666185ca2af6f9ec465))
+
 ## 1.2.0 (2023-02-02)
 
 * feat: add feishu_plugin can support OSS info to show ([11ab740](https://github.com/sinlov/drone-feishu-group-robot/commit/11ab740))
@@ -22,6 +33,3 @@
 * feat: change to codecov/codecov-action@v3.1.1 ([37bc78d](https://github.com/sinlov/drone-feishu-group-robot/commit/37bc78d))
 * feat: mark version to v1.0.1 for building ([5843891](https://github.com/sinlov/drone-feishu-group-robot/commit/5843891))
 * first commit ([99f59ee](https://github.com/sinlov/drone-feishu-group-robot/commit/99f59ee))
-
-
-

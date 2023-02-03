@@ -1,6 +1,5 @@
 {
   "name": "drone-feishu-group-robot",
-  "version": "v1.2.0",
-  "dependencies": {
-  }
+  "version": "1.3.0",
+  "dependencies": {}
 }
