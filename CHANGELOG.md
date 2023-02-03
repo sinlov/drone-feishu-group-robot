@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/sinlov/drone-feishu-group-robot/compare/v1.3.1...v1.4.0) (2023-02-03)
+
+
+### Features
+
+* embed package.json to config cli ([911a269](https://github.com/sinlov/drone-feishu-group-robot/commit/911a26938ce2e81aae62e90d59523e9bb5e5e232))
+
 ### [1.3.1](https://github.com/sinlov/drone-feishu-group-robot/compare/v1.3.0...v1.3.1) (2023-02-03)
 
 
