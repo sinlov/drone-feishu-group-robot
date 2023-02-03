@@ -1,7 +1,7 @@
 .PHONY: test check clean build dist all
 #TOP_DIR := $(shell pwd)
 # each tag change this
-ENV_DIST_VERSION := v1.3.1
+ENV_DIST_VERSION := v1.3.2
 
 ROOT_NAME ?= drone-feishu-group-robot
 RUN_ARGS = -h

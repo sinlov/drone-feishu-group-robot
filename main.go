@@ -1,9 +1,11 @@
 package main
 
 import (
+	_ "embed"
 	"fmt"
 	"github.com/sinlov/drone-feishu-group-robot/feishu_plugin"
 	"github.com/sinlov/drone-info-tools/drone_urfave_cli_v2"
+	"github.com/sinlov/drone-info-tools/pkgJson"
 	"github.com/sinlov/drone-info-tools/template"
 	"log"
 	"os"
@@ -14,10 +16,11 @@ import (
 )
 
 const (
-	// Version of cli
-	Version = "v1.3.1"
-	Name    = "drone-feishu-group-robot"
+	Name = "drone-feishu-group-robot"
 )
+
+//go:embed package.json
+var packageJson string
 
 func action(c *cli.Context) error {
 
@@ -25,8 +28,10 @@ func action(c *cli.Context) error {
 
 	drone := drone_urfave_cli_v2.UrfaveCliBindDroneInfo(c)
 
+	cliVersion := pkgJson.GetPackageJsonVersionGoStyle()
+
 	if isDebug {
-		log.Printf("debug: cli version is %s", Version)
+		log.Printf("debug: cli version is %s", cliVersion)
 		log.Printf("debug: load droneInfo finish at link: %v\n", drone.Build.Link)
 	}
 	config := feishu_plugin.Config{
@@ -43,7 +48,9 @@ func action(c *cli.Context) error {
 	}
 
 	ossHost := findStrFromCliOrCoverByEnv(c, "config.feishu_oss_host", feishu_plugin.EnvPluginFeishuOssHost)
-	cardOss := feishu_plugin.CardOss{}
+	cardOss := feishu_plugin.CardOss{
+		Host: ossHost,
+	}
 	if ossHost == "" {
 		config.RenderOssCard = feishu_plugin.RenderStatusHide
 	} else {
@@ -69,7 +76,7 @@ func action(c *cli.Context) error {
 
 	p := feishu_plugin.FeishuPlugin{
 		Name:    Name,
-		Version: Version,
+		Version: cliVersion,
 		Drone:   drone,
 		Config:  config,
 	}
@@ -189,9 +196,10 @@ func pluginFlag() []cli.Flag {
 }
 
 func main() {
+	pkgJson.InitPkgJsonContent(packageJson)
 	template.RegisterSettings(template.DefaultFunctions)
 	app := cli.NewApp()
-	app.Version = Version
+	app.Version = pkgJson.GetPackageJsonVersionGoStyle()
 	app.Name = "Drone feishu Message FeishuPlugin"
 	app.Usage = "Sending message to feishu group by robot using WebHook"
 	year := time.Now().Year()
