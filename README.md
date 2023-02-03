@@ -16,15 +16,19 @@
 
 - more see [features/README.md](features/README.md)
 
-### v1.2.0
+### v1.4.0
 
 - failure notification
 
-![img.png](features/release-v1.2.0/img-v1.2.0-failure.png)
+![img.png](https://github.com/sinlov/drone-feishu-group-robot/raw/main/features/release-v1.3/img-v1.3.1-fail.png)
+
+- failure notification by build success but oss status error
+
+![img.png](https://github.com/sinlov/drone-feishu-group-robot/raw/main/features/release-v1.2.0/img-v1.2.0-failure.png)
 
 - success notification
 
-![img.png](features/release-v1.2.0/img-v1.2.0-success.png)
+![img.png](https://github.com/sinlov/drone-feishu-group-robot/raw/main/features/release-v1.2.0/img-v1.2.0-success.png)
 
 ## before use
 
