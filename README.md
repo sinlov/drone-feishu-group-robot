@@ -55,6 +55,7 @@ steps:
       feishu_msg_title: "Drone CI Notification" # default [Drone CI Notification]
       feishu_enable_forward: true
       feishu_oss_host: "https://xxx.com" # OSS host for show oss info, if empty will not show oss info
+      feishu_oss_info_send_result: "success" # append oss info must set success
       feishu_oss_info_user: "admin" # OSS user for show at card
       feishu_oss_info_path: "dist/foo/bar" # OSS path for show at card
       feishu_oss_resource_url: "https://xxx.com/s/xxx" # OSS resource url
@@ -92,6 +93,7 @@ steps:
       PLUGIN_FEISHU_MSG_TITLE: "Drone CI Notification" # default [Drone CI Notification]
       PLUGIN_FEISHU_ENABLE_FORWARD: true
       PLUGIN_FEISHU_OSS_HOST: "https://xxx.com" # OSS host for show oss info, if empty will not show oss info
+      PLUGIN_FEISHU_OSS_INFO_SEND_RESULT: "success" # append oss info must set success 
       PLUGIN_FEISHU_OSS_INFO_USER: "admin" # OSS user for show at card
       PLUGIN_FEISHU_OSS_INFO_PATH: "dist/foo/bar" # OSS path for show at card 
       PLUGIN_FEISHU_OSS_RESOURCE_URL: "https://xxx.com/s/xxx" # OSS resource url
