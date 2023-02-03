@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"encoding/gob"
 	"encoding/json"
-	"github.com/sinlov/drone-feishu-group-robot/template"
-	"github.com/sinlov/drone-feishu-group-robot/tools"
+	"github.com/sinlov/drone-info-tools/template"
+	tools "github.com/sinlov/drone-info-tools/tools/str_tools"
 )
 
 // defaultCardTemplate

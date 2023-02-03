@@ -39,9 +39,8 @@
 
 ```yaml
 steps:
-
   - name: notification-feishu-group-robot
-    image: sinlov/drone-feishu-group-robot:1.2.0-alpine
+    image: sinlov/drone-feishu-group-robot:1.3.0-alpine
     pull: if-not-exists
     settings:
       debug: false
@@ -80,7 +79,6 @@ steps:
 
 ```yaml
 steps:
-
   - name: notification-feishu-group-robot-exec # must has env EXEC_DRONE_FEISHU_GROUP_ROBOT_FULL_PATH and exec tools
     environment:
       PLUGIN_DEBUG: false

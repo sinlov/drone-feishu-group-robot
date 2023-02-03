@@ -20,12 +20,12 @@ require (
 )
 
 require (
-	github.com/Masterminds/sprig/v3 v3.1.0
-	github.com/aymerick/raymond v2.0.2+incompatible
+	github.com/Masterminds/sprig/v3 v3.1.0 // indirect
+	github.com/aymerick/raymond v2.0.2+incompatible // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/joho/godotenv v1.4.0
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	github.com/sinlov/drone-info-tools v1.0.1
+	github.com/sinlov/drone-info-tools v1.2.0
 	github.com/urfave/cli/v2 v2.23.7
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
