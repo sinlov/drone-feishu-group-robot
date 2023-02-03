@@ -53,10 +53,18 @@ const defaultCardTemplate string = `{
         "tag": "hr"
       },
 {{#success Config.RenderOssCard }}
+{{#success Config.CardOss.InfoSendResult }}
       {
         "tag": "markdown",
         "content": "[OSS {{ Config.CardOss.InfoUser }} ]({{ Config.CardOss.Host }})\nPath: {{ Config.CardOss.InfoPath }}\nPage: [{{ Config.CardOss.PageUrl }}]({{ Config.CardOss.PageUrl }}){{#failure Config.CardOss.RenderResourceUrl }}\nPassword: {{ Config.CardOss.PagePasswd }}\n{{/failure}}{{#success Config.CardOss.RenderResourceUrl }}\nDownload: [click me]({{ Config.CardOss.ResourceUrl }})\n{{/success}}"
       },
+{{/success}}
+{{#failure Config.CardOss.InfoSendResult }}
+      {
+        "tag": "markdown",
+        "content": "[OSS {{ Config.CardOss.InfoUser }} ]({{ Config.CardOss.Host }}) send error, please check at [build Details]({{ Drone.Build.Link }})"
+      },
+{{/failure}}
       {
         "tag": "hr"
       },

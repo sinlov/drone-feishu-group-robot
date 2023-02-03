@@ -1,4 +1,4 @@
-package main
+package feishu_plugin_test
 
 import (
 	"github.com/sinlov/drone-info-tools/template"

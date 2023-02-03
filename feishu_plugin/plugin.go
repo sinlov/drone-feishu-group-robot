@@ -25,6 +25,7 @@ const (
 	EnvPluginFeishuMsgPoweredByImageKey = "PLUGIN_FEISHU_MSG_POWERED_BY_IMAGE_KEY"
 	EnvPluginFeishuMsgPoweredByImageAlt = "PLUGIN_FEISHU_MSG_POWERED_BY_IMAGE_ALT"
 	EnvPluginFeishuOssHost              = "PLUGIN_FEISHU_OSS_HOST"
+	EnvPluginFeishuOssInfoSendResult    = "PLUGIN_FEISHU_OSS_INFO_SEND_RESULT"
 	EnvPluginFeishuOssInfoUser          = "PLUGIN_FEISHU_OSS_INFO_USER"
 	EnvPluginFeishuOssInfoPath          = "PLUGIN_FEISHU_OSS_INFO_PATH"
 	EnvPluginFeishuOssResourceUrl       = "PLUGIN_FEISHU_OSS_RESOURCE_URL"
@@ -65,10 +66,19 @@ func (p *FeishuPlugin) Exec() error {
 	if p.Config.MsgType == "" {
 		p.Config.MsgType = msgTypeInteractive
 	}
-
 	if !(tools.StrInArr(p.Config.MsgType, supportMsgType)) {
-		return fmt.Errorf("feishu msg type only support %v", supportMsgType)
+		return fmt.Errorf("config [ msg_type ] only support %v", supportMsgType)
 	}
+
+	// change p.Config.CardOss.InfoSendResult to default
+	if p.Config.CardOss.InfoSendResult != RenderStatusShow {
+		p.Config.CardOss.InfoSendResult = RenderStatusHide
+		p.Drone.Build.Status = RenderStatusHide
+	}
+	if !(tools.StrInArr(p.Config.CardOss.InfoSendResult, supportRenderStatus)) {
+		return fmt.Errorf("config [ feishu_oss_info_send_result ] only support %v", supportRenderStatus)
+	}
+
 	var err error
 
 	sendTarget, err := p.fetchSendTarget()
