@@ -147,7 +147,7 @@ func pluginFlag() []cli.Flag {
 			EnvVars: []string{feishu_plugin.EnvPluginFeishuMsgPoweredByImageAlt},
 		},
 
-		// oss card end
+		// oss card start
 		&cli.StringFlag{
 			Name:    "config.feishu_oss_host",
 			Usage:   "feishu OSS host for show oss info, if empty will not show oss info",

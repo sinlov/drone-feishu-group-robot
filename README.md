@@ -40,7 +40,7 @@
 ```yaml
 steps:
   - name: notification-feishu-group-robot
-    image: sinlov/drone-feishu-group-robot:1.3.0-alpine
+    image: sinlov/drone-feishu-group-robot:1.3.1-alpine
     pull: if-not-exists
     settings:
       debug: false
