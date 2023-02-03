@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.1](https://github.com/sinlov/drone-feishu-group-robot/compare/v1.3.0...v1.3.1) (2023-02-03)
+
+
+### Bug Fixes
+
+* add feishu_oss_info_send_result and fix template render init func ([affd62f](https://github.com/sinlov/drone-feishu-group-robot/commit/affd62f18aae34fb7d4b6ea3c7715de043847f1c))
+* fix not set oss will show drone build error ([9427ed8](https://github.com/sinlov/drone-feishu-group-robot/commit/9427ed8b45a4f67df5da87cee8caa72763538b7b))
+
 ## [1.3.0](https://github.com/sinlov/drone-feishu-group-robot/compare/v1.2.0...v1.3.0) (2023-02-03)
 
 
