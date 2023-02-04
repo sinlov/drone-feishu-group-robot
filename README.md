@@ -14,9 +14,12 @@
 
 ## Features
 
-- more see [features/README.md](features/README.md)
+- more see [features/README.md](https://github.com/sinlov/drone-feishu-group-robot/blob/main/features/README.md)
 
-### v1.4.0
+
+* let flag bind and maintain at package feishu_plugin ([af68743](https://github.com/sinlov/drone-feishu-group-robot/commit/af687439627de513eb54750241252aa0de0d8b8c))
+
+### v1.4.+
 
 - failure notification
 

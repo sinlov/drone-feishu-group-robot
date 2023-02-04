@@ -1,5 +1,13 @@
 ## Features
 
+## [1.5.0](https://github.com/sinlov/drone-feishu-group-robot/compare/v1.4.0...v1.5.0) (2023-02-04)
+
+
+### Features
+
+* let flag bind and maintain at package feishu_plugin ([af68743](https://github.com/sinlov/drone-feishu-group-robot/commit/af687439627de513eb54750241252aa0de0d8b8c))
+
+
 ## [1.4.0](https://github.com/sinlov/drone-feishu-group-robot/compare/v1.3.1...v1.4.0) (2023-02-03)
 
 
