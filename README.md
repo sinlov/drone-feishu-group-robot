@@ -44,14 +44,50 @@
 
 - `1.x` docker
 
+sample config
+
 ```yaml
 steps:
   - name: notification-feishu-group-robot
-    image: sinlov/drone-feishu-group-robot:1.3.1-alpine
+    # depends_on: # https://docs.drone.io/pipeline/exec/syntax/parallelism/
+    #   - dist-release
+    image: sinlov/drone-feishu-group-robot:1.5.0-alpine
+    pull: if-not-exists
+    # image: sinlov/drone-feishu-group-robot:latest
+    settings:
+      # debug: true # plugin debug switch
+	  # ntp_target: "pool.ntp.org" # if not set will not sync ntp time
+      feishu_webhook:
+        # https://docs.drone.io/pipeline/environment/syntax/#from-secrets
+        from_secret: feishu_group_bot_token
+      feishu_secret:
+        from_secret: feishu_group_secret_bot
+      feishu_msg_title: "Drone CI Notification" # default [Drone CI Notification]
+      # let notification card change more info see https://open.feishu.cn/document/ukTMukTMukTM/uAjNwUjLwYDM14CM2ATN
+      feishu_enable_forward: true
+    when:
+      event: # https://docs.drone.io/pipeline/exec/syntax/conditions/#by-event
+        - promote
+        - rollback
+        - push
+        - pull_request
+        - tag
+      status: # only support failure/success,  both open will send anything
+        - failure
+        - success
+```
+
+
+full config
+
+```yaml
+steps:
+  - name: notification-feishu-group-robot
+    image: sinlov/drone-feishu-group-robot:latest
     pull: if-not-exists
     settings:
       debug: false
-#      ntp_target: "pool.ntp.org" # if not set will not sync
+#      ntp_target: "pool.ntp.org" # if not set will not sync ntp time
       timeout_second: 10 # default 10
       feishu_webhook:
         # https://docs.drone.io/pipeline/environment/syntax/#from-secrets
