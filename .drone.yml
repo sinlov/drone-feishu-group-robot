@@ -21,6 +21,13 @@ environment:
   GOARCH: amd64
 
 steps:
+  - name: env-init
+    image: alpine:3.17
+    pull: if-not-exists
+    commands:
+      - "echo \"=> base  info\nDRONE_STAGE_MACHINE    ${DRONE_STAGE_MACHINE}\nDRONE_STAGE_OS         ${DRONE_STAGE_OS}\nDRONE_STAGE_ARCH       ${DRONE_STAGE_ARCH}\""
+      - "echo \"=> drone info\nDRONE_WORKSPACE        ${DRONE_WORKSPACE}\nDRONE_REPO_NAME        ${DRONE_REPO_NAME}\nDRONE_REPO_OWNER       ${DRONE_REPO_OWNER}\nDRONE_REPO             ${DRONE_REPO}\""
+      - "echo \"=> cvs   info\nDRONE_BRANCH           ${DRONE_BRANCH/\\//-}\nDRONE_COMMIT_SHA short ${DRONE_COMMIT_SHA:0:8}\nDRONE_TAG              ${DRONE_TAG##v}\""
   - name: go-init
     image: golang:1.17.13-buster
     pull: if-not-exists
@@ -30,13 +37,6 @@ steps:
     environment:
       GOPATH: /go
     commands:
-      - pwd
-      - echo "DRONE_REPO_NAME        ${DRONE_REPO_NAME}"
-      - echo "DRONE_REPO_OWNER       ${DRONE_REPO_OWNER}"
-      - echo "DRONE_REPO             ${DRONE_REPO}"
-      - echo "DRONE_BRANCH           ${DRONE_BRANCH/\//-}"
-      - echo "DRONE_COMMIT_SHA short ${DRONE_COMMIT_SHA:0:8}"
-      - echo "DRONE_TAG              ${DRONE_TAG##v}"
       - go version
       - go env
       - go mod verify
@@ -87,30 +87,27 @@ steps:
     environment:
       GOPATH: /go
     commands:
-      - make cleanAllDist distReleaseTar
+      - export ENV_CI_DIST_VERSION=${DRONE_TAG}
+      - make cleanAllDist distPlatformTarCommonUse
       - cp ./dist/**/**.gz /go_dist_release/
     when:
       event:
         - tag
-  - name: notify-docker-email # must drone orgsecret add keys
-    image: drillster/drone-email # https://github.com/Drillster/drone-email
+  - name: notification-feishu-group-robot
+    image: sinlov/drone-feishu-group-robot:1.1.0-alpine
     pull: if-not-exists
-    environment:
-      PLUGIN_FROM_ADDRESS:
-        from_secret: email_from_address
-      PLUGIN_FROM_NAME:
-        from_secret: email_from_name
-      PLUGIN_HOST:
-        from_secret: email_smtp_host
-      PLUGIN_PORT:
-        from_secret: email_smtp_port
-      PLUGIN_USERNAME:
-        from_secret: email_smtp_user_name
-      PLUGIN_PASSWORD:
-        from_secret: email_smtp_password
     settings:
-      recipients: #  List of recipients to send this mail to (besides the commit author)
-        - sinlovgmppt@gmail.com
+      debug: false
+#      ntp_target: "pool.ntp.org" # if not set will not sync
+      timeout_second: 10 # default 10
+      feishu_webhook:
+        # https://docs.drone.io/pipeline/environment/syntax/#from-secrets
+        from_secret: feishu_group_bot_token
+      feishu_secret:
+        from_secret: feishu_group_secret_bot
+      feishu_msg_title: "Drone CI Notification" # default [Drone CI Notification]
+      # let notification card change more info see https://open.feishu.cn/document/ukTMukTMukTM/uAjNwUjLwYDM14CM2ATN
+      feishu_enable_forward: true
     when:
       event: # https://docs.drone.io/pipeline/exec/syntax/conditions/#by-event
         - promote
@@ -120,7 +117,7 @@ steps:
         - tag
       status: # only support failure/success,  both open will send anything
         - failure
-        # - success
+        - success
 
 trigger: # https://docs.drone.io/pipeline/triggers/
   # branch:
