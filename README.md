@@ -16,8 +16,11 @@
 
 - more see [features/README.md](https://github.com/sinlov/drone-feishu-group-robot/blob/main/features/README.md)
 
+### v1.6.+
 
-* let flag bind and maintain at package feishu_plugin ([af68743](https://github.com/sinlov/drone-feishu-group-robot/commit/af687439627de513eb54750241252aa0de0d8b8c))
+card render by Drone Tag
+
+![img.png](https://github.com/sinlov/drone-feishu-group-robot/raw/main/features/release-v1.6.x/release-v1.6-support-tag.png)
 
 ### v1.4.+
 

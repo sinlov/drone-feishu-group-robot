@@ -1,10 +1,8 @@
 .PHONY: test check clean build dist all
 #TOP_DIR := $(shell pwd)
-# each tag change this
+# can change by env:ENV_CI_DIST_VERSION use and change by env:ENV_CI_DIST_MARK by CI
 ENV_DIST_VERSION := v1.6.0
-ifneq ($(strip $(ENV_CI_DIST_VERSION)),)
-    ENV_DIST_VERSION=${ENV_CI_DIST_VERSION}
-endif
+ENV_DIST_MARK=
 
 ROOT_NAME ?= drone-feishu-group-robot
 
@@ -45,10 +43,6 @@ ENV_DIST_GO_OS = linux
 # amd64 386
 ENV_DIST_GO_ARCH = amd64
 
-#ENV_NOW_GIT_COMMIT_ID_SHORT=$(shell git --no-pager rev-parse --short HEAD)
-#ENV_DIST_MARK=-${ENV_NOW_GIT_COMMIT_ID_SHORT}
-ENV_DIST_MARK=
-
 # this can change to other mark https://docs.drone.io/pipeline/environment/substitution/
 ifneq ($(strip $(DRONE_TAG)),)
 $(info -> change ENV_DIST_MARK by DRONE_TAG)
@@ -66,6 +60,15 @@ endif
 ifeq ($(strip $(ENV_DIST_MARK)),)
 $(info -> change ENV_DIST_MARK by git)
     ENV_DIST_MARK=-$(strip $(shell git --no-pager rev-parse --short HEAD))
+endif
+ifneq ($(strip $(ENV_CI_DIST_MARK)),)
+$(info -> change ENV_DIST_MARK by ENV_CI_DIST_MARK)
+    ENV_DIST_MARK=-${ENV_CI_DIST_MARK}
+endif
+
+ifneq ($(strip $(ENV_CI_DIST_VERSION)),)
+$(info -> change ENV_DIST_VERSION by ENV_CI_DIST_VERSION)
+    ENV_DIST_VERSION=${ENV_CI_DIST_VERSION}
 endif
 
 # ifeq ($(FILE), $(wildcard $(FILE)))
