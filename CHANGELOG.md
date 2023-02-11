@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.0](https://github.com/sinlov/drone-feishu-group-robot/compare/v1.5.0...v1.6.0) (2023-02-11)
+
+
+### Features
+
+* fix Drone.Commit.Link compare not support, when tags Link get error ([c55854a](https://github.com/sinlov/drone-feishu-group-robot/commit/c55854acf74887699b754ff51ef8859937665087))
+* update github.com/sinlov/drone-info-tools v1.7.0 and card render by Drone Tag ([6ee3f3c](https://github.com/sinlov/drone-feishu-group-robot/commit/6ee3f3cf01459e68aa97ece2358aed0973d2ff96))
+
 ## [1.5.0](https://github.com/sinlov/drone-feishu-group-robot/compare/v1.4.0...v1.5.0) (2023-02-04)
 
 
