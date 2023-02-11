@@ -4,23 +4,14 @@ import (
 	"github.com/sinlov/drone-feishu-group-robot/feishu_plugin"
 	"github.com/sinlov/drone-info-tools/drone_info"
 	"github.com/stretchr/testify/assert"
-	"os"
 	"testing"
-)
-
-const (
-	mockName           = "drone-feishu-group-robot"
-	mockVersion        = "v0.0.0"
-	mockOssHost        = "https://docs.aws.amazon.com/s3/index.html"
-	mockOssUser        = "ossAdmin"
-	mockOssPath        = "dist/demo/pass.tar.gz"
-	mockOssResourceUrl = "https://docs.aws.amazon.com/s/dist/demo/pass.tar.gz"
-	mockOssPageUrl     = "https://docs.aws.amazon.com/p/dist/demo/pass.tar.gz"
-	mockOssPagePasswd  = "abc-zxy"
 )
 
 func TestPlugin(t *testing.T) {
 	// mock FeishuPlugin
+	if envCheck(t) {
+		return
+	}
 	t.Logf("~> mock FeishuPlugin")
 	p := feishu_plugin.FeishuPlugin{
 		Name:    mockName,
@@ -33,14 +24,9 @@ func TestPlugin(t *testing.T) {
 		t.Error("feishu webhook empty error should be catch!")
 	}
 
-	envFeishuWebHook := os.Getenv(feishu_plugin.EnvPluginFeishuWebhook)
-	if envFeishuWebHook == "" {
-		t.Errorf("please set env:%s", feishu_plugin.EnvPluginFeishuWebhook)
-	}
-
 	p.Config.Webhook = envFeishuWebHook
-	if os.Getenv(feishu_plugin.EnvPluginFeishuSecret) != "" {
-		p.Config.Secret = os.Getenv(feishu_plugin.EnvPluginFeishuSecret)
+	if envFeishuSecret != "" {
+		p.Config.Secret = envFeishuSecret
 	}
 
 	p.Config.MsgType = "mock" // not support type
@@ -49,16 +35,13 @@ func TestPlugin(t *testing.T) {
 		t.Error("feishu msg type not support error should be catch!")
 	}
 
-	envMsgType := "interactive" // only support this type now
-	p.Config.MsgType = envMsgType
+	p.Config.MsgType = feishu_plugin.MsgTypeInteractive
 
-	if os.Getenv("PLUGIN_DEBUG") == "true" {
-		p.Config.Debug = true
-	}
+	p.Config.Debug = envDebug
 	p.Config.FeishuEnableForward = false
 	pagePasswd := mockOssPagePasswd
 
-	p.Drone = *drone_info.MockDroneInfo("success")
+	p.Drone = *drone_info.MockDroneInfo(drone_info.DroneBuildStatusSuccess)
 	checkCardOssRenderByPlugin(&p, pagePasswd, false)
 	p.Config.CardOss.InfoSendResult = ""
 	// verify FeishuPlugin
@@ -68,10 +51,10 @@ func TestPlugin(t *testing.T) {
 		t.Fatalf("send failure error at %v", err)
 	}
 
-	p.Drone = *drone_info.MockDroneInfo("success")
+	p.Drone = *drone_info.MockDroneInfo(drone_info.DroneBuildStatusSuccess)
+	p.Drone.Commit.Message = "build success but oss send failure and render RenderOssCard show"
 	p.Config.RenderOssCard = feishu_plugin.RenderStatusShow
 	checkCardOssRenderByPlugin(&p, pagePasswd, false)
-	p.Drone.Commit.Message = "build success but oss send failure and render RenderOssCard show"
 	// verify FeishuPlugin
 	err = p.Exec()
 
@@ -79,9 +62,9 @@ func TestPlugin(t *testing.T) {
 		t.Fatalf("send failure error at %v", err)
 	}
 
-	p.Drone = *drone_info.MockDroneInfo("success")
-	checkCardOssRenderByPlugin(&p, pagePasswd, true)
+	p.Drone = *drone_info.MockDroneInfo(drone_info.DroneBuildStatusSuccess)
 	p.Drone.Commit.Message = "send success and render OssStatus"
+	checkCardOssRenderByPlugin(&p, pagePasswd, true)
 
 	assert.Equal(t, "sinlov", p.Drone.Repo.OwnerName)
 	// verify FeishuPlugin
@@ -91,12 +74,12 @@ func TestPlugin(t *testing.T) {
 		t.Fatalf("send error at %v", err)
 	}
 
-	p.Drone = *drone_info.MockDroneInfo("failure")
+	p.Drone = *drone_info.MockDroneInfo(drone_info.DroneBuildStatusFailure)
+	p.Drone.Commit.Message = "build failure and hide Oss settings and render OssStatus"
 	p.Config.FeishuEnableForward = true
 	p.Config.RenderOssCard = feishu_plugin.RenderStatusHide
 	pagePasswd = ""
 	checkCardOssRenderByPlugin(&p, pagePasswd, true)
-	p.Drone.Commit.Message = "build failure and hide Oss settings and render OssStatus"
 	// verify FeishuPlugin
 	err = p.Exec()
 

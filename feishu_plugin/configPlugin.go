@@ -4,9 +4,9 @@ const (
 	RenderStatusShow = "success"
 	RenderStatusHide = "failure"
 
-	msgTypeText        = "text"
-	msgTypePost        = "post"
-	msgTypeInteractive = "interactive"
+	MsgTypeText        = "text"
+	MsgTypePost        = "post"
+	MsgTypeInteractive = "interactive"
 )
 
 var (
@@ -19,7 +19,7 @@ var (
 	// supportMsgType
 	// @doc https://open.feishu.cn/document/ukTMukTMukTM/ucTM5YjL3ETO24yNxkjN?lang=zh-CN#8b0f2a1b
 	supportMsgType = []string{
-		msgTypeInteractive,
+		MsgTypeInteractive,
 	}
 )
 
@@ -33,6 +33,9 @@ type (
 
 	CardOss struct {
 		Host string
+		// InfoTagResult
+		// tag result [ success or failure]
+		InfoTagResult string
 		// InfoSendResult
 		// send result [ success or failure]
 		InfoSendResult string

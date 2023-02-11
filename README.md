@@ -51,7 +51,7 @@ steps:
   - name: notification-feishu-group-robot
     # depends_on: # https://docs.drone.io/pipeline/exec/syntax/parallelism/
     #   - dist-release
-    image: sinlov/drone-feishu-group-robot:1.5.0-alpine
+    image: sinlov/drone-feishu-group-robot:1.6.0-alpine
     pull: if-not-exists
     # image: sinlov/drone-feishu-group-robot:latest
     settings:

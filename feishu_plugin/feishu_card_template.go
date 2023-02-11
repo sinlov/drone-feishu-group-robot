@@ -8,9 +8,9 @@ import (
 	tools "github.com/sinlov/drone-info-tools/tools/str_tools"
 )
 
-// defaultCardTemplate
+// DefaultCardTemplate
 // use FeishuPlugin and feishu_message.FeishuRobotMsgTemplate
-const defaultCardTemplate string = `{
+const DefaultCardTemplate string = `{
   "timestamp": {{ FeishuRobotMsgTemplate.Timestamp }},
   "sign": "{{ FeishuRobotMsgTemplate.Sign }}",
   "msg_type": "interactive",
@@ -33,17 +33,25 @@ const defaultCardTemplate string = `{
       {
         "tag": "hr"
       },
+{{#success Config.CardOss.InfoTagResult }}
       {
         "tag": "markdown",
-        "content": "📝 Commit by {{ Drone.Commit.Author.Username }} on **{{ Drone.Commit.Branch }}**\nCommitCode: {{ Drone.Commit.Sha }}"
+        "content": "**Drone Tag:** {{ Drone.Build.Tag }}\n📝 Commit by {{ Drone.Commit.Author.Username }}\nCommitCode: {{ Drone.Commit.Sha }}"
       },
+{{/success}}
+{{#failure Config.CardOss.InfoTagResult }}
+      {
+        "tag": "markdown",
+        "content": "📝 Commit by {{ Drone.Commit.Author.Username }} on **{{ Drone.Build.Branch }}**\nCommitCode: {{ Drone.Commit.Sha }}"
+      },
+{{/failure}}
       {
         "tag": "markdown",
         "content": "{{#success Drone.Build.Status }}✅{{/success}}{{#failure Drone.Build.Status}}❌{{/failure}} Build [#{{ Drone.Build.Number }}]({{ Drone.Build.Link }}) {{ Drone.Build.Status }}{{#failure Drone.Build.Status}}\n failedStages: {{Drone.Build.FailedStages}}\n failedSteps: {{Drone.Build.FailedSteps}} {{/failure}}"
       },
       {
         "tag": "markdown",
-        "content": "**Commit:**\n\n{{ Drone.Commit.Message }}"
+        "content": "**Commit:**\n{{ Drone.Commit.Message }}"
       },
       {
         "tag": "markdown",
@@ -105,6 +113,13 @@ func RenderFeishuCard(tpl string, p *FeishuPlugin) (string, error) {
 	}
 
 	renderPlugin.Drone.Commit.Message = tools.Str2LineRaw(renderPlugin.Drone.Commit.Message)
+
+	// check out p.Config.CardOss.InfoTagResult
+	if renderPlugin.Drone.Build.Tag == "" {
+		renderPlugin.Config.CardOss.InfoTagResult = RenderStatusHide
+	} else {
+		renderPlugin.Config.CardOss.InfoTagResult = RenderStatusShow
+	}
 
 	message, err := template.RenderTrim(tpl, &renderPlugin)
 	if err != nil {

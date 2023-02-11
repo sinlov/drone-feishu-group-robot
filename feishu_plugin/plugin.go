@@ -64,7 +64,7 @@ func (p *FeishuPlugin) Exec() error {
 
 	// set default MsgType
 	if p.Config.MsgType == "" {
-		p.Config.MsgType = msgTypeInteractive
+		p.Config.MsgType = MsgTypeInteractive
 	}
 	if !(tools.StrInArr(p.Config.MsgType, supportMsgType)) {
 		return fmt.Errorf("config [ msg_type ] only support %v", supportMsgType)
@@ -156,7 +156,7 @@ func (p *FeishuPlugin) fetchSendTarget() (SendTarget, error) {
 	default:
 		log.Printf("fetchSend msg type now not support %v", p.Config.MsgType)
 		return sendTarget, fmt.Errorf("fetchSend msg type now not support %v", p.Config.MsgType)
-	case msgTypeInteractive:
+	case MsgTypeInteractive:
 		cardTemp := (feishu_message.CardTemp{}).Build(
 			p.Config.Title,
 			p.Config.PoweredByImageKey,
@@ -168,7 +168,7 @@ func (p *FeishuPlugin) fetchSendTarget() (SendTarget, error) {
 		robotMsgTemplate.CtxTemp = ctxTemp
 		p.FeishuRobotMsgTemplate = robotMsgTemplate
 
-		renderFeishuCard, err := RenderFeishuCard(defaultCardTemplate, p)
+		renderFeishuCard, err := RenderFeishuCard(DefaultCardTemplate, p)
 		if err != nil {
 			return sendTarget, err
 		}
