@@ -84,7 +84,6 @@ full config
 steps:
   - name: notification-feishu-group-robot
     image: sinlov/drone-feishu-group-robot:latest
-    pull: if-not-exists
     settings:
       debug: false
 #      ntp_target: "pool.ntp.org" # if not set will not sync ntp time

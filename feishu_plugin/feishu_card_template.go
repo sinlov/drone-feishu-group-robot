@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"github.com/sinlov/drone-info-tools/template"
 	tools "github.com/sinlov/drone-info-tools/tools/str_tools"
+	"strings"
 )
 
 // DefaultCardTemplate
@@ -36,7 +37,7 @@ const DefaultCardTemplate string = `{
 {{#success Config.CardOss.InfoTagResult }}
       {
         "tag": "markdown",
-        "content": "**Drone Tag:** {{ Drone.Build.Tag }}\n📝 Commit by {{ Drone.Commit.Author.Username }}\nCommitCode: {{ Drone.Commit.Sha }}"
+        "content": "📝 **Drone Tag:** {{ Drone.Build.Tag }}\nCommitCode: {{ Drone.Commit.Sha }}"
       },
 {{/success}}
 {{#failure Config.CardOss.InfoTagResult }}
@@ -119,6 +120,10 @@ func RenderFeishuCard(tpl string, p *FeishuPlugin) (string, error) {
 		renderPlugin.Config.CardOss.InfoTagResult = RenderStatusHide
 	} else {
 		renderPlugin.Config.CardOss.InfoTagResult = RenderStatusShow
+		// fix Drone.Commit.Link compare not support, when tags Link get error
+		if strings.Contains(renderPlugin.Drone.Commit.Link, "compare/0000000000000000000000000000000000000000...") {
+			renderPlugin.Drone.Commit.Link = strings.Replace(renderPlugin.Drone.Commit.Link, "compare/0000000000000000000000000000000000000000...", "commit/", -1)
+		}
 	}
 
 	message, err := template.RenderTrim(tpl, &renderPlugin)
