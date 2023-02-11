@@ -20,7 +20,7 @@
 
 card render by Drone Tag
 
-![img.png](https://github.com/sinlov/drone-feishu-group-robot/raw/main/features/release-v1.6.x/release-v1.6-support-tag.png)
+![img.png](https://github.com/sinlov/drone-feishu-group-robot/raw/main/features/release-v1.6.x/release-v1.6-tag-render.png)
 
 ### v1.4.+
 
