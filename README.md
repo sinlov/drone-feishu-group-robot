@@ -17,6 +17,10 @@
 
 - more see [features/README.md](https://github.com/sinlov/drone-feishu-group-robot/blob/main/features/README.md)
 
+### v1.7.+
+
+![img.png](https://github.com/sinlov/drone-feishu-group-robot/raw/main/features/release-v1.7.x/release-v1.7.0-detail.png)
+
 ### v1.6.+
 
 card render by Drone Tag

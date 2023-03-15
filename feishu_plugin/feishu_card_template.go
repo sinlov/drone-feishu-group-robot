@@ -80,7 +80,7 @@ const DefaultCardTemplate string = `{
 {{/success}}
       {
         "tag": "markdown",
-        "content": "**Stage**\nName: {{ Drone.Stage.Name }}\nMachine: {{ Drone.Stage.Machine }}\nOS: {{ Drone.Stage.Os }}\nArch: {{ Drone.Stage.Arch }}\nType: {{ Drone.Stage.Type }}\nKind: {{ Drone.Stage.Kind }}"
+        "content": "**Started:** {{ Drone.Stage.StartedTime }}\n**Finished:** {{ Drone.Stage.FinishedTime }}\n**Stage**\nName: {{ Drone.Stage.Name }}\nMachine: {{ Drone.Stage.Machine }}\nOS: {{ Drone.Stage.Os }}\nArch: {{ Drone.Stage.Arch }}\nType: {{ Drone.Stage.Type }}\nKind: {{ Drone.Stage.Kind }}"
       },
       {
         "tag": "hr"
