@@ -1,5 +1,14 @@
 ## Features
 
+## [1.7.0](https://github.com/sinlov/drone-feishu-group-robot/compare/v1.6.0...v1.7.0) (2023-03-15)
+
+
+### Features
+
+* let detail show start time and finish time ([bc46a56](https://github.com/sinlov/drone-feishu-group-robot/commit/bc46a5691c8c627d5614e8d7819c2a710f4c679d))
+
+![img.png](release-v1.7.x/release-v1.7.0-detail.png)
+
 ## [1.6.0](https://github.com/sinlov/drone-feishu-group-robot/compare/v1.5.0...v1.6.0) (2023-02-11)
 
 
