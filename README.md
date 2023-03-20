@@ -43,6 +43,7 @@ card render by Drone Tag
 
 ## before use
 
+- sed doc at [feishu Custom bot guide](https://open.feishu.cn/document/ukTMukTMukTM/ucTM5YjL3ETO24yNxkjN?lang=en-US), to new group robot
 - Configure webhook like `https://open.feishu.cn/open-apis/bot/v2/hook/{web_hook}` end `{web_hook}`
 - `{web_hook}` must settings at `settings.feishu_webhook`or `PLUGIN_FEISHU_WEBHOOK`
 - if set `Custom keywords` you can change `settings.feishu_msg_title` or `PLUGIN_FEISHU_MSG_TITLE`
@@ -57,14 +58,12 @@ sample config
 ```yaml
 steps:
   - name: notification-feishu-group-robot
-    # depends_on: # https://docs.drone.io/pipeline/exec/syntax/parallelism/
-    #   - dist-release
-    image: sinlov/drone-feishu-group-robot:1.6.0-alpine
+    image: sinlov/drone-feishu-group-robot:1.7.0-alpine
     pull: if-not-exists
     # image: sinlov/drone-feishu-group-robot:latest
     settings:
       # debug: true # plugin debug switch
-	  # ntp_target: "pool.ntp.org" # if not set will not sync ntp time
+      # ntp_target: "pool.ntp.org" # if not set will not sync ntp time
       feishu_webhook:
         # https://docs.drone.io/pipeline/environment/syntax/#from-secrets
         from_secret: feishu_group_bot_token
@@ -93,8 +92,8 @@ steps:
   - name: notification-feishu-group-robot
     image: sinlov/drone-feishu-group-robot:latest
     settings:
-      debug: false
-#      ntp_target: "pool.ntp.org" # if not set will not sync ntp time
+      debug: true # plugin debug switch
+      # ntp_target: "pool.ntp.org" # if not set will not sync ntp time
       timeout_second: 10 # default 10
       feishu_webhook:
         # https://docs.drone.io/pipeline/environment/syntax/#from-secrets
@@ -142,6 +141,7 @@ steps:
       # let notification card change more info see https://open.feishu.cn/document/ukTMukTMukTM/uAjNwUjLwYDM14CM2ATN
       PLUGIN_FEISHU_MSG_TITLE: "Drone CI Notification" # default [Drone CI Notification]
       PLUGIN_FEISHU_ENABLE_FORWARD: true
+      # oss info to show
       PLUGIN_FEISHU_OSS_HOST: "https://xxx.com" # OSS host for show oss info, if empty will not show oss info
       PLUGIN_FEISHU_OSS_INFO_SEND_RESULT: ${DRONE_BUILD_STATUS} # append oss info must set success 
       PLUGIN_FEISHU_OSS_INFO_USER: "admin" # OSS user for show at card
@@ -285,5 +285,5 @@ $ make dockerTestPruneLatest
 # see how to use
 $ docker run --rm sinlov/drone-feishu-group-robot:latest -h
 # or version
-$ docker run --rm sinlov/drone-feishu-group-robot:1.1.0-alpine -h
+$ docker run --rm sinlov/drone-feishu-group-robot:1.7.0-alpine -h
 ```
