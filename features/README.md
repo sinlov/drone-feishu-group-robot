@@ -1,40 +1,45 @@
 ## Features
 
-## [1.7.0](https://github.com/sinlov/drone-feishu-group-robot/compare/v1.6.0...v1.7.0) (2023-03-15)
-
+## [1.8.0](https://github.com/sinlov/drone-feishu-group-robot/compare/v1.7.0...v1.8.0) (2023-06-14)
 
 ### Features
 
-* let detail show start time and finish time ([bc46a56](https://github.com/sinlov/drone-feishu-group-robot/commit/bc46a5691c8c627d5614e8d7819c2a710f4c679d))
+* add
+  feishu_ignore_last_success_by_badges ([a36c4ec](https://github.com/sinlov/drone-feishu-group-robot/commit/a36c4ec1f25eed6101a0965d9689777d44bfa7f0))
+
+## [1.7.0](https://github.com/sinlov/drone-feishu-group-robot/compare/v1.6.0...v1.7.0) (2023-03-15)
+
+### Features
+
+* let detail show start time and finish
+  time ([bc46a56](https://github.com/sinlov/drone-feishu-group-robot/commit/bc46a5691c8c627d5614e8d7819c2a710f4c679d))
 
 ![img.png](release-v1.7.x/release-v1.7.0-detail.png)
 
 ## [1.6.0](https://github.com/sinlov/drone-feishu-group-robot/compare/v1.5.0...v1.6.0) (2023-02-11)
 
-
 ### Features
 
-* fix Drone.Commit.Link compare not support, when tags Link get error ([c55854a](https://github.com/sinlov/drone-feishu-group-robot/commit/c55854acf74887699b754ff51ef8859937665087))
-* update github.com/sinlov/drone-info-tools v1.7.0 and card render by Drone Tag ([6ee3f3c](https://github.com/sinlov/drone-feishu-group-robot/commit/6ee3f3cf01459e68aa97ece2358aed0973d2ff96))
-
+* fix Drone.Commit.Link compare not support, when tags Link get
+  error ([c55854a](https://github.com/sinlov/drone-feishu-group-robot/commit/c55854acf74887699b754ff51ef8859937665087))
+* update github.com/sinlov/drone-info-tools v1.7.0 and card render by Drone
+  Tag ([6ee3f3c](https://github.com/sinlov/drone-feishu-group-robot/commit/6ee3f3cf01459e68aa97ece2358aed0973d2ff96))
 
 ![img.png](release-v1.6.x/release-v1.6-tag-render.png)
 
-
 ## [1.5.0](https://github.com/sinlov/drone-feishu-group-robot/compare/v1.4.0...v1.5.0) (2023-02-04)
-
 
 ### Features
 
-* let flag bind and maintain at package feishu_plugin ([af68743](https://github.com/sinlov/drone-feishu-group-robot/commit/af687439627de513eb54750241252aa0de0d8b8c))
-
+* let flag bind and maintain at package
+  feishu_plugin ([af68743](https://github.com/sinlov/drone-feishu-group-robot/commit/af687439627de513eb54750241252aa0de0d8b8c))
 
 ## [1.4.0](https://github.com/sinlov/drone-feishu-group-robot/compare/v1.3.1...v1.4.0) (2023-02-03)
 
-
 ### Features
 
-* embed package.json to config cli ([911a269](https://github.com/sinlov/drone-feishu-group-robot/commit/911a26938ce2e81aae62e90d59523e9bb5e5e232))
+* embed package.json to config
+  cli ([911a269](https://github.com/sinlov/drone-feishu-group-robot/commit/911a26938ce2e81aae62e90d59523e9bb5e5e232))
 
 ### [1.3.1](https://github.com/sinlov/drone-feishu-group-robot/compare/v1.3.0...v1.3.1) (2023-02-03)
 
@@ -44,15 +49,17 @@
 
 ### Bug Fixes
 
-* add feishu_oss_info_send_result and fix template render init func ([affd62f](https://github.com/sinlov/drone-feishu-group-robot/commit/affd62f18aae34fb7d4b6ea3c7715de043847f1c))
-* fix not set oss will show drone build error ([9427ed8](https://github.com/sinlov/drone-feishu-group-robot/commit/9427ed8b45a4f67df5da87cee8caa72763538b7b))
+* add feishu_oss_info_send_result and fix template render init
+  func ([affd62f](https://github.com/sinlov/drone-feishu-group-robot/commit/affd62f18aae34fb7d4b6ea3c7715de043847f1c))
+* fix not set oss will show drone build
+  error ([9427ed8](https://github.com/sinlov/drone-feishu-group-robot/commit/9427ed8b45a4f67df5da87cee8caa72763538b7b))
 
 ## [1.3.0](https://github.com/sinlov/drone-feishu-group-robot/compare/v1.2.0...v1.3.0) (2023-02-03)
 
-
 ### Features
 
-* change to use github.com/sinlov/drone-info-tools v1.2.0 and remove useless code ([b00f07e](https://github.com/sinlov/drone-feishu-group-robot/commit/b00f07e93d2f484a0bbac666185ca2af6f9ec465))
+* change to use github.com/sinlov/drone-info-tools v1.2.0 and remove useless
+  code ([b00f07e](https://github.com/sinlov/drone-feishu-group-robot/commit/b00f07e93d2f484a0bbac666185ca2af6f9ec465))
 
 ### v1.2.0
 
@@ -63,7 +70,6 @@
 - success notification
 
 ![img.png](release-v1.2.0/img-v1.2.0-success.png)
-
 
 ### v1.1.0
 
