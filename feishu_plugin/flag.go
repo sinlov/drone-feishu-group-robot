@@ -9,11 +9,13 @@ import (
 
 func BindFlag(c *cli.Context, cliVersion, cliName string, drone drone_info.Drone) FeishuPlugin {
 	config := Config{
-		Debug:         c.Bool("config.debug"),
-		TimeoutSecond: c.Int("config.timeout_second"),
+		Debug:                 c.Bool("config.debug"),
+		TimeoutSecond:         c.Int("config.timeout_second"),
+		DroneSystemAdminToken: c.String("config.drone_system_admin_token"),
 
-		IgnoreLastSuccessByBadges:     c.Bool("config.feishu_ignore_last_success_by_badges"),
-		IgnoreLastSuccessBadgesBranch: c.String("config.feishu_ignore_last_success_branch"),
+		IgnoreLastSuccessByAdminTokenDistance: c.Uint("config.feishu_ignore_last_success_by_admin_token_distance"),
+		IgnoreLastSuccessByBadges:             c.Bool("config.feishu_ignore_last_success_by_badges"),
+		IgnoreLastSuccessBadgesBranch:         c.String("config.feishu_ignore_last_success_branch"),
 
 		NtpTarget:           c.String("config.ntp_target"),
 		Webhook:             c.String("config.webhook"),
@@ -75,6 +77,12 @@ func findStrFromCliOrCoverByEnv(c *cli.Context, ctxKey, envKey string) string {
 func Flag() []cli.Flag {
 	return []cli.Flag{
 		// plugin start
+		&cli.UintFlag{
+			Name:    "config.feishu_ignore_last_success_by_admin_token_distance,feishu_ignore_last_success_by_admin_token_distance",
+			Usage:   "open ignore last success by env PLUGIN_DRONE_SYSTEM_ADMIN_TOKEN, if distance is 0 will not ignore, use 1 will let let notify build change to success",
+			EnvVars: []string{EnvPluginFeishuIgnoreLastSuccessByAdminTokenDistance},
+			Value:   0,
+		},
 		&cli.BoolFlag{
 			Name:    "config.feishu_ignore_last_success_by_badges,feishu_ignore_last_success_by_badges",
 			Usage:   "open ignore last success by badges, will check branch badges, if success will not send message, tag build will not pass, default false",
@@ -172,6 +180,13 @@ func HideFlag() []cli.Flag {
 			Hidden:  true,
 			Usage:   "ntp target like: pool.ntp.org, time1.google.com,time.pool.aliyun.com, default not use ntpd to sync",
 			EnvVars: []string{"PLUGIN_NTP_TARGET"},
+		},
+		&cli.StringFlag{
+			Name:    "config.drone_system_admin_token,drone_system_admin_token",
+			Usage:   "drone system admin user token",
+			Hidden:  true,
+			Value:   "",
+			EnvVars: []string{EnvDroneSystemAdminToken},
 		},
 	}
 }

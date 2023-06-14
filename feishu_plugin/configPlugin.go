@@ -50,16 +50,19 @@ type (
 
 	// Config plugin private config
 	Config struct {
-		Debug               bool
-		NtpTarget           string
-		Webhook             string
-		Secret              string
-		FeishuEnableForward bool
-		TimeoutSecond       int
-		MsgType             string
-		Title               string
-		PoweredByImageKey   string
-		PoweredByImageAlt   string
+		Debug                 bool
+		DroneSystemAdminToken string
+		NtpTarget             string
+		Webhook               string
+		Secret                string
+		FeishuEnableForward   bool
+		TimeoutSecond         int
+		MsgType               string
+		Title                 string
+		PoweredByImageKey     string
+		PoweredByImageAlt     string
+
+		IgnoreLastSuccessByAdminTokenDistance uint
 
 		IgnoreLastSuccessByBadges     bool
 		IgnoreLastSuccessBadgesBranch string

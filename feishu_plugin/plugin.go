@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/antchfx/xmlquery"
 	"github.com/sinlov/drone-feishu-group-robot/feishu_message"
+	"github.com/sinlov/drone-feishu-group-robot/tools/drone_api"
 	"github.com/sinlov/drone-info-tools/drone_info"
 	tools "github.com/sinlov/drone-info-tools/tools/str_tools"
 	"io/ioutil"
@@ -18,15 +19,18 @@ import (
 )
 
 const (
-	EnvPluginFeishuIgnoreLastSuccessByBadges = "PLUGIN_FEISHU_IGNORE_LAST_SUCCESS_BY_BADGES"
-	EnvPluginFeishuIgnoreLastSuccessBranch   = "PLUGIN_FEISHU_IGNORE_LAST_SUCCESS_BRANCH"
-	EnvPluginFeishuWebhook                   = "PLUGIN_FEISHU_WEBHOOK"
-	EnvPluginFeishuSecret                    = "PLUGIN_FEISHU_SECRET"
-	EnvPluginFeishuMsgTitle                  = "PLUGIN_FEISHU_MSG_TITLE"
-	EnvPluginFeishuEnableForward             = "PLUGIN_FEISHU_ENABLE_FORWARD"
-	EnvPluginFeishuMsgType                   = "PLUGIN_FEISHU_MSG_TYPE"
-	EnvPluginFeishuMsgPoweredByImageKey      = "PLUGIN_FEISHU_MSG_POWERED_BY_IMAGE_KEY"
-	EnvPluginFeishuMsgPoweredByImageAlt      = "PLUGIN_FEISHU_MSG_POWERED_BY_IMAGE_ALT"
+	EnvDroneSystemAdminToken = "PLUGIN_DRONE_SYSTEM_ADMIN_TOKEN"
+
+	EnvPluginFeishuIgnoreLastSuccessByAdminTokenDistance = "PLUGIN_FEISHU_IGNORE_LAST_SUCCESS_BY_ADMIN_TOKEN_DISTANCE"
+	EnvPluginFeishuIgnoreLastSuccessByBadges             = "PLUGIN_FEISHU_IGNORE_LAST_SUCCESS_BY_BADGES"
+	EnvPluginFeishuIgnoreLastSuccessBranch               = "PLUGIN_FEISHU_IGNORE_LAST_SUCCESS_BRANCH"
+	EnvPluginFeishuWebhook                               = "PLUGIN_FEISHU_WEBHOOK"
+	EnvPluginFeishuSecret                                = "PLUGIN_FEISHU_SECRET"
+	EnvPluginFeishuMsgTitle                              = "PLUGIN_FEISHU_MSG_TITLE"
+	EnvPluginFeishuEnableForward                         = "PLUGIN_FEISHU_ENABLE_FORWARD"
+	EnvPluginFeishuMsgType                               = "PLUGIN_FEISHU_MSG_TYPE"
+	EnvPluginFeishuMsgPoweredByImageKey                  = "PLUGIN_FEISHU_MSG_POWERED_BY_IMAGE_KEY"
+	EnvPluginFeishuMsgPoweredByImageAlt                  = "PLUGIN_FEISHU_MSG_POWERED_BY_IMAGE_ALT"
 
 	EnvPluginFeishuOssHost           = "PLUGIN_FEISHU_OSS_HOST"
 	EnvPluginFeishuOssInfoSendResult = "PLUGIN_FEISHU_OSS_INFO_SEND_RESULT"
@@ -46,6 +50,7 @@ type (
 		Config                 Config
 		SendTarget             SendTarget
 		FeishuRobotMsgTemplate feishu_message.FeishuRobotMsgTemplate
+		droneApiClient         *drone_api.DroneApiClient
 	}
 )
 
@@ -91,18 +96,37 @@ func (p *FeishuPlugin) Exec() error {
 	}
 
 	var err error
+	if p.Config.DroneSystemAdminToken != "" {
+		errFetchBuildInfo := p.fetchBuildInfoByAdminToken()
+		if errFetchBuildInfo != nil {
+			return errFetchBuildInfo
+		}
+	}
+
+	if p.Config.IgnoreLastSuccessByAdminTokenDistance > 0 {
+		if p.Config.DroneSystemAdminToken == "" {
+			return fmt.Errorf("config [ %s ] is empty", EnvDroneSystemAdminToken)
+		}
+		pass, errIgnoreByAdminToken := p.checkIgnoreLastSuccessByAdminToken()
+		if errIgnoreByAdminToken != nil {
+			log.Printf("trt checkIgnoreLastSuccessByAdminToken fail and send message err: %v\n", errIgnoreByAdminToken)
+		}
+		if pass {
+			log.Printf("=> plugin %s version %s", p.Name, p.Version)
+			log.Printf("ignore send feishu group robot message at success by LastSuccessByAdminTokenDistance %d.\n", p.Config.IgnoreLastSuccessByAdminTokenDistance)
+			return nil
+		}
+	}
 
 	if p.Config.IgnoreLastSuccessByBadges {
-		ignoreLastSuccess, errIgnore := p.ignoreLastSuccess()
+		ignoreLastSuccess, errIgnore := p.ignoreLastBadgesSuccess()
 		if errIgnore != nil {
-			log.Printf("trt IgnoreLastSuccessByBadges fail but end message again err: %v\n", errIgnore)
+			log.Printf("trt IgnoreLastSuccessByBadges fail and send message err: %v\n", errIgnore)
 		}
 
 		if ignoreLastSuccess {
-			if p.Config.Debug {
-				log.Printf("=> plugin %s version %s", p.Name, p.Version)
-				log.Printf("ingore send feishu group robot message at success branch %s.\n", p.Config.IgnoreLastSuccessBadgesBranch)
-			}
+			log.Printf("=> plugin %s version %s", p.Name, p.Version)
+			log.Printf("ignore send feishu group robot message at success branch %s.\n", p.Config.IgnoreLastSuccessBadgesBranch)
 			return nil
 		}
 	}
@@ -146,7 +170,29 @@ func (p *FeishuPlugin) Exec() error {
 	log.Printf("send feishu group robot message finish.\n")
 	return err
 }
-func (p *FeishuPlugin) ignoreLastSuccess() (bool, error) {
+
+func (p *FeishuPlugin) checkIgnoreLastSuccessByAdminToken() (bool, error) {
+	if p.droneApiClient == nil {
+		return false, fmt.Errorf("not fetch droneApiClient")
+	}
+	distance := p.Drone.Build.Number - p.droneApiClient.LastRecordBuildSuccessNumber()
+	if distance < uint64(p.Config.IgnoreLastSuccessByAdminTokenDistance) {
+		if p.Config.Debug {
+			lastRecordRepoBuildSuccess := *p.droneApiClient.LastRecordRepoBuildSuccess()
+			lastSuccessInfo, errMarshal := json.Marshal(lastRecordRepoBuildSuccess)
+			if errMarshal != nil {
+				return false, nil
+			}
+			log.Printf("checkIgnoreLastSuccessByAdminToken lastSuccesBuild info\n%v\n", lastSuccessInfo)
+			log.Printf("checkIgnoreLastSuccessByAdminToken true by distance [ %v < %v ]\n", distance, p.Config.IgnoreLastSuccessByAdminTokenDistance)
+		}
+		return true, nil
+	}
+
+	return false, nil
+}
+
+func (p *FeishuPlugin) ignoreLastBadgesSuccess() (bool, error) {
 	if p.Drone.Build.Status != drone_info.DroneBuildStatusSuccess {
 		return false, fmt.Errorf("drone build status is not success: %v", p.Drone.Build.Status)
 	}
@@ -154,7 +200,7 @@ func (p *FeishuPlugin) ignoreLastSuccess() (bool, error) {
 	var ignoreLastSuccessBranch = p.Drone.Build.Branch
 	if ignoreLastSuccessBranch == "" {
 		if p.Drone.Build.Tag != "" {
-			log.Printf("ignoreLastSuccess false by tag: %v Branch is empty\n", p.Drone.Build.Tag)
+			log.Printf("ignoreLastBadgesSuccess false by tag: %v Branch is empty\n", p.Drone.Build.Tag)
 			return false, nil
 		}
 	}
@@ -170,23 +216,23 @@ func (p *FeishuPlugin) ignoreLastSuccess() (bool, error) {
 	// see https://github.com/harness/drone/blob/master/handler/api/badge/badge.go
 	if badgesStatus == drone_info.DroneBuildStatusSuccess {
 		if p.Config.Debug {
-			log.Printf("ignoreLastSuccess by badgesStatus: %v", badgesStatus)
+			log.Printf("ignoreLastBadgesSuccess by badgesStatus: %v", badgesStatus)
 		}
 		return true, nil
 	}
 	if badgesStatus == "started" {
-		log.Printf("ignoreLastSuccess false badgesStatus: %v", badgesStatus)
+		log.Printf("ignoreLastBadgesSuccess false badgesStatus: %v", badgesStatus)
 		return false, nil
 	}
 	if badgesStatus == "none" {
 		if p.Config.Debug {
-			log.Printf("ignoreLastSuccess false badgesStatus: %v", badgesStatus)
+			log.Printf("ignoreLastBadgesSuccess false badgesStatus: %v", badgesStatus)
 		}
 		return false, nil
 	}
 
 	if p.Config.Debug {
-		log.Printf("ignoreLastSuccess false by badgesStatus: %v", badgesStatus)
+		log.Printf("ignoreLastBadgesSuccess false by badgesStatus: %v", badgesStatus)
 	}
 
 	return false, nil
@@ -320,5 +366,17 @@ func (p *FeishuPlugin) sendMessage() error {
 	if respApi.Code != 0 {
 		return fmt.Errorf("feishu message can not send by code [ %v ] err: %v", respApi.Code, respApi.Msg)
 	}
+	return nil
+}
+
+func (p *FeishuPlugin) fetchBuildInfoByAdminToken() error {
+	droneApiClient := drone_api.NewDroneApiClient(
+		fmt.Sprintf("%s://%s", p.Drone.DroneSystem.Proto, p.Drone.DroneSystem.Host),
+		p.Config.DroneSystemAdminToken, uint(p.Config.TimeoutSecond), p.Config.Debug)
+	err := droneApiClient.FetchBuildInfo(p.Drone.Repo.OwnerName, p.Drone.Repo.ShortName, 0)
+	if err != nil {
+		return err
+	}
+	p.droneApiClient = &droneApiClient
 	return nil
 }
