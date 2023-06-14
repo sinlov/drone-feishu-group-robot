@@ -187,6 +187,12 @@ func (p *FeishuPlugin) fetchInfoAndSend() error {
 }
 
 func (p *FeishuPlugin) checkIgnoreLastSuccessByAdminToken() (bool, error) {
+	if p.Drone.Build.Status != drone_info.DroneBuildStatusSuccess {
+		if p.Config.Debug {
+			log.Printf("checkIgnoreLastSuccessByAdminToken false by now Drone Build status [ %v ]\n", p.Drone.Build.Status)
+		}
+		return false, nil
+	}
 	if p.droneApiClient == nil {
 		return false, fmt.Errorf("not fetch droneApiClient")
 	}
