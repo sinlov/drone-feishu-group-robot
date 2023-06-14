@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.10.0](https://github.com/sinlov/drone-feishu-group-robot/compare/v1.9.0...v1.10.0) (2023-06-14)
+
+
+### Features
+
+* let checkIgnoreLastSuccessByAdminToken not pass when now drone build status not success ([1b27c6a](https://github.com/sinlov/drone-feishu-group-robot/commit/1b27c6a7f80ad2dc488360a627067fce82e9e3b0))
+
 ## [1.9.0](https://github.com/sinlov/drone-feishu-group-robot/compare/v1.8.0...v1.9.0) (2023-06-14)
 
 
