@@ -191,19 +191,23 @@ func (p *FeishuPlugin) checkIgnoreLastSuccessByAdminToken() (bool, error) {
 		return false, fmt.Errorf("not fetch droneApiClient")
 	}
 	distance := p.Drone.Build.Number - p.droneApiClient.LastRecordBuildSuccessNumber()
-	if distance < uint64(p.Config.IgnoreLastSuccessByAdminTokenDistance) {
+	if p.Config.Debug {
+		log.Printf("checkIgnoreLastSuccessByAdminToken LastRecordBuildSuccessNumber [ %v ]\n", p.droneApiClient.LastRecordBuildSuccessNumber())
+		log.Printf("checkIgnoreLastSuccessByAdminToken distance [ %v ] config [ %v ]\n", distance, uint64(p.Config.IgnoreLastSuccessByAdminTokenDistance))
+		lastRecordRepoBuildSuccess := *p.droneApiClient.LastRecordRepoBuildSuccess()
+		lastSuccessInfo, errMarshal := json.Marshal(lastRecordRepoBuildSuccess)
+		if errMarshal != nil {
+			return false, nil
+		}
+		var str bytes.Buffer
+		err := json.Indent(&str, []byte(lastSuccessInfo), "", "    ")
+		if err != nil {
+			return false, nil
+		}
+		log.Printf("checkIgnoreLastSuccessByAdminToken lastSuccesBuild info\n%v\n", str.String())
+	}
+	if distance <= uint64(p.Config.IgnoreLastSuccessByAdminTokenDistance) {
 		if p.Config.Debug {
-			lastRecordRepoBuildSuccess := *p.droneApiClient.LastRecordRepoBuildSuccess()
-			lastSuccessInfo, errMarshal := json.Marshal(lastRecordRepoBuildSuccess)
-			if errMarshal != nil {
-				return false, nil
-			}
-			var str bytes.Buffer
-			err := json.Indent(&str, []byte(lastSuccessInfo), "", "    ")
-			if err != nil {
-				return false, nil
-			}
-			log.Printf("checkIgnoreLastSuccessByAdminToken lastSuccesBuild info\n%v\n", str.String())
 			log.Printf("checkIgnoreLastSuccessByAdminToken true by distance [ %v < %v ]\n", distance, p.Config.IgnoreLastSuccessByAdminTokenDistance)
 		}
 		return true, nil
