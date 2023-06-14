@@ -58,7 +58,7 @@ sample config
 ```yaml
 steps:
   - name: notification-feishu-group-robot
-    image: sinlov/drone-feishu-group-robot:1.8.0-alpine
+    image: sinlov/drone-feishu-group-robot:1.9.0-alpine
     pull: if-not-exists
     # image: sinlov/drone-feishu-group-robot:latest
     settings:
@@ -72,6 +72,10 @@ steps:
       feishu_msg_title: "Drone CI Notification" # default [Drone CI Notification]
       # let notification card change more info see https://open.feishu.cn/document/ukTMukTMukTM/uAjNwUjLwYDM14CM2ATN
       feishu_enable_forward: true
+      drone_system_admin_token: # non-essential parameter 1.9.0+
+        from_secret: drone_system_admin_token
+      # ignore last success by distance
+      feishu_ignore_last_success_by_admin_token_distance: 1 # if distance is 0 will not ignore, use 1 will let notify build change to success
     when:
       event: # https://docs.drone.io/pipeline/exec/syntax/conditions/#by-event
         - promote
@@ -100,7 +104,7 @@ steps:
         from_secret: feishu_group_bot_token
       feishu_secret:
         from_secret: feishu_group_secret_bot
-      drone_system_admin_token: # non-essential parameter
+      drone_system_admin_token: # non-essential parameter 1.9.0+
         from_secret: drone_system_admin_token
       # ignore last success by distance
       feishu_ignore_last_success_by_admin_token_distance: 1 # if distance is 0 will not ignore, use 1 will let notify build change to success
@@ -145,7 +149,7 @@ steps:
         from_secret: feishu_group_bot_token
       PLUGIN_FEISHU_SECRET:
         from_secret: feishu_group_secret_bot
-      PLUGIN_DRONE_SYSTEM_ADMIN_TOKEN: # non-essential parameter
+      PLUGIN_DRONE_SYSTEM_ADMIN_TOKEN: # non-essential parameter 1.9.0+
         from_secret: drone_system_admin_token
       # ignore last success by distance
       PLUGIN_FEISHU_IGNORE_LAST_SUCCESS_BY_ADMIN_TOKEN_DISTANCE: 1 # if distance is 0 will not ignore, use 1 will let notify build change to success
@@ -299,5 +303,5 @@ $ make dockerTestPruneLatest
 # see how to use
 $ docker run --rm sinlov/drone-feishu-group-robot:latest -h
 # or version
-$ docker run --rm sinlov/drone-feishu-group-robot:1.8.0-alpine -h
+$ docker run --rm sinlov/drone-feishu-group-robot:1.9.0-alpine -h
 ```
