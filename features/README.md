@@ -1,5 +1,12 @@
 ## Features
 
+## [1.10.0](https://github.com/sinlov/drone-feishu-group-robot/compare/v1.9.0...v1.10.0) (2023-06-14)
+
+### Features
+
+* let checkIgnoreLastSuccessByAdminToken not pass when now drone build status not
+  success ([1b27c6a](https://github.com/sinlov/drone-feishu-group-robot/commit/1b27c6a7f80ad2dc488360a627067fce82e9e3b0))
+
 ## [1.8.0](https://github.com/sinlov/drone-feishu-group-robot/compare/v1.7.0...v1.8.0) (2023-06-14)
 
 ### Features

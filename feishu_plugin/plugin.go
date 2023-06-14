@@ -193,6 +193,12 @@ func (p *FeishuPlugin) checkIgnoreLastSuccessByAdminToken() (bool, error) {
 		}
 		return false, nil
 	}
+	if p.Drone.Build.Branch == "" {
+		if p.Drone.Build.Tag != "" {
+			log.Printf("checkIgnoreLastSuccessByAdminToken false by tag: %v Branch is empty\n", p.Drone.Build.Tag)
+			return false, nil
+		}
+	}
 	if p.droneApiClient == nil {
 		return false, fmt.Errorf("not fetch droneApiClient")
 	}

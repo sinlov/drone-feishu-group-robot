@@ -79,7 +79,7 @@ func Flag() []cli.Flag {
 		// plugin start
 		&cli.UintFlag{
 			Name:    "config.feishu_ignore_last_success_by_admin_token_distance,feishu_ignore_last_success_by_admin_token_distance",
-			Usage:   "open ignore last success by env PLUGIN_DRONE_SYSTEM_ADMIN_TOKEN, if distance is 0 will not ignore, use 1 will let notify build change to success",
+			Usage:   "open ignore last success by env PLUGIN_DRONE_SYSTEM_ADMIN_TOKEN, if distance is 0 or now is tag will not ignore, use 1 will let notify build change to success",
 			EnvVars: []string{EnvPluginFeishuIgnoreLastSuccessByAdminTokenDistance},
 			Value:   0,
 		},
