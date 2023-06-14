@@ -58,7 +58,7 @@ sample config
 ```yaml
 steps:
   - name: notification-feishu-group-robot
-    image: sinlov/drone-feishu-group-robot:1.10.0-alpine
+    image: sinlov/drone-feishu-group-robot:1.11.0-alpine
     pull: if-not-exists
     # image: sinlov/drone-feishu-group-robot:latest
     settings:
@@ -303,5 +303,5 @@ $ make dockerTestPruneLatest
 # see how to use
 $ docker run --rm sinlov/drone-feishu-group-robot:latest -h
 # or version
-$ docker run --rm sinlov/drone-feishu-group-robot:1.10.0-alpine -h
+$ docker run --rm sinlov/drone-feishu-group-robot:1.11.0-alpine -h
 ```
