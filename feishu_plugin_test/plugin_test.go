@@ -1,6 +1,7 @@
 package feishu_plugin_test
 
 import (
+	"fmt"
 	"github.com/sinlov/drone-feishu-group-robot/feishu_plugin"
 	"github.com/sinlov/drone-info-tools/drone_info"
 	"github.com/stretchr/testify/assert"
@@ -86,6 +87,29 @@ func TestPlugin(t *testing.T) {
 	if err != nil {
 		t.Fatalf("send failure error at %v", err)
 	}
+
+	drone, err := drone_info.MockDroneInfoDroneSystemRefs(
+		envDroneSystemProto,
+		envDroneSystemHost,
+		envDroneSystemHostName,
+		drone_info.DroneBuildStatusSuccess,
+		fmt.Sprintf("refs/heads/%s", envDroneBranch))
+
+	p.Config.IgnoreLastSuccessByBadges = true
+
+	p.Drone = *drone
+	p.Drone.Commit.Message = "build success and hide Oss settings and render OssStatus, open IgnoreLastSuccessByBadges"
+	p.Config.FeishuEnableForward = true
+	p.Config.RenderOssCard = feishu_plugin.RenderStatusHide
+	pagePasswd = ""
+	checkCardOssRenderByPlugin(&p, pagePasswd, true)
+	// verify FeishuPlugin
+	err = p.Exec()
+
+	if err != nil {
+		t.Fatalf("send failure error at %v", err)
+	}
+
 }
 
 func checkCardOssRenderByPlugin(p *feishu_plugin.FeishuPlugin, pagePasswd string, sendOssSucc bool) {

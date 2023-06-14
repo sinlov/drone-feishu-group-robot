@@ -9,8 +9,12 @@ import (
 
 func BindFlag(c *cli.Context, cliVersion, cliName string, drone drone_info.Drone) FeishuPlugin {
 	config := Config{
-		Debug:               c.Bool("config.debug"),
-		TimeoutSecond:       c.Int("config.timeout_second"),
+		Debug:         c.Bool("config.debug"),
+		TimeoutSecond: c.Int("config.timeout_second"),
+
+		IgnoreLastSuccessByBadges:     c.Bool("config.feishu_ignore_last_success_by_badges"),
+		IgnoreLastSuccessBadgesBranch: c.String("config.feishu_ignore_last_success_branch"),
+
 		NtpTarget:           c.String("config.ntp_target"),
 		Webhook:             c.String("config.webhook"),
 		Secret:              c.String("config.secret"),
@@ -71,6 +75,17 @@ func findStrFromCliOrCoverByEnv(c *cli.Context, ctxKey, envKey string) string {
 func Flag() []cli.Flag {
 	return []cli.Flag{
 		// plugin start
+		&cli.BoolFlag{
+			Name:    "config.feishu_ignore_last_success_by_badges,feishu_ignore_last_success_by_badges",
+			Usage:   "open ignore last success by badges, will check branch badges, if success will not send message, tag build will not pass, default false",
+			EnvVars: []string{EnvPluginFeishuIgnoreLastSuccessByBadges},
+			Value:   false,
+		},
+		&cli.StringFlag{
+			Name:    "config.feishu_ignore_last_success_branch,feishu_ignore_last_success_branch",
+			Usage:   "ignore last success by badges, if not set, will use now drone build branch, and if tag mode, will not ignore",
+			EnvVars: []string{EnvPluginFeishuIgnoreLastSuccessBranch},
+		},
 		&cli.StringFlag{
 			Name:    "config.webhook,feishu_webhook",
 			Usage:   "feishu webhook for send message",

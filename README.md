@@ -94,6 +94,9 @@ steps:
     settings:
       debug: true # plugin debug switch
       # ntp_target: "pool.ntp.org" # if not set will not sync ntp time
+      # ignore last success branch by badges
+      feishu_ignore_last_success_by_badges: true # will check branch badges, if success will not send message, tag build will not pass, default false
+      feishu_ignore_last_success_branch: main # if not set, will use now drone build branch, and if tag mode, will not ignore
       timeout_second: 10 # default 10
       feishu_webhook:
         # https://docs.drone.io/pipeline/environment/syntax/#from-secrets
@@ -141,6 +144,9 @@ steps:
       # let notification card change more info see https://open.feishu.cn/document/ukTMukTMukTM/uAjNwUjLwYDM14CM2ATN
       PLUGIN_FEISHU_MSG_TITLE: "Drone CI Notification" # default [Drone CI Notification]
       PLUGIN_FEISHU_ENABLE_FORWARD: true
+      # ignore last success branch by badges
+      PLUGIN_FEISHU_IGNORE_LAST_SUCCESS_BY_BADGES: true # will check branch badges, if success will not send message, tag build will not pass, default false
+      PLUGIN_FEISHU_IGNORE_LAST_SUCCESS_BRANCH: main # if not set, will use now drone build branch, and if tag mode, will not ignore
       # oss info to show
       PLUGIN_FEISHU_OSS_HOST: "https://xxx.com" # OSS host for show oss info, if empty will not show oss info
       PLUGIN_FEISHU_OSS_INFO_SEND_RESULT: ${DRONE_BUILD_STATUS} # append oss info must set success 

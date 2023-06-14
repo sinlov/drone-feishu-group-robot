@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/antchfx/xmlquery"
 	"github.com/sinlov/drone-feishu-group-robot/feishu_message"
 	"github.com/sinlov/drone-info-tools/drone_info"
 	tools "github.com/sinlov/drone-info-tools/tools/str_tools"
@@ -17,20 +18,23 @@ import (
 )
 
 const (
-	EnvPluginFeishuWebhook              = "PLUGIN_FEISHU_WEBHOOK"
-	EnvPluginFeishuSecret               = "PLUGIN_FEISHU_SECRET"
-	EnvPluginFeishuMsgTitle             = "PLUGIN_FEISHU_MSG_TITLE"
-	EnvPluginFeishuEnableForward        = "PLUGIN_FEISHU_ENABLE_FORWARD"
-	EnvPluginFeishuMsgType              = "PLUGIN_FEISHU_MSG_TYPE"
-	EnvPluginFeishuMsgPoweredByImageKey = "PLUGIN_FEISHU_MSG_POWERED_BY_IMAGE_KEY"
-	EnvPluginFeishuMsgPoweredByImageAlt = "PLUGIN_FEISHU_MSG_POWERED_BY_IMAGE_ALT"
-	EnvPluginFeishuOssHost              = "PLUGIN_FEISHU_OSS_HOST"
-	EnvPluginFeishuOssInfoSendResult    = "PLUGIN_FEISHU_OSS_INFO_SEND_RESULT"
-	EnvPluginFeishuOssInfoUser          = "PLUGIN_FEISHU_OSS_INFO_USER"
-	EnvPluginFeishuOssInfoPath          = "PLUGIN_FEISHU_OSS_INFO_PATH"
-	EnvPluginFeishuOssResourceUrl       = "PLUGIN_FEISHU_OSS_RESOURCE_URL"
-	EnvPluginFeishuOssPageUrl           = "PLUGIN_FEISHU_OSS_PAGE_URL"
-	EnvPluginFeishuOssPagePasswd        = "PLUGIN_FEISHU_OSS_PAGE_PASSWD"
+	EnvPluginFeishuIgnoreLastSuccessByBadges = "PLUGIN_FEISHU_IGNORE_LAST_SUCCESS_BY_BADGES"
+	EnvPluginFeishuIgnoreLastSuccessBranch   = "PLUGIN_FEISHU_IGNORE_LAST_SUCCESS_BRANCH"
+	EnvPluginFeishuWebhook                   = "PLUGIN_FEISHU_WEBHOOK"
+	EnvPluginFeishuSecret                    = "PLUGIN_FEISHU_SECRET"
+	EnvPluginFeishuMsgTitle                  = "PLUGIN_FEISHU_MSG_TITLE"
+	EnvPluginFeishuEnableForward             = "PLUGIN_FEISHU_ENABLE_FORWARD"
+	EnvPluginFeishuMsgType                   = "PLUGIN_FEISHU_MSG_TYPE"
+	EnvPluginFeishuMsgPoweredByImageKey      = "PLUGIN_FEISHU_MSG_POWERED_BY_IMAGE_KEY"
+	EnvPluginFeishuMsgPoweredByImageAlt      = "PLUGIN_FEISHU_MSG_POWERED_BY_IMAGE_ALT"
+
+	EnvPluginFeishuOssHost           = "PLUGIN_FEISHU_OSS_HOST"
+	EnvPluginFeishuOssInfoSendResult = "PLUGIN_FEISHU_OSS_INFO_SEND_RESULT"
+	EnvPluginFeishuOssInfoUser       = "PLUGIN_FEISHU_OSS_INFO_USER"
+	EnvPluginFeishuOssInfoPath       = "PLUGIN_FEISHU_OSS_INFO_PATH"
+	EnvPluginFeishuOssResourceUrl    = "PLUGIN_FEISHU_OSS_RESOURCE_URL"
+	EnvPluginFeishuOssPageUrl        = "PLUGIN_FEISHU_OSS_PAGE_URL"
+	EnvPluginFeishuOssPagePasswd     = "PLUGIN_FEISHU_OSS_PAGE_PASSWD"
 )
 
 type (
@@ -88,6 +92,21 @@ func (p *FeishuPlugin) Exec() error {
 
 	var err error
 
+	if p.Config.IgnoreLastSuccessByBadges {
+		ignoreLastSuccess, errIgnore := p.ignoreLastSuccess()
+		if errIgnore != nil {
+			log.Printf("trt IgnoreLastSuccessByBadges fail but end message again err: %v\n", errIgnore)
+		}
+
+		if ignoreLastSuccess {
+			if p.Config.Debug {
+				log.Printf("=> plugin %s version %s", p.Name, p.Version)
+				log.Printf("ingore send feishu group robot message at success branch %s.\n", p.Config.IgnoreLastSuccessBadgesBranch)
+			}
+			return nil
+		}
+	}
+
 	sendTarget, err := p.fetchSendTarget()
 	if err != nil {
 		return err
@@ -126,6 +145,76 @@ func (p *FeishuPlugin) Exec() error {
 	log.Printf("=> plugin %s version %s", p.Name, p.Version)
 	log.Printf("send feishu group robot message finish.\n")
 	return err
+}
+func (p *FeishuPlugin) ignoreLastSuccess() (bool, error) {
+	if p.Drone.Build.Status != drone_info.DroneBuildStatusSuccess {
+		return false, fmt.Errorf("drone build status is not success: %v", p.Drone.Build.Status)
+	}
+
+	var ignoreLastSuccessBranch = p.Drone.Build.Branch
+	if ignoreLastSuccessBranch == "" {
+		if p.Drone.Build.Tag != "" {
+			log.Printf("ignoreLastSuccess false by tag: %v Branch is empty\n", p.Drone.Build.Tag)
+			return false, nil
+		}
+	}
+	if p.Config.IgnoreLastSuccessBadgesBranch == "" { // replace by now Build Branch
+		p.Config.IgnoreLastSuccessBadgesBranch = p.Drone.Build.Branch
+	}
+
+	badgesStatus, err := p.fetchBadgesStatus()
+	if err != nil {
+		return false, err
+	}
+
+	// see https://github.com/harness/drone/blob/master/handler/api/badge/badge.go
+	if badgesStatus == drone_info.DroneBuildStatusSuccess {
+		if p.Config.Debug {
+			log.Printf("ignoreLastSuccess by badgesStatus: %v", badgesStatus)
+		}
+		return true, nil
+	}
+	if badgesStatus == "started" {
+		log.Printf("ignoreLastSuccess false badgesStatus: %v", badgesStatus)
+		return false, nil
+	}
+	if badgesStatus == "none" {
+		if p.Config.Debug {
+			log.Printf("ignoreLastSuccess false badgesStatus: %v", badgesStatus)
+		}
+		return false, nil
+	}
+
+	if p.Config.Debug {
+		log.Printf("ignoreLastSuccess false by badgesStatus: %v", badgesStatus)
+	}
+
+	return false, nil
+}
+
+func (p *FeishuPlugin) fetchBadgesStatus() (string, error) {
+
+	if p.Config.IgnoreLastSuccessBadgesBranch == "" {
+		return "", nil
+	}
+	badgeURL := fmt.Sprintf(
+		"%s://%s/api/badges/%s/%s/status.svg?ref=refs/heads/%s",
+		p.Drone.DroneSystem.Proto, p.Drone.DroneSystem.Host,
+		p.Drone.Repo.GroupName, p.Drone.Repo.ShortName, p.Config.IgnoreLastSuccessBadgesBranch,
+	)
+	doc, err := xmlquery.LoadURL(badgeURL)
+	if err != nil {
+		return "", err
+	}
+	nodeText4, err := xmlquery.QueryAll(doc, "/svg/g/text[4]")
+	if err != nil {
+		return "", err
+	}
+	if len(nodeText4) == 0 {
+		return "", fmt.Errorf("can not find /svg/g/text[4] in %s", badgeURL)
+	}
+	statusText := nodeText4[0].InnerText()
+	return statusText, nil
 }
 
 func (p *FeishuPlugin) fetchSendTarget() (SendTarget, error) {

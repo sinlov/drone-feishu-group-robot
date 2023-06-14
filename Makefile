@@ -155,14 +155,24 @@ cloc:
 	cloc --exclude-list-file=.clocignore .
 
 cleanBuild:
-	-@RM -r ${ENV_ROOT_BUILD_PATH}
+	-@$(RM) -r ${ENV_ROOT_BUILD_PATH}
 	@echo "~> finish clean path: ${ENV_ROOT_BUILD_PATH}"
 
 cleanLog:
-	-@RM -r ${ENV_ROOT_LOG_PATH}
+	-@$(RM) -r ${ENV_ROOT_LOG_PATH}
 	@echo "~> finish clean path: ${ENV_ROOT_LOG_PATH}"
 
-clean: cleanBuild cleanLog
+cleanTestData:
+	$(info -> notes: remove folder [ testdata ] unable to match subdirectories)
+	@$(RM) -r **/testdata
+	@$(RM) -r **/**/testdata
+	@$(RM) -r **/**/**/testdata
+	@$(RM) -r **/**/**/**/testdata
+	@$(RM) -r **/**/**/**/**/testdata
+	@$(RM) -r **/**/**/**/**/**/testdata
+	$(info -> finish clean folder [ testdata ])
+
+clean: cleanBuild cleanTestData cleanLog
 	@echo "~> clean finish"
 
 cleanAll: clean cleanAllDist

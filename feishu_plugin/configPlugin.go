@@ -61,6 +61,9 @@ type (
 		PoweredByImageKey   string
 		PoweredByImageAlt   string
 
+		IgnoreLastSuccessByBadges     bool
+		IgnoreLastSuccessBadgesBranch string
+
 		RenderOssCard string
 		CardOss       CardOss
 	}
