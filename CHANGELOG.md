@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.8.0](https://github.com/sinlov/drone-feishu-group-robot/compare/v1.7.0...v1.8.0) (2023-06-14)
+
+
+### Features
+
+* add feishu_ignore_last_success_by_badges ([a36c4ec](https://github.com/sinlov/drone-feishu-group-robot/commit/a36c4ec1f25eed6101a0965d9689777d44bfa7f0))
+
 ## [1.7.0](https://github.com/sinlov/drone-feishu-group-robot/compare/v1.6.0...v1.7.0) (2023-03-15)
 
 
