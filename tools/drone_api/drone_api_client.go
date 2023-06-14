@@ -51,7 +51,7 @@ func (d *DroneApiClient) FetchBuildInfo(owner, repo string, perPage uint) error 
 	}
 	c := request.Client{
 		Timeout: time.Duration(d.TimeoutSecond) * time.Second,
-		URL:     fmt.Sprintf("%s/%s/%s/builds/", ApiReposGroup(), owner, repo),
+		URL:     fmt.Sprintf("%s/%s/%s/builds", ApiReposGroup(), owner, repo),
 		Method:  request.GET,
 		Header:  d.baseHeader,
 		Query: map[string]string{

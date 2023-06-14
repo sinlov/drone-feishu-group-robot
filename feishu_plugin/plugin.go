@@ -183,7 +183,12 @@ func (p *FeishuPlugin) checkIgnoreLastSuccessByAdminToken() (bool, error) {
 			if errMarshal != nil {
 				return false, nil
 			}
-			log.Printf("checkIgnoreLastSuccessByAdminToken lastSuccesBuild info\n%v\n", lastSuccessInfo)
+			var str bytes.Buffer
+			err := json.Indent(&str, []byte(lastSuccessInfo), "", "    ")
+			if err != nil {
+				return false, nil
+			}
+			log.Printf("checkIgnoreLastSuccessByAdminToken lastSuccesBuild info\n%v\n", str.String())
 			log.Printf("checkIgnoreLastSuccessByAdminToken true by distance [ %v < %v ]\n", distance, p.Config.IgnoreLastSuccessByAdminTokenDistance)
 		}
 		return true, nil

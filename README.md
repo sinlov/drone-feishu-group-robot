@@ -94,15 +94,19 @@ steps:
     settings:
       debug: true # plugin debug switch
       # ntp_target: "pool.ntp.org" # if not set will not sync ntp time
-      # ignore last success branch by badges
-      feishu_ignore_last_success_by_badges: true # will check branch badges, if success will not send message, tag build will not pass, default false
-      feishu_ignore_last_success_branch: main # if not set, will use now drone build branch, and now branch status is started so not ignore, and if in tag mode, will not ignore
       timeout_second: 10 # default 10
       feishu_webhook:
         # https://docs.drone.io/pipeline/environment/syntax/#from-secrets
         from_secret: feishu_group_bot_token
       feishu_secret:
         from_secret: feishu_group_secret_bot
+      drone_system_admin_token: # non-essential parameter
+        from_secret: drone_system_admin_token
+      # ignore last success by distance
+      feishu_ignore_last_success_by_admin_token_distance: 1 # if distance is 0 will not ignore, use 1 will let notify build change to success
+      # ignore last success branch by badges
+      feishu_ignore_last_success_by_badges: true # will check branch badges, if success will not send message, tag build will not pass, default false
+      feishu_ignore_last_success_branch: main # if not set, will use now drone build branch, and now branch status is started so not ignore, and if in tag mode, will not ignore
       # let notification card change more info see https://open.feishu.cn/document/ukTMukTMukTM/uAjNwUjLwYDM14CM2ATN
       feishu_msg_title: "Drone CI Notification" # default [Drone CI Notification]
       feishu_enable_forward: true
@@ -141,6 +145,10 @@ steps:
         from_secret: feishu_group_bot_token
       PLUGIN_FEISHU_SECRET:
         from_secret: feishu_group_secret_bot
+      PLUGIN_DRONE_SYSTEM_ADMIN_TOKEN: # non-essential parameter
+        from_secret: drone_system_admin_token
+      # ignore last success by distance
+      PLUGIN_FEISHU_IGNORE_LAST_SUCCESS_BY_ADMIN_TOKEN_DISTANCE: 1 # if distance is 0 will not ignore, use 1 will let notify build change to success
       # let notification card change more info see https://open.feishu.cn/document/ukTMukTMukTM/uAjNwUjLwYDM14CM2ATN
       PLUGIN_FEISHU_MSG_TITLE: "Drone CI Notification" # default [Drone CI Notification]
       PLUGIN_FEISHU_ENABLE_FORWARD: true
