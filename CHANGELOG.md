@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.11.0](https://github.com/sinlov/drone-feishu-group-robot/compare/v1.10.0...v1.11.0) (2023-06-14)
+
+
+### Features
+
+* let feishu_ignore_last_success_by_admin_token_distance not pass tag to notifty ([ec1555b](https://github.com/sinlov/drone-feishu-group-robot/commit/ec1555bce120d9d24c910076ae1d38d83d45fc9b))
+
 ## [1.10.0](https://github.com/sinlov/drone-feishu-group-robot/compare/v1.9.0...v1.10.0) (2023-06-14)
 
 
