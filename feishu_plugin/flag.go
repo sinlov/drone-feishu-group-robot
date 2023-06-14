@@ -83,7 +83,7 @@ func Flag() []cli.Flag {
 		},
 		&cli.StringFlag{
 			Name:    "config.feishu_ignore_last_success_branch,feishu_ignore_last_success_branch",
-			Usage:   "ignore last success by badges, if not set, will use now drone build branch, and if tag mode, will not ignore",
+			Usage:   "if not set, will use now drone build branch, and now branch status is started so not ignore, and if in tag mode, will not ignore",
 			EnvVars: []string{EnvPluginFeishuIgnoreLastSuccessBranch},
 		},
 		&cli.StringFlag{
