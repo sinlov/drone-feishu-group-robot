@@ -99,6 +99,13 @@ func (p *FeishuPlugin) Exec() error {
 	if p.Config.DroneSystemAdminToken != "" {
 		errFetchBuildInfo := p.fetchBuildInfoByAdminToken()
 		if errFetchBuildInfo != nil {
+			log.Printf("trt fetchBuildInfoByAdminToken fail and send message err: %v\n", errFetchBuildInfo)
+			p.Drone.Build.Status = drone_info.DroneBuildStatusFailure
+			p.Drone.Commit.Message = fmt.Sprintf("%s\n%s", p.Drone.Commit.Message, "fetchBuildInfoByAdminToken fail pleae check config")
+			err = p.fetchInfoAndSend()
+			if err != nil {
+				return err
+			}
 			return errFetchBuildInfo
 		}
 	}
@@ -131,6 +138,14 @@ func (p *FeishuPlugin) Exec() error {
 		}
 	}
 
+	err = p.fetchInfoAndSend()
+	if err != nil {
+		return err
+	}
+	return err
+}
+
+func (p *FeishuPlugin) fetchInfoAndSend() error {
 	sendTarget, err := p.fetchSendTarget()
 	if err != nil {
 		return err
@@ -168,7 +183,7 @@ func (p *FeishuPlugin) Exec() error {
 	}
 	log.Printf("=> plugin %s version %s", p.Name, p.Version)
 	log.Printf("send feishu group robot message finish.\n")
-	return err
+	return nil
 }
 
 func (p *FeishuPlugin) checkIgnoreLastSuccessByAdminToken() (bool, error) {
