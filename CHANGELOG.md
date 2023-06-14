@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.9.0](https://github.com/sinlov/drone-feishu-group-robot/compare/v1.8.0...v1.9.0) (2023-06-14)
+
+
+### Features
+
+* add drone_system_admin_token and feishu_ignore_last_success_by_admin_token_distance support ([0af41fc](https://github.com/sinlov/drone-feishu-group-robot/commit/0af41fcdf8dea1ae1cac61857ea736b2657fd52c))
+* let checkIgnoreLastSuccessByAdminToken debug show more info ([5ce5047](https://github.com/sinlov/drone-feishu-group-robot/commit/5ce5047c0ed02010204fa7e75562495e8b42f9e9))
+* let drone_system_admin_token or ENV: PLUGIN_DRONE_SYSTEM_ADMIN_TOKEN fail ([1d3de85](https://github.com/sinlov/drone-feishu-group-robot/commit/1d3de85a3795bde99a5b919526e3ef82f17160ab))
+
 ## [1.8.0](https://github.com/sinlov/drone-feishu-group-robot/compare/v1.7.0...v1.8.0) (2023-06-14)
 
 
