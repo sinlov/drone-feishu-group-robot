@@ -29,7 +29,7 @@ steps:
       - "echo \"=> drone info\nDRONE_WORKSPACE        ${DRONE_WORKSPACE}\nDRONE_REPO_NAME        ${DRONE_REPO_NAME}\nDRONE_REPO_OWNER       ${DRONE_REPO_OWNER}\nDRONE_REPO             ${DRONE_REPO}\""
       - "echo \"=> cvs   info\nDRONE_BRANCH           ${DRONE_BRANCH/\\//-}\nDRONE_COMMIT_SHA short ${DRONE_COMMIT_SHA:0:8}\nDRONE_TAG              ${DRONE_TAG##v}\""
   - name: go-init
-    image: golang:1.17.13-buster
+    image: golang:1.18.10-buster
     pull: if-not-exists
     volumes:
       - name: go_cache
@@ -47,7 +47,7 @@ steps:
       event:
         - push
   - name: go-test
-    image: golang:1.17.13-buster
+    image: golang:1.18.10-buster
     pull: if-not-exists
     volumes:
       - name: go_cache
@@ -61,7 +61,7 @@ steps:
       event:
         - push
   - name: go-dist-test
-    image: golang:1.17.13-buster
+    image: golang:1.18.10-buster
     pull: if-not-exists
     volumes:
       - name: go_cache
@@ -77,7 +77,7 @@ steps:
       event:
         - push
   - name: go-dist-release
-    image: golang:1.17.13-buster
+    image: golang:1.18.10-buster
     pull: if-not-exists
     volumes:
       - name: go_cache
