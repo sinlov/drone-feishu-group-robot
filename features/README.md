@@ -1,4 +1,20 @@
-## Features
+# Features
+
+## [1.12.0](https://github.com/sinlov/drone-feishu-group-robot/compare/1.11.0...v1.12.0) (2023-08-04)
+
+### ✨ Features
+
+* support env DRONE_BUILD_DEBUG for debug of this tools as drone admin ([cf4df62d](https://github.com/sinlov/drone-feishu-group-robot/commit/cf4df62ddd2a9d66a4a4e4cff73781beb3f455bd))
+
+### 👷‍ Build System
+
+* change to go 1.18 and 1.18.10 to build ([f8c04d34](https://github.com/sinlov/drone-feishu-group-robot/commit/f8c04d341be92feea0bb0d869e7f8a81197e2642))
+
+## [1.11.0](https://github.com/sinlov/drone-feishu-group-robot/compare/v1.10.0...v1.11.0) (2023-06-14)
+
+### Features
+
+* let feishu_ignore_last_success_by_admin_token_distance not pass tag to notifty ([ec1555b](https://github.com/sinlov/drone-feishu-group-robot/commit/ec1555bce120d9d24c910076ae1d38d83d45fc9b))
 
 ## [1.10.0](https://github.com/sinlov/drone-feishu-group-robot/compare/v1.9.0...v1.10.0) (2023-06-14)
 
