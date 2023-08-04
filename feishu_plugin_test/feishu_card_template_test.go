@@ -71,7 +71,7 @@ func Test_RenderFeishuCardTag(t *testing.T) {
 	}
 	p.Drone = *droneInfoRefs
 	assert.Equal(t, "", p.Drone.Build.Branch)
-	assert.Equal(t, "1.2.3", p.Drone.Build.Tag)
+	assert.Equal(t, "v1.2.3", p.Drone.Build.Tag)
 
 	t.Logf("~> do _RenderFeishuCardTag")
 	renderFeishuCard, err := feishu_plugin.RenderFeishuCard(feishu_plugin.DefaultCardTemplate, &p)

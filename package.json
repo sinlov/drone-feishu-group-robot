@@ -1,5 +1,28 @@
 {
   "name": "drone-feishu-group-robot",
   "version": "1.11.0",
-  "dependencies": {}
+  "description": "Sending message to feishu group by robot using WebHook",
+  "directories": {
+    "doc": "doc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sinlov/drone-feishu-group-robot.git"
+  },
+  "keywords": [
+    "go",
+    "drone",
+    "docker",
+    "devops"
+  ],
+  "author": {
+    "name": "sinlov",
+    "email": "sinlovgmppt@gmail.com",
+    "url": "https://github.com/sinlov/drone-feishu-group-robot"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/sinlov/drone-feishu-group-robot/issues"
+  },
+  "homepage": "https://github.com/sinlov/drone-feishu-group-robot#readme"
 }

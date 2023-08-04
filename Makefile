@@ -214,6 +214,12 @@ else
 	@go test -bench=. -test.benchmem -v $(ENV_ROOT_TEST_LIST)
 endif
 
+dep: modVerify modDownload modTidy modVendor
+	@echo "-> just check depends below"
+
+ci: export CI=true
+ci: modTidy modVerify modFmt modVet modLintRun test
+
 buildMain:
 	@echo "-> start build local OS"
 ifeq ($(OS),Windows_NT)
@@ -242,12 +248,20 @@ else
 	@echo "-> finish build out path: ${ENV_ROOT_BUILD_BIN_PATH}"
 endif
 
-dev: export ENV_WEB_AUTO_HOST=true
-dev: cleanBuild buildMain
-ifeq ($(OS),windows)
+devHelp: export PLUGIN_DEBUG=false
+devHelp: cleanBuild buildMain
+ifeq ($(OS),Windows_NT)
 	$(subst /,\,${ENV_ROOT_BUILD_BIN_PATH}).exe ${ENV_RUN_INFO_HELP_ARGS}
 else
 	${ENV_ROOT_BUILD_BIN_PATH} ${ENV_RUN_INFO_HELP_ARGS}
+endif
+
+dev: export ENV_WEB_AUTO_HOST=true
+dev: cleanBuild buildMain
+ifeq ($(OS),windows)
+	$(subst /,\,${ENV_ROOT_BUILD_BIN_PATH}).exe ${ENV_RUN_INFO_ARGS}
+else
+	${ENV_ROOT_BUILD_BIN_PATH} ${ENV_RUN_INFO_ARGS}
 endif
 
 run: export ENV_WEB_AUTO_HOST=false

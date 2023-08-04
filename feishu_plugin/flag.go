@@ -7,10 +7,18 @@ import (
 	"os"
 )
 
+// IsBuildDebugOpen
+// when config or drone build open debug will open debug
+func IsBuildDebugOpen(c *cli.Context) bool {
+	return c.Bool(NamePluginDebug) || c.Bool(drone_info.NameCliStepsDebug)
+}
+
 func BindFlag(c *cli.Context, cliVersion, cliName string, drone drone_info.Drone) FeishuPlugin {
+	debug := IsBuildDebugOpen(c)
+
 	config := Config{
-		Debug:                 c.Bool("config.debug"),
-		TimeoutSecond:         c.Int("config.timeout_second"),
+		Debug:                 debug,
+		TimeoutSecond:         c.Int(NamePluginTimeOut),
 		DroneSystemAdminToken: c.String("config.drone_system_admin_token"),
 
 		IgnoreLastSuccessByAdminTokenDistance: c.Uint("config.feishu_ignore_last_success_by_admin_token_distance"),
@@ -199,14 +207,14 @@ func CommonFlag() []cli.Flag {
 			Name:    "config.debug,debug",
 			Usage:   "debug mode",
 			Value:   false,
-			EnvVars: []string{"PLUGIN_DEBUG"},
+			EnvVars: []string{drone_info.EnvKeyPluginDebug},
 		},
 		&cli.UintFlag{
-			Name:    "config.timeout_second,timeout_second",
+			Name:    NamePluginTimeOut,
 			Usage:   "do request timeout setting second. gather than 10",
 			Hidden:  true,
 			Value:   10,
-			EnvVars: []string{"PLUGIN_TIMEOUT_SECOND"},
+			EnvVars: []string{EnvPluginTimeOut},
 		},
 	}
 }

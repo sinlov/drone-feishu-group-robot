@@ -1,6 +1,10 @@
 package feishu_plugin
 
 const (
+	NamePluginDebug   = "config.debug"
+	EnvPluginTimeOut  = "PLUGIN_TIMEOUT_SECOND"
+	NamePluginTimeOut = "config.timeout_second"
+
 	RenderStatusShow = "success"
 	RenderStatusHide = "failure"
 

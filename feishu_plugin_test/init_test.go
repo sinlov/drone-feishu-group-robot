@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/sinlov/drone-feishu-group-robot/feishu_plugin"
 	"github.com/sinlov/drone-info-tools/drone_info"
+	"github.com/sinlov/drone-info-tools/drone_log"
 	"github.com/sinlov/drone-info-tools/template"
 	"io/fs"
 	"math/rand"
@@ -46,6 +47,12 @@ var (
 )
 
 func envCheck(t *testing.T) bool {
+
+	if envDebug {
+		drone_log.ShowLogLineNo(true)
+		drone_log.OpenDebug()
+	}
+
 	mustSetEnvList := []string{
 		feishu_plugin.EnvPluginFeishuWebhook,
 		feishu_plugin.EnvPluginFeishuSecret,
@@ -62,7 +69,7 @@ func envCheck(t *testing.T) bool {
 
 func init() {
 	template.RegisterSettings(template.DefaultFunctions)
-	envDebug = fetchOsEnvBool("ENV_DEBUG", false)
+	envDebug = fetchOsEnvBool(drone_info.EnvKeyPluginDebug, false) || fetchOsEnvBool(drone_info.EnvDroneBuildDebug, false)
 
 	envFeishuWebHook = os.Getenv(feishu_plugin.EnvPluginFeishuWebhook)
 	envFeishuSecret = os.Getenv(feishu_plugin.EnvPluginFeishuSecret)

@@ -121,9 +121,7 @@ func RenderFeishuCard(tpl string, p *FeishuPlugin) (string, error) {
 	} else {
 		renderPlugin.Config.CardOss.InfoTagResult = RenderStatusShow
 		// fix Drone.Commit.Link compare not support, when tags Link get error
-		if strings.Contains(renderPlugin.Drone.Commit.Link, "compare/0000000000000000000000000000000000000000...") {
-			renderPlugin.Drone.Commit.Link = strings.Replace(renderPlugin.Drone.Commit.Link, "compare/0000000000000000000000000000000000000000...", "commit/", -1)
-		}
+		renderPlugin.Drone.Commit.Link = strings.Replace(renderPlugin.Drone.Commit.Link, "compare/0000000000000000000000000000000000000000...", "commit/", -1)
 	}
 
 	message, err := template.RenderTrim(tpl, &renderPlugin)
@@ -133,6 +131,9 @@ func RenderFeishuCard(tpl string, p *FeishuPlugin) (string, error) {
 	return message, nil
 }
 
+// deepCopyByGob deep copy by gob
+//
+//nolint:golint,unused
 func deepCopyByGob(src, dst interface{}) error {
 	var buffer bytes.Buffer
 	if err := gob.NewEncoder(&buffer).Encode(src); err != nil {
