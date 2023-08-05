@@ -1,5 +1,13 @@
 # Features
 
+### v1.13.+
+
+- use new github action build workflow
+- show `tag info` at drone tag build at `message card title`
+- add Trigger info at each `Stage details info`
+
+![img.png](https://github.com/sinlov/drone-feishu-group-robot/raw/main/features/release-v1.13.x/release-v1.13.0-Trigger-info.png)
+
 ## [1.12.0](https://github.com/sinlov/drone-feishu-group-robot/compare/1.11.0...v1.12.0) (2023-08-04)
 
 ### ✨ Features
