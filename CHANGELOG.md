@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.14.0](https://github.com/sinlov/drone-feishu-group-robot/compare/1.13.0...v1.14.0) (2023-08-05)
+
+### ✨ Features
+
+* change format of show build link ([0139bf47](https://github.com/sinlov/drone-feishu-group-robot/commit/0139bf474ff4053a3684a2da8d760312f2e13e07))
+
+### 👷‍ Build System
+
+* change go version to 1.19.10 to build ([8259f6eb](https://github.com/sinlov/drone-feishu-group-robot/commit/8259f6ebb5ae37562ffabd719d88e42e045da4da))
+
 ## [1.13.0](https://github.com/sinlov/drone-feishu-group-robot/compare/1.12.0...v1.13.0) (2023-08-05)
 
 ### ✨ Features
