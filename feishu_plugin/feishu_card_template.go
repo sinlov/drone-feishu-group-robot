@@ -23,7 +23,7 @@ const DefaultCardTemplate string = `{
       "template": "{{#success Drone.Build.Status }}blue{{/success}}{{#failure Drone.Build.Status}}red{{/failure}}",
       "title": {
         "tag": "plain_text",
-        "content": "{{#failure Drone.Build.Status}}[Failure]{{/failure}}{{ Drone.Repo.FullName }}"
+        "content": "{{#failure Drone.Build.Status}}[Failure]{{/failure}}{{ Drone.Repo.FullName }} {{#success Config.CardOss.InfoTagResult }}Tag: {{ Drone.Build.Tag }}{{/success}}"
       }
     },
     "elements": [
@@ -80,7 +80,7 @@ const DefaultCardTemplate string = `{
 {{/success}}
       {
         "tag": "markdown",
-        "content": "**Started:** {{ Drone.Stage.StartedTime }}\n**Finished:** {{ Drone.Stage.FinishedTime }}\n**Stage**\nName: {{ Drone.Stage.Name }}\nMachine: {{ Drone.Stage.Machine }}\nOS: {{ Drone.Stage.Os }}\nArch: {{ Drone.Stage.Arch }}\nType: {{ Drone.Stage.Type }}\nKind: {{ Drone.Stage.Kind }}"
+        "content": "**Started:** {{ Drone.Stage.StartedTime }}\n**Finished:** {{ Drone.Stage.FinishedTime }}\n**Stage details info**\nName: {{ Drone.Stage.Name }}\nTrigger: {{ Drone.Build.Trigger }}\nMachine: {{ Drone.Stage.Machine }}\nOS: {{ Drone.Stage.Os }}\nArch: {{ Drone.Stage.Arch }}\nType: {{ Drone.Stage.Type }}\nKind: {{ Drone.Stage.Kind }}"
       },
       {
         "tag": "hr"
@@ -113,7 +113,32 @@ func RenderFeishuCard(tpl string, p *FeishuPlugin) (string, error) {
 		return "", err
 	}
 
+	renderPlugin.Drone.Build.Tag = tools.Str2LineRaw(renderPlugin.Drone.Build.Tag)
+	renderPlugin.Drone.Commit.Sha = tools.Str2LineRaw(renderPlugin.Drone.Commit.Sha)
+	renderPlugin.Drone.Commit.Branch = tools.Str2LineRaw(renderPlugin.Drone.Commit.Branch)
+	renderPlugin.Drone.Build.Branch = tools.Str2LineRaw(renderPlugin.Drone.Build.Branch)
+	renderPlugin.Drone.Build.Status = tools.Str2LineRaw(renderPlugin.Drone.Build.Status)
 	renderPlugin.Drone.Commit.Message = tools.Str2LineRaw(renderPlugin.Drone.Commit.Message)
+
+	renderPlugin.Drone.Commit.Link = tools.Str2LineRaw(renderPlugin.Drone.Commit.Link)
+	renderPlugin.Drone.Build.Link = tools.Str2LineRaw(renderPlugin.Drone.Build.Link)
+
+	renderPlugin.Config.CardOss.InfoUser = tools.Str2LineRaw(renderPlugin.Config.CardOss.InfoUser)
+	renderPlugin.Config.CardOss.InfoPath = tools.Str2LineRaw(renderPlugin.Config.CardOss.InfoPath)
+	renderPlugin.Config.CardOss.PageUrl = tools.Str2LineRaw(renderPlugin.Config.CardOss.PageUrl)
+	renderPlugin.Config.CardOss.RenderResourceUrl = tools.Str2LineRaw(renderPlugin.Config.CardOss.RenderResourceUrl)
+	renderPlugin.Config.CardOss.PagePasswd = tools.Str2LineRaw(renderPlugin.Config.CardOss.PagePasswd)
+	renderPlugin.Config.CardOss.Host = tools.Str2LineRaw(renderPlugin.Config.CardOss.Host)
+
+	renderPlugin.Drone.Stage.StartedTime = tools.Str2LineRaw(renderPlugin.Drone.Stage.StartedTime)
+	renderPlugin.Drone.Stage.FinishedTime = tools.Str2LineRaw(renderPlugin.Drone.Stage.FinishedTime)
+	renderPlugin.Drone.Stage.Name = tools.Str2LineRaw(renderPlugin.Drone.Stage.Name)
+	renderPlugin.Drone.Build.Trigger = tools.Str2LineRaw(renderPlugin.Drone.Build.Trigger)
+	renderPlugin.Drone.Stage.Machine = tools.Str2LineRaw(renderPlugin.Drone.Stage.Machine)
+	renderPlugin.Drone.Stage.Os = tools.Str2LineRaw(renderPlugin.Drone.Stage.Os)
+	renderPlugin.Drone.Stage.Arch = tools.Str2LineRaw(renderPlugin.Drone.Stage.Arch)
+	renderPlugin.Drone.Stage.Type = tools.Str2LineRaw(renderPlugin.Drone.Stage.Type)
+	renderPlugin.Drone.Stage.Kind = tools.Str2LineRaw(renderPlugin.Drone.Stage.Kind)
 
 	// check out p.Config.CardOss.InfoTagResult
 	if renderPlugin.Drone.Build.Tag == "" {
