@@ -251,7 +251,7 @@ $ echo "go mod vendor"
 ## evn
 
 - minimum go version: go 1.18
-- change `go 1.18`, `^1.18`, `1.18.10` to new go version
+- change `go 1.18`, `^1.19`, `1.19.10` to new go version
 
 ```bash
 make init dep

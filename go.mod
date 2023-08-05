@@ -1,6 +1,6 @@
 module github.com/sinlov/drone-feishu-group-robot
 
-go 1.18
+go 1.19
 
 require (
 	github.com/antchfx/xmlquery v1.3.17
