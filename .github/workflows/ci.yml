@@ -7,6 +7,10 @@ on:
     branches:
       - 'main'
       - 'release-*'
+      - 'FE-*'
+      - 'BF-*'
+      - 'PU-*'
+      - 'DOC-*'
       - 'hotfix-*'
     tags:
       - '*' # Push events to matching *, i.e. 1.0.0 v1.0, v20.15.10
@@ -20,11 +24,8 @@ on:
     branches:
       - 'main'
       - 'release-*'
-      - 'hotfix-*'
-      - 'FE-*'
-      - 'BF-*'
-      - 'PU-*'
       - 'DOC-*'
+      - 'hotfix-*'
 
 permissions:
   contents: write
