@@ -22,12 +22,14 @@ environment:
 
 steps:
   - name: env-init
-    image: alpine:3.17
+    image: sinlov/drone-env-printer:1.2.0
     pull: if-not-exists
-    commands:
-      - "echo \"=> base  info\nDRONE_STAGE_MACHINE    ${DRONE_STAGE_MACHINE}\nDRONE_STAGE_OS         ${DRONE_STAGE_OS}\nDRONE_STAGE_ARCH       ${DRONE_STAGE_ARCH}\""
-      - "echo \"=> drone info\nDRONE_WORKSPACE        ${DRONE_WORKSPACE}\nDRONE_REPO_NAME        ${DRONE_REPO_NAME}\nDRONE_REPO_OWNER       ${DRONE_REPO_OWNER}\nDRONE_REPO             ${DRONE_REPO}\""
-      - "echo \"=> cvs   info\nDRONE_BRANCH           ${DRONE_BRANCH/\\//-}\nDRONE_COMMIT_SHA short ${DRONE_COMMIT_SHA:0:8}\nDRONE_TAG              ${DRONE_TAG##v}\""
+    settings:
+      debug: false
+      # env_printer_padding_left_max: 42
+      env_printer_print_keys:
+        - GOPATH
+        - GOBIN
   - name: go-init
     image: golang:1.18.10-buster
     pull: if-not-exists
@@ -38,15 +40,16 @@ steps:
       GOPATH: /go
     commands:
       - go version
-      - go env
       - go mod verify
-      - go mod tidy
-      - go mod download
-      - go mod vendor
+      - go mod download -x
+      - go mod tidy -v
     when:
       event:
         - push
   - name: go-test
+    depends_on: # https://docs.drone.io/pipeline/exec/syntax/parallelism/
+      - go-init
+
     image: golang:1.18.10-buster
     pull: if-not-exists
     volumes:
@@ -55,47 +58,36 @@ steps:
     environment:
       GOPATH: /go
     commands:
-      - make test
-      # - go test -test.v .
+      - go get -t -v ./...
+      - go build -v ./...
+      - go test -v ./...
     when:
       event:
         - push
-  - name: go-dist-test
+  - name: go-test-benchmark
+    depends_on: # https://docs.drone.io/pipeline/exec/syntax/parallelism/
+      - go-test
+
     image: golang:1.18.10-buster
     pull: if-not-exists
     volumes:
       - name: go_cache
         path: /go
-      - name: go_dist_test
-        path: /go_dist_test
     environment:
       GOPATH: /go
     commands:
-      - make cleanAllDist distTestTar
-      - cp ./dist/**/**.gz /go_dist_test/
+      - go test -run none -bench . -benchmem -v ./...
     when:
       event:
         - push
-  - name: go-dist-release
-    image: golang:1.18.10-buster
-    pull: if-not-exists
-    volumes:
-      - name: go_cache
-        path: /go
-      - name: go_dist_release
-        path: /go_dist_release
-    environment:
-      GOPATH: /go
-    commands:
-      - export ENV_CI_DIST_VERSION=${DRONE_TAG}
-      - export ENV_CI_DIST_MARK=${DRONE_COMMIT_SHA:0:8}
-      - make cleanAllDist distPlatformTarCommonUse
-      - cp ./dist/**/**.gz /go_dist_release/
-    when:
-      event:
-        - tag
-  - name: notification-feishu-group-robot
-    image: sinlov/drone-feishu-group-robot:1.1.0-alpine
+  - name: notification-failure-feishu-group-robot
+    depends_on: # https://docs.drone.io/pipeline/exec/syntax/parallelism/
+      - env-init
+      - go-init
+      - go-test
+      - go-test-benchmark
+
+    image: sinlov/drone-feishu-group-robot:1.12.0-alpine # https://hub.docker.com/r/sinlov/drone-feishu-group-robot/tags
     pull: if-not-exists
     settings:
       debug: false
@@ -118,7 +110,7 @@ steps:
         - tag
       status: # only support failure/success,  both open will send anything
         - failure
-        - success
+       # - success
 
 trigger: # https://docs.drone.io/pipeline/triggers/
   # branch:

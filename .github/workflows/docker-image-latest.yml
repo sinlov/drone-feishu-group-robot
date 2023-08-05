@@ -1,45 +1,117 @@
-name: Docker Image buildx latest
+# this is a workflow must has secrets.DOCKERHUB_TOKEN
+# most use as github.event.pull_request.merged == true
+name: docker-image-latest
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  workflow_call: # https://docs.github.com/actions/using-workflows/reusing-workflows#using-inputs-and-secrets-in-a-reusable-workflow
+    inputs:
+      docker_hub_user:
+        description: 'name of docker hub user'
+        default: ''
+        required: false
+        type: string
+      docker_image_name:
+        description: 'name of docker image'
+        default: ''
+        required: false
+        type: string
+      build_branch_name:
+        description: 'name of branch for build default is main'
+        default: 'main'
+        required: false
+        type: string
 
 env:
-  # name of docker image
-  DOCKER_HUB_USER: sinlov
-  IMAGE_NAME: drone-feishu-group-robot
+  DOCKER_IMAGE_PLATFORMS: linux/amd64,linux/386,linux/arm64/v8,linux/arm/v7 # change to your platforms for release
+#  DOCKER_IMAGE_PLATFORMS: linux/amd64,linux/386,linux/arm64/v8,linux/arm/v7
 
 jobs:
-
-  build:
-
-    runs-on: ubuntu-latest
+  docker-image-buildx:
+    strategy:
+      matrix:
+        os: [ ubuntu-latest ]
+        docker_image: # change this for build dry-run
+          - platform: linux/amd64
+          - platform: linux/arm64/v8
+          - platform: linux/386
+          - platform: linux/arm/v7
+    runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v2
-    - name: "Login into registry as user: $DOCKER_HUB_USER"
-      run: echo "${{ secrets.ACCESS_TOKEN }}" | docker login -u $DOCKER_HUB_USER --password-stdin
-    - name: Docker buildx ready
-      run: |
-        DOCKER_CLI_EXPERIMENTAL=enabled
-        docker run --privileged --rm tonistiigi/binfmt --install all
-        docker buildx create --use --name mybuilder
-        docker buildx inspect mybuilder --bootstrap
-    - name: Push image
-      run: |
-        # parse docker image id
-        IMAGE_ID=$DOCKER_HUB_USER/$IMAGE_NAME
-        # lower case all
-        IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-        # ref get version
-        VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-        # replace v chat at tag
-        [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-        # Use Docker `latest` tag convention when get main
-        [ "$VERSION" == "main" ] && VERSION=latest
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ inputs.docker_image_name }}
+          tags: |
+            # set latest tag for main branch https://github.com/docker/metadata-action#latest-tag
+            type=raw,value=latest,enable=true
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      -
+        name: "Login into registry as user: inputs.docker_hub_user"
+        uses: docker/login-action@v2
+        with:
+          username: ${{ inputs.docker_hub_user }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Build dry
+        uses: docker/build-push-action@v4 # https://github.com/docker/build-push-action
+        with:
+          context: .
+          file: Dockerfile
+          platforms: ${{ matrix.docker_image.platform }}
+          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.meta.outputs.tags }}
+          no-cache: false
+          pull: true
+          push: false
 
-        echo IMAGE_ID=$IMAGE_ID
-        echo VERSION=$VERSION
-        # build
-        docker buildx build -t $IMAGE_ID:$VERSION --platform=linux/arm,linux/arm64,linux/amd64 . --push
+  docker-image-push:
+    runs-on: ubuntu-latest
+    needs:
+      - docker-image-buildx
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ inputs.docker_image_name }}
+          tags: |
+            # type semver https://github.com/docker/metadata-action#typesemver
+            type=raw,value=latest,enable=true
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      -
+        name: "Login into registry as user: inputs.docker_hub_user"
+        uses: docker/login-action@v2
+        with:
+          username: ${{ inputs.docker_hub_user }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Build and push
+        id: docker_push
+        uses: docker/build-push-action@v4 # https://github.com/docker/build-push-action
+        with:
+          context: .
+          file: Dockerfile
+          platforms: ${{ env.DOCKER_IMAGE_PLATFORMS }}
+          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.meta.outputs.tags }}
+          no-cache: false
+          pull: true
+          push: true
