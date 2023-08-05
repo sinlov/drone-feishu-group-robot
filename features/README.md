@@ -16,7 +16,7 @@
 
 ### 👷‍ Build System
 
-* change to go 1.18 and 1.18.10 to build ([f8c04d34](https://github.com/sinlov/drone-feishu-group-robot/commit/f8c04d341be92feea0bb0d869e7f8a81197e2642))
+* change to go 1.18 and 1.19.10 to build ([f8c04d34](https://github.com/sinlov/drone-feishu-group-robot/commit/f8c04d341be92feea0bb0d869e7f8a81197e2642))
 
 ## [1.11.0](https://github.com/sinlov/drone-feishu-group-robot/compare/v1.10.0...v1.11.0) (2023-06-14)
 

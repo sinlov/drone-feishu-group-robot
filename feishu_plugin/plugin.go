@@ -10,7 +10,7 @@ import (
 	"github.com/sinlov/drone-feishu-group-robot/tools/drone_api"
 	"github.com/sinlov/drone-info-tools/drone_info"
 	tools "github.com/sinlov/drone-info-tools/tools/str_tools"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -380,13 +380,13 @@ func (p *FeishuPlugin) sendMessage() error {
 	}()
 	statusCode := resp.StatusCode
 	if statusCode != http.StatusOK {
-		errBody, _ := ioutil.ReadAll(resp.Body)
+		errBody, _ := io.ReadAll(resp.Body)
 		if errBody != nil {
 			return fmt.Errorf("sendMessage http status code: %v , body: %v", statusCode, string(errBody))
 		}
 		return fmt.Errorf("sendMessage http status code: %v", statusCode)
 	}
-	body, errRead := ioutil.ReadAll(resp.Body)
+	body, errRead := io.ReadAll(resp.Body)
 	if errRead != nil {
 		return fmt.Errorf("sendMessage http read err: %v", errRead)
 	}
