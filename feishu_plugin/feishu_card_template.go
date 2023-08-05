@@ -56,7 +56,7 @@ const DefaultCardTemplate string = `{
       },
       {
         "tag": "markdown",
-        "content": "[See Commit Details]({{ Drone.Commit.Link }}) | [See Build Details]({{ Drone.Build.Link }})"
+        "content": "[See Git Link]({{ Drone.Commit.Link }}) | [See Build Details]({{ Drone.Build.Link }})"
       },
       {
         "tag": "hr"
