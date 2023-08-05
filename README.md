@@ -40,7 +40,7 @@ Please read [Contributor Guide](.github/CONTRIBUTING_DOC/CONTRIBUTING.md) for mo
 - show `tag info` at drone tag build at `message card title`
 - add Trigger info at each `Stage details info`
 
-![img.png](https://github.com/sinlov/drone-feishu-group-robot/raw/main/features/release-v1.13.x/release-v1.14.0-Trigger-info.png)
+![img.png](https://github.com/sinlov/drone-feishu-group-robot/raw/main/features/release-v1.13.x/release-v1.13.0-Trigger-info.png)
 
 ### v1.7.+
 
