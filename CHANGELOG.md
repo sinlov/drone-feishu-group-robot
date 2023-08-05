@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.13.0](https://github.com/sinlov/drone-feishu-group-robot/compare/1.12.0...v1.13.0) (2023-08-05)
+
+### ✨ Features
+
+* add title build Tag ([e73233c1](https://github.com/sinlov/drone-feishu-group-robot/commit/e73233c1778f162fb062e173f3935738e9c35c02))
+
+* update feature doc ([20489e96](https://github.com/sinlov/drone-feishu-group-robot/commit/20489e96d8ce18fdbafcf213ebb4b787fa2c91bd))
+
+### ♻ Refactor
+
+* use new build system for fast build ([bac6a404](https://github.com/sinlov/drone-feishu-group-robot/commit/bac6a40437792b6ca06eed303e9cc06cf04300d1))
+
 ## [1.12.0](https://github.com/sinlov/drone-feishu-group-robot/compare/1.11.0...v1.12.0) (2023-08-04)
 
 ### ✨ Features
