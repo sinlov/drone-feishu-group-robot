@@ -1,6 +1,6 @@
 {
   "name": "drone-feishu-group-robot",
-  "version": "1.13.0",
+  "version": "1.14.0",
   "description": "Sending message to feishu group by robot using WebHook",
   "directories": {
     "doc": "doc"
