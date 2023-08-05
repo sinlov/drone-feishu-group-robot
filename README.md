@@ -1,17 +1,34 @@
-[![go-ubuntu](https://github.com/sinlov/drone-feishu-group-robot/workflows/go-ubuntu/badge.svg?branch=main)](https://github.com/sinlov/drone-feishu-group-robot/actions)
-[![GoDoc](https://godoc.org/github.com/sinlov/drone-feishu-group-robot?status.png)](https://godoc.org/github.com/sinlov/drone-feishu-group-robot/)
-[![GoReportCard](https://goreportcard.com/badge/github.com/sinlov/drone-feishu-group-robot)](https://goreportcard.com/report/github.com/sinlov/drone-feishu-group-robot)
-[![codecov](https://codecov.io/gh/sinlov/drone-feishu-group-robot/branch/main/graph/badge.svg)](https://codecov.io/gh/sinlov/drone-feishu-group-robot)
-[![docker version semver](https://img.shields.io/docker/v/sinlov/drone-feishu-group-robot?sort=semver)](https://hub.docker.com/r/sinlov/drone-feishu-group-robot/tags?page=1&ordering=last_updated)
-[![docker image size](https://img.shields.io/docker/image-size/sinlov/drone-feishu-group-robot)](https://hub.docker.com/r/sinlov/drone-feishu-group-robot)
-[![docker pulls](https://img.shields.io/docker/pulls/sinlov/drone-feishu-group-robot)](https://hub.docker.com/r/sinlov/drone-feishu-group-robot/tags?page=1&ordering=last_updated)
-[![github release](https://img.shields.io/github/v/release/sinlov/drone-feishu-group-robot?style=social)](https://github.com/sinlov/drone-feishu-group-robot/releases)
+[![ci](https://github.com/sinlov/drone-feishu-group-robot/workflows/ci/badge.svg?branch=main)](https://github.com/sinlov/drone-feishu-group-robot/actions/workflows/ci.yml)
+
+[![go mod version](https://img.shields.io/github/go-mod/go-version/sinlov/drone-feishu-group-robot?label=go.mod)](https://github.com/sinlov/drone-feishu-group-robot)
+[![GoDoc](https://godoc.org/github.com/sinlov/drone-feishu-group-robot?status.png)](https://godoc.org/github.com/sinlov/drone-feishu-group-robot)
+[![goreportcard](https://goreportcard.com/badge/github.com/sinlov/drone-feishu-group-robot)](https://goreportcard.com/report/github.com/sinlov/drone-feishu-group-robot)
+
+[![docker hub version semver](https://img.shields.io/docker/v/sinlov/drone-feishu-group-robot?sort=semver)](https://hub.docker.com/r/sinlov/drone-feishu-group-robot/tags?page=1&ordering=last_updated)
+[![docker hub image size](https://img.shields.io/docker/image-size/sinlov/drone-feishu-group-robot)](https://hub.docker.com/r/sinlov/drone-feishu-group-robot)
+[![docker hub image pulls](https://img.shields.io/docker/pulls/sinlov/drone-feishu-group-robot)](https://hub.docker.com/r/sinlov/drone-feishu-group-robot/tags?page=1&ordering=last_updated)
+
+[![GitHub license](https://img.shields.io/github/license/sinlov/drone-feishu-group-robot)](https://github.com/sinlov/drone-feishu-group-robot)
+[![codecov](https://codecov.io/gh/sinlov/drone-feishu-group-robot/branch/FE-add-build-trigger-show/graph/badge.svg)](https://codecov.io/gh/sinlov/drone-feishu-group-robot)
+[![GitHub latest SemVer tag)](https://img.shields.io/github/v/tag/sinlov/drone-feishu-group-robot)](https://github.com/sinlov/drone-feishu-group-robot/tags)
+[![GitHub release)](https://img.shields.io/github/v/release/sinlov/drone-feishu-group-robot)](https://github.com/sinlov/drone-feishu-group-robot/releases)
 
 ## for what
 
 - this project used to drone CI use [Custom bot guide](https://open.feishu.cn/document/ukTMukTMukTM/ucTM5YjL3ETO24yNxkjN?lang=en-US)
 - support drone-docker `platform=linux/arm,linux/arm64,linux/amd64`
 - support drone-exec
+
+## Contributing
+
+[![Contributor Covenant](https://img.shields.io/badge/contributor%20covenant-v1.4-ff69b4.svg)](.github/CONTRIBUTING_DOC/CODE_OF_CONDUCT.md)
+[![GitHub contributors](https://img.shields.io/github/contributors/sinlov/drone-feishu-group-robot)](https://github.com/sinlov/drone-feishu-group-robot/graphs/contributors)
+
+We welcome community contributions to this project.
+
+Please read [Contributor Guide](.github/CONTRIBUTING_DOC/CONTRIBUTING.md) for more information on how to get started.
+
+请阅读有关 [贡献者指南](.github/CONTRIBUTING_DOC/zh-CN/CONTRIBUTING.md) 以获取更多如何入门的信息
 
 ## Features
 

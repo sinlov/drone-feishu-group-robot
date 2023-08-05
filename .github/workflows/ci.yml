@@ -1,0 +1,108 @@
+name: ci
+
+on:
+  push:
+    paths-ignore:
+      - '**/README.md'
+    branches:
+      - 'main'
+      - 'release-*'
+      - 'FE-*'
+      - 'BF-*'
+      - 'PU-*'
+      - 'hotfix-*'
+    tags:
+      - '*' # Push events to matching *, i.e. 1.0.0 v1.0, v20.15.10
+  pull_request:
+    paths-ignore:
+      - '**/README.md'
+    types: # https://docs.github.com/actions/using-workflows/events-that-trigger-workflows#pull_request
+      - opened
+      - reopened
+      - closed
+    branches:
+      - 'main'
+      - 'release-*'
+      - 'DOC-*'
+      - 'hotfix-*'
+
+permissions:
+  contents: write
+  discussions: write
+
+jobs:
+  version:
+    name: version
+    uses: ./.github/workflows/version.yml
+
+  golang-ci:
+    name: golang-ci
+    needs:
+     - version
+    uses: ./.github/workflows/golang-ci.yml
+
+  go-build-check-main:
+    name: go-build-check-main
+    needs:
+     - version
+     - golang-ci
+    # if: ${{ github.event.pull_request.merged == true }}
+    if: ${{ ( github.event_name == 'push' && github.ref == 'refs/heads/main' ) || ( github.base_ref == 'main' && github.event.pull_request.merged == true ) }}
+    uses: ./.github/workflows/go-release-platform.yml
+    secrets: inherit
+    with:
+      verison_name: latest
+
+  docker-image-latest:
+    name: docker-image-latest
+    needs:
+     - version
+     - golang-ci
+    uses: ./.github/workflows/docker-image-latest.yml
+    if: ${{ ( github.event_name == 'push' && github.ref == 'refs/heads/main' ) || ( github.base_ref == 'main' && github.event.pull_request.merged == true ) }}
+    secrets: inherit
+    with:
+      docker_hub_user: 'sinlov'
+      docker_image_name: 'sinlov/drone-feishu-group-robot'
+      build_branch_name: 'main'
+
+  docker-image-tag:
+    name: docker-image-tag
+    needs:
+     - version
+     - golang-ci
+    uses: ./.github/workflows/docker-image-tag.yml
+    if: startsWith(github.ref, 'refs/tags/')
+    secrets: inherit
+    with:
+      docker_hub_user: 'sinlov'
+      docker_image_name: 'sinlov/drone-feishu-group-robot'
+
+  go-release-platform:
+    name: go-release-platform
+    needs:
+     - version
+     - golang-ci
+     - docker-image-tag
+    if: startsWith(github.ref, 'refs/tags/')
+    uses: ./.github/workflows/go-release-platform.yml
+    secrets: inherit
+    with:
+      verison_name: ${{ needs.version.outputs.tag_name }}
+      upload_artifact_name: go-release
+
+  deploy-tag:
+    needs:
+      - version
+      - docker-image-tag
+      - go-release-platform
+    # - go-release-cross
+    name: deploy-tag
+    uses: ./.github/workflows/deploy-tag.yml
+    if: startsWith(github.ref, 'refs/tags/')
+    secrets: inherit
+    with:
+      prerelease: true
+      tag_name: ${{ needs.version.outputs.tag_name }}
+      tag_changes: ${{ needs.version.outputs.cc_changes }}
+      download_artifact_name: go-release
