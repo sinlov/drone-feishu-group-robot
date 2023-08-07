@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.14.1](https://github.com/sinlov/drone-feishu-group-robot/compare/1.14.0...v1.14.1) (2023-08-07)
+
+### 👷‍ Build System
+
+* github.com/sinlov/drone-info-tools v1.31.0 ([e4de5e7f](https://github.com/sinlov/drone-feishu-group-robot/commit/e4de5e7f3dafdfa391d7e310a2e344c3bf2dd0a5))
+
 ## [1.14.0](https://github.com/sinlov/drone-feishu-group-robot/compare/1.13.0...v1.14.0) (2023-08-05)
 
 ### ✨ Features
