@@ -37,14 +37,23 @@ type (
 
 	CardOss struct {
 		Host string
+
+		// HeadTemplateStyle
+		// @doc https://open.feishu.cn/document/common-capabilities/message-card/message-cards-content/card-header
+		HeadTemplateStyle string
+
 		// InfoTagResult
 		// tag result [ success or failure]
 		InfoTagResult string
 		// InfoSendResult
 		// send result [ success or failure]
 		InfoSendResult string
-		InfoUser       string
-		InfoPath       string
+
+		// pull request [ success or failure]
+		InfoPullRequestResult string
+
+		InfoUser string
+		InfoPath string
 
 		RenderResourceUrl string
 		ResourceUrl       string

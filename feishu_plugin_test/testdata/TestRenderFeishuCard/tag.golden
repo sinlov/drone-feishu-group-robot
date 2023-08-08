@@ -1,0 +1,69 @@
+{
+  "timestamp": 0,
+  "sign": "",
+  "msg_type": "interactive",
+  "card": {
+    "config": {
+      "enable_forward": false
+    },
+    "header": {
+      "template": "indigo",
+      "title": {
+        "tag": "plain_text",
+        "content": "sinlov/drone-file-browser-plugin Tag: v1.2.3"
+      }
+    },
+    "elements": [
+      {
+        "tag": "markdown",
+        "content": "**Drone CI Notification**"
+      },
+      {
+        "tag": "hr"
+      },
+      {
+        "tag": "markdown",
+        "content": "📦 **Drone Tag:** v1.2.3\nCommitCode: f5513d4e409730c28ee51ba85d01031d1e3a4eba"
+      },
+      {
+        "tag": "markdown",
+        "content": "✅ Build [#1](https://drone.xxx.com/sinlov/drone-file-browser-plugin/1) success"
+      },
+      {
+        "tag": "markdown",
+        "content": "**Commit:**\nmock message commit\nmore line\nand more line\n"
+      },
+      {
+        "tag": "markdown",
+        "content": "[See Git Link](https://github.com/sinlov/drone-file-browser-plugin/commit/f5513d4e409730c28ee51ba85d01031d1e3a4eba) | [See Build Details](https://drone.xxx.com/sinlov/drone-file-browser-plugin/1)"
+      },
+      {
+        "tag": "hr"
+      },
+      {
+        "tag": "markdown",
+        "content": "**Started:** 2023-01-24-03-33-26\n**Finished:** 2023-01-24-03-33-26\n**Stage details info**\nName: build\nTrigger: @hook\nMachine: CI-machine\nOS: linux\nArch: amd64\nType: docker\nKind: pipeline"
+      },
+      {
+        "tag": "hr"
+      },
+      {
+        "tag": "note",
+        "elements": [
+          {
+            "tag": "plain_text",
+            "content": "From drone 1.0.0@drone.xxx.com. Powered By"
+          },
+          {
+            "tag": "img",
+            "img_key": "",
+            "alt": {
+              "tag": "plain_text",
+              "content": ""
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
