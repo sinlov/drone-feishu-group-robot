@@ -43,8 +43,12 @@ type (
 		// InfoSendResult
 		// send result [ success or failure]
 		InfoSendResult string
-		InfoUser       string
-		InfoPath       string
+
+		// pull request [ success or failure]
+		InfoPullRequestResult string
+
+		InfoUser string
+		InfoPath string
 
 		RenderResourceUrl string
 		ResourceUrl       string
