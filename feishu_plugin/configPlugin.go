@@ -37,6 +37,11 @@ type (
 
 	CardOss struct {
 		Host string
+
+		// HeadTemplateStyle
+		// @doc https://open.feishu.cn/document/common-capabilities/message-card/message-cards-content/card-header
+		HeadTemplateStyle string
+
 		// InfoTagResult
 		// tag result [ success or failure]
 		InfoTagResult string

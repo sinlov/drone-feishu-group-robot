@@ -4,9 +4,18 @@ import (
 	"bytes"
 	"encoding/gob"
 	"encoding/json"
+	"github.com/sinlov/drone-info-tools/drone_info"
 	"github.com/sinlov/drone-info-tools/template"
 	tools "github.com/sinlov/drone-info-tools/tools/str_tools"
 	"strings"
+)
+
+const (
+	headTemplateStyleDefault = "default"
+	headTemplateStyleGreen   = "green"
+	headTemplateStyleRed     = "red"
+	headTemplateStyleOrange  = "orange"
+	headTemplateStylIndigo   = "indigo"
 )
 
 // DefaultCardTemplate
@@ -20,7 +29,7 @@ const DefaultCardTemplate string = `{
       "enable_forward": {{ FeishuRobotMsgTemplate.CtxTemp.CardTemp.EnableForward }}
     },
     "header": {
-      "template": "{{#success Drone.Build.Status }}blue{{/success}}{{#failure Drone.Build.Status}}red{{/failure}}",
+      "template": "{{ Config.CardOss.HeadTemplateStyle }}",
       "title": {
         "tag": "plain_text",
         "content": "{{#failure Drone.Build.Status}}[Failure]{{/failure}}{{ Drone.Repo.FullName }}{{#success Config.CardOss.InfoTagResult }} Tag: {{ Drone.Build.Tag }}{{/success}}{{#success Config.CardOss.InfoPullRequestResult }} PullRequest: #{{ Drone.Build.PR }}{{/success}}"
@@ -144,6 +153,12 @@ func RenderFeishuCard(tpl string, p *FeishuPlugin) (string, error) {
 	renderPlugin.Drone.Stage.Type = tools.Str2LineRaw(renderPlugin.Drone.Stage.Type)
 	renderPlugin.Drone.Stage.Kind = tools.Str2LineRaw(renderPlugin.Drone.Stage.Kind)
 
+	// set default CardOss.HeadTemplateStyle
+	renderPlugin.Config.CardOss.HeadTemplateStyle = headTemplateStyleDefault
+	if renderPlugin.Drone.Build.Status == drone_info.DroneBuildStatusSuccess {
+		renderPlugin.Config.CardOss.HeadTemplateStyle = headTemplateStyleGreen
+	}
+
 	// check out p.Config.CardOss.InfoTagResult
 	if renderPlugin.Drone.Build.Tag == "" {
 		renderPlugin.Config.CardOss.InfoTagResult = RenderStatusHide
@@ -151,12 +166,19 @@ func RenderFeishuCard(tpl string, p *FeishuPlugin) (string, error) {
 		renderPlugin.Config.CardOss.InfoTagResult = RenderStatusShow
 		// fix Drone.Commit.Link compare not support, when tags Link get error
 		renderPlugin.Drone.Commit.Link = strings.Replace(renderPlugin.Drone.Commit.Link, "compare/0000000000000000000000000000000000000000...", "commit/", -1)
+		renderPlugin.Config.CardOss.HeadTemplateStyle = headTemplateStylIndigo
 	}
 
 	// set default InfoPullRequestResult
 	renderPlugin.Config.CardOss.InfoPullRequestResult = RenderStatusHide
 	if p.Drone.Build.Event == "pull_request" {
 		renderPlugin.Config.CardOss.InfoPullRequestResult = RenderStatusShow
+		renderPlugin.Config.CardOss.HeadTemplateStyle = headTemplateStyleOrange
+	}
+
+	// set HeadTemplateStyle at failure
+	if renderPlugin.Drone.Build.Status == drone_info.DroneBuildStatusFailure {
+		renderPlugin.Config.CardOss.HeadTemplateStyle = headTemplateStyleRed
 	}
 
 	message, err := template.RenderTrim(tpl, &renderPlugin)

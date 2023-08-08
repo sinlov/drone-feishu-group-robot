@@ -7,10 +7,10 @@
       "enable_forward": false
     },
     "header": {
-      "template": "orange",
+      "template": "red",
       "title": {
         "tag": "plain_text",
-        "content": "sinlov/drone-file-browser-plugin PullRequest: #3"
+        "content": "[Failure]sinlov/drone-file-browser-plugin"
       }
     },
     "elements": [
@@ -23,11 +23,11 @@
       },
       {
         "tag": "markdown",
-        "content": "🏗️ Pull Request: feat-new -> main [#3](https://github.com/sinlov/drone-file-browser-plugin/pulls/3)"
+        "content": "📝 Commit by sinlov on **main**\nCommitCode: f5513d4e409730c28ee51ba85d01031d1e3a4eba"
       },
       {
         "tag": "markdown",
-        "content": "✅ Build [#1](https://drone.xxx.com/sinlov/drone-file-browser-plugin/1) success"
+        "content": "❌ Build [#1](https://drone.xxx.com/sinlov/drone-file-browser-plugin/1) failure\n failedStages: build,test\n failedSteps: backend,frontend "
       },
       {
         "tag": "markdown",
@@ -35,7 +35,7 @@
       },
       {
         "tag": "markdown",
-        "content": "[See Git Link](https://github.com/sinlov/drone-file-browser-plugin/pulls/3) | [See Build Details](https://drone.xxx.com/sinlov/drone-file-browser-plugin/1)"
+        "content": "[See Git Link](https://github.com/sinlov/drone-file-browser-plugin/commit/f5513d4e409730c28ee51ba85d01031d1e3a4eba) | [See Build Details](https://drone.xxx.com/sinlov/drone-file-browser-plugin/1)"
       },
       {
         "tag": "hr"

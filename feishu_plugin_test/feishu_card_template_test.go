@@ -31,6 +31,10 @@ func TestRenderFeishuCard(t *testing.T) {
 	var sampleRender feishu_plugin.FeishuPlugin
 	deepCopyByPlugin(&p, &sampleRender)
 
+	var sampleFailRender feishu_plugin.FeishuPlugin
+	deepCopyByPlugin(&p, &sampleFailRender)
+	sampleFailRender.Drone = *drone_info.MockDroneInfo(drone_info.DroneBuildStatusFailure)
+
 	var tagMessageRender feishu_plugin.FeishuPlugin
 	deepCopyByPlugin(&p, &tagMessageRender)
 	droneTagInfoRefs, err := drone_info.MockDroneInfoRefs(
@@ -61,6 +65,10 @@ func TestRenderFeishuCard(t *testing.T) {
 		{
 			name: "sample", // testdata/TestRenderFeishuCard/sample.golden
 			p:    sampleRender,
+		},
+		{
+			name: "sample_fail", // testdata/TestRenderFeishuCard/sample_fail.golden
+			p:    sampleFailRender,
 		},
 		{
 			name: "tag", // testdata/TestRenderFeishuCard/tag.golden

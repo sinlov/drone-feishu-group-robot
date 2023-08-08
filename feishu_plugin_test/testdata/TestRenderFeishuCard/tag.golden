@@ -7,7 +7,7 @@
       "enable_forward": false
     },
     "header": {
-      "template": "blue",
+      "template": "indigo",
       "title": {
         "tag": "plain_text",
         "content": "sinlov/drone-file-browser-plugin Tag: v1.2.3"
