@@ -32,39 +32,33 @@ Please read [Contributor Guide](.github/CONTRIBUTING_DOC/CONTRIBUTING.md) for mo
 
 ## Features
 
-- more see [features/README.md](https://github.com/sinlov/drone-feishu-group-robot/blob/main/features/README.md)
+### v1.15.+
 
-### v1.13.+
+- let feishu message card render HeadTemplateStyle support different event
 
-- use new github action build workflow
-- show `tag info` at drone tag build at `message card title`
-- add Trigger info at each `Stage details info`
+- build status success
 
-![img.png](https://github.com/sinlov/drone-feishu-group-robot/raw/main/features/release-v1.13.x/release-v1.13.0-Trigger-info.png)
+![](https://github.com/sinlov/drone-feishu-group-robot/raw/main/features/release-v1.15.x/push-success.png)
 
-### v1.7.+
+- build status failure
 
-![img.png](https://github.com/sinlov/drone-feishu-group-robot/raw/main/features/release-v1.7.x/release-v1.7.0-detail.png)
+![](https://github.com/sinlov/drone-feishu-group-robot/raw/main/features/release-v1.15.x/push-failure.png)
 
-### v1.6.+
+- pull request status success
 
-card render by Drone Tag
+![](https://github.com/sinlov/drone-feishu-group-robot/raw/main/features/release-v1.15.x/pr-success.png)
 
-![img.png](https://github.com/sinlov/drone-feishu-group-robot/raw/main/features/release-v1.6.x/release-v1.6-tag-render.png)
+- pull request status failure
 
-### v1.4.+
+![](https://github.com/sinlov/drone-feishu-group-robot/raw/main/features/release-v1.15.x/pr-failure.png)
 
-- failure notification
+- tag status success
 
-![img.png](https://github.com/sinlov/drone-feishu-group-robot/raw/main/features/release-v1.3/img-v1.3.1-fail.png)
+![](https://github.com/sinlov/drone-feishu-group-robot/raw/main/features/release-v1.15.x/tag-success.png)
 
-- failure notification by build success but oss status error
+### more features
 
-![img.png](https://github.com/sinlov/drone-feishu-group-robot/raw/main/features/release-v1.2.0/img-v1.2.0-failure.png)
-
-- success notification
-
-![img.png](https://github.com/sinlov/drone-feishu-group-robot/raw/main/features/release-v1.2.0/img-v1.2.0-success.png)
+- see [features/README.md](https://github.com/sinlov/drone-feishu-group-robot/blob/main/features/README.md)
 
 ## before use
 
@@ -83,7 +77,7 @@ sample config
 ```yaml
 steps:
   - name: notification-feishu-group-robot
-    image: sinlov/drone-feishu-group-robot:1.14.1
+    image: sinlov/drone-feishu-group-robot:1.15.0
     pull: if-not-exists
     # image: sinlov/drone-feishu-group-robot:latest
     settings:
@@ -329,5 +323,5 @@ $ make dockerTestPruneLatest
 # see how to use
 $ docker run --rm sinlov/drone-feishu-group-robot:latest -h
 # or version
-$ docker run --rm sinlov/drone-feishu-group-robot:1.14.1 -h
+$ docker run --rm sinlov/drone-feishu-group-robot:1.15.0 -h
 ```

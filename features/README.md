@@ -1,5 +1,29 @@
 # Features
 
+### v1.15.+
+
+- let feishu message card render HeadTemplateStyle support different event
+
+- build status success
+
+![](https://github.com/sinlov/drone-feishu-group-robot/raw/main/features/release-v1.15.x/push-success.png)
+
+- build status failure
+
+![](https://github.com/sinlov/drone-feishu-group-robot/raw/main/features/release-v1.15.x/push-failure.png)
+
+- pull request status success
+
+![](https://github.com/sinlov/drone-feishu-group-robot/raw/main/features/release-v1.15.x/pr-success.png)
+
+- pull request status failure
+
+![](https://github.com/sinlov/drone-feishu-group-robot/raw/main/features/release-v1.15.x/pr-failure.png)
+
+- tag status success
+
+![](https://github.com/sinlov/drone-feishu-group-robot/raw/main/features/release-v1.15.x/tag-success.png)
+
 ### v1.13.+
 
 - use new github action build workflow
