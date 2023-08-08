@@ -91,10 +91,6 @@ steps:
       feishu_msg_title: "Drone CI Notification" # default [Drone CI Notification]
       # let notification card change more info see https://open.feishu.cn/document/ukTMukTMukTM/uAjNwUjLwYDM14CM2ATN
       feishu_enable_forward: true
-      drone_system_admin_token: # non-essential parameter 1.9.0+
-        from_secret: drone_system_admin_token
-      # ignore last success by distance
-      feishu_ignore_last_success_by_admin_token_distance: 1 # if distance is 0 will not ignore, use 1 will let notify build change to success
     when:
       event: # https://docs.drone.io/pipeline/exec/syntax/conditions/#by-event
         - promote
@@ -123,16 +119,17 @@ steps:
         from_secret: feishu_group_bot_token
       feishu_secret:
         from_secret: feishu_group_secret_bot
-      drone_system_admin_token: # non-essential parameter 1.9.0+
-        from_secret: drone_system_admin_token
-      # ignore last success by distance
-      feishu_ignore_last_success_by_admin_token_distance: 2 # if distance is 0 or now is tag will not ignore, use 1 will let notify build change to success, most use 2 to support tag release
       # ignore last success branch by badges
       feishu_ignore_last_success_by_badges: true # will check branch badges, if success will not send message, tag build will not pass, default false
       feishu_ignore_last_success_branch: main # if not set, will use now drone build branch, and now branch status is started so not ignore, and if in tag mode, will not ignore
       # let notification card change more info see https://open.feishu.cn/document/ukTMukTMukTM/uAjNwUjLwYDM14CM2ATN
       feishu_msg_title: "Drone CI Notification" # default [Drone CI Notification]
       feishu_enable_forward: true
+      drone_system_admin_token: # non-essential parameter 1.9.0+
+        from_secret: drone_system_admin_token
+      # ignore last success by distance
+      feishu_ignore_last_success_by_admin_token_distance: 2 # if distance is 0 or now is tag will not ignore, use 1 will let notify build change to success, most use 2 to support tag release
+      # oss info
       feishu_oss_host: "https://xxx.com" # OSS host for show oss info, if empty will not show oss info
       feishu_oss_info_send_result: ${DRONE_BUILD_STATUS} # append oss info must set success
       feishu_oss_info_user: "admin" # OSS user for show at card
