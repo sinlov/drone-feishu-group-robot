@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.15.0](https://github.com/sinlov/drone-feishu-group-robot/compare/1.14.1...v1.15.0) (2023-08-08)
+
+### ✨ Features
+
+* let feishu message card render HeadTemplateStyle support different event ([ef1a9791](https://github.com/sinlov/drone-feishu-group-robot/commit/ef1a97916f270230a3de438e87c09c7c600fe456))
+
+* add feishu_card support DRONE_BUILD_EVENT tag pull_request ([8d49bd8b](https://github.com/sinlov/drone-feishu-group-robot/commit/8d49bd8b8d03875eeafbed3ad9a690848eb53d5b))
+
 ## [1.14.1](https://github.com/sinlov/drone-feishu-group-robot/compare/1.14.0...v1.14.1) (2023-08-07)
 
 ### 👷‍ Build System
