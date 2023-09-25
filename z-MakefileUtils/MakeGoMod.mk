@@ -85,6 +85,10 @@ modLintRun:
 	@echo "-> if run error try fix: make modCiLintInstall"
 	golangci-lint run -c .golangci.yaml
 
+modGosec:
+	@echo "-> if run error try fix: go install github.com/securego/gosec/v2/cmd/gosec@latest"
+	gosec -no-fail ./...
+
 helpGoMod:
 	@echo "Help: MakeGoMod.mk"
 	@echo "-> go mod document at: https://go.dev/ref/mod"
