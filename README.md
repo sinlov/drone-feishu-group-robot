@@ -32,6 +32,12 @@ Please read [Contributor Guide](.github/CONTRIBUTING_DOC/CONTRIBUTING.md) for mo
 
 ## Features
 
+### v1.16.+
+
+- show build time and Stage details info
+
+![img.png](https://github.com/sinlov/drone-feishu-group-robot/raw/main/features/release-v1.16.x/pr-success.png)
+
 ### v1.15.+
 
 - let feishu message card render HeadTemplateStyle support different event
@@ -77,7 +83,7 @@ sample config
 ```yaml
 steps:
   - name: notification-feishu-group-robot
-    image: sinlov/drone-feishu-group-robot:1.15.0
+    image: sinlov/drone-feishu-group-robot:1.16.0
     pull: if-not-exists
     # image: sinlov/drone-feishu-group-robot:latest
     settings:
@@ -320,5 +326,5 @@ $ make dockerTestPruneLatest
 # see how to use
 $ docker run --rm sinlov/drone-feishu-group-robot:latest -h
 # or version
-$ docker run --rm sinlov/drone-feishu-group-robot:1.15.0 -h
+$ docker run --rm sinlov/drone-feishu-group-robot:1.16.0 -h
 ```

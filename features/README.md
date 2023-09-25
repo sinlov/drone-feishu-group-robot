@@ -1,5 +1,11 @@
 # Features
 
+### v1.16.+
+
+- show build time and Stage details info
+
+![img.png](https://github.com/sinlov/drone-feishu-group-robot/raw/main/features/release-v1.16.x/pr-success.png)
+
 ### v1.15.+
 
 - let feishu message card render HeadTemplateStyle support different event
