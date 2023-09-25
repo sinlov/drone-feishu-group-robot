@@ -3,11 +3,11 @@ module github.com/sinlov/drone-feishu-group-robot
 go 1.19
 
 require (
-	github.com/antchfx/xmlquery v1.3.17
+	github.com/antchfx/xmlquery v1.3.18
 	github.com/joho/godotenv v1.5.1
 	github.com/monaco-io/request v1.0.16
 	github.com/sebdah/goldie/v2 v2.5.3
-	github.com/sinlov/drone-info-tools v1.31.0
+	github.com/sinlov/drone-info-tools v1.32.0
 	github.com/stretchr/testify v1.8.4
 	github.com/urfave/cli/v2 v2.25.7
 )
