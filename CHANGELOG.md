@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.16.0](https://github.com/sinlov/drone-feishu-group-robot/compare/1.15.0...v1.16.0) (2023-09-26)
+
+### ✨ Features
+
+* show build create and finish and interval time ([6d4305b6](https://github.com/sinlov/drone-feishu-group-robot/commit/6d4305b666b3c00bbf82b2ee6e1e92b280f26c08)), feat [#7](https://github.com/sinlov/drone-feishu-group-robot/issues/7)
+
+### 👷‍ Build System
+
+* github.com/sinlov/drone-info-tools v1.32.0 and github.com/antchfx/xmlquery v1.3.18 ([c91fcddb](https://github.com/sinlov/drone-feishu-group-robot/commit/c91fcddbdddde74b5926d31cb2698e91fc2ac88c))
+
 ## [1.15.0](https://github.com/sinlov/drone-feishu-group-robot/compare/1.14.1...v1.15.0) (2023-08-08)
 
 ### ✨ Features
