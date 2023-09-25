@@ -89,7 +89,7 @@ const DefaultCardTemplate string = `{
 {{/success}}
       {
         "tag": "markdown",
-        "content": "**Started:** {{ Drone.Stage.StartedTime }}\n**Finished:** {{ Drone.Stage.FinishedTime }}\n**Stage details info**\nName: {{ Drone.Stage.Name }}\nTrigger: {{ Drone.Build.Trigger }}\nMachine: {{ Drone.Stage.Machine }}\nOS: {{ Drone.Stage.Os }}\nArch: {{ Drone.Stage.Arch }}\nType: {{ Drone.Stage.Type }}\nKind: {{ Drone.Stage.Kind }}"
+        "content": "**Build Created At:** {{ Drone.Build.CreatedAtT }}\n**Build Time:** {{ Drone.Build.TotalBuildTime }}\n**Stage details info**\nName: {{ Drone.Stage.Name }}\nStage Started: {{ Drone.Stage.StartedTime }}\nStage Total Time: {{ Drone.Stage.TotalStageTime }}\nTrigger: {{ Drone.Build.Trigger }}\nMachine: {{ Drone.Stage.Machine }}\nOS: {{ Drone.Stage.Os }}\nArch: {{ Drone.Stage.Arch }}\nType: {{ Drone.Stage.Type }}\nKind: {{ Drone.Stage.Kind }}"
       },
       {
         "tag": "hr"
@@ -127,6 +127,10 @@ func RenderFeishuCard(tpl string, p *FeishuPlugin) (string, error) {
 	renderPlugin.Drone.Commit.Branch = tools.Str2LineRaw(renderPlugin.Drone.Commit.Branch)
 	renderPlugin.Drone.Build.Branch = tools.Str2LineRaw(renderPlugin.Drone.Build.Branch)
 	renderPlugin.Drone.Build.Status = tools.Str2LineRaw(renderPlugin.Drone.Build.Status)
+	renderPlugin.Drone.Build.CreatedAtT = tools.Str2LineRaw(renderPlugin.Drone.Build.CreatedAtT)
+	renderPlugin.Drone.Build.StartAtT = tools.Str2LineRaw(renderPlugin.Drone.Build.StartAtT)
+	renderPlugin.Drone.Build.FinishedAtT = tools.Str2LineRaw(renderPlugin.Drone.Build.FinishedAtT)
+	renderPlugin.Drone.Build.TotalBuildTime = tools.Str2LineRaw(renderPlugin.Drone.Build.TotalBuildTime)
 	renderPlugin.Drone.Commit.Message = tools.Str2LineRaw(renderPlugin.Drone.Commit.Message)
 	if p.Drone.Build.Event == "pull_request" {
 		renderPlugin.Drone.Build.SourceBranch = tools.Str2LineRaw(renderPlugin.Drone.Build.SourceBranch)
@@ -145,6 +149,7 @@ func RenderFeishuCard(tpl string, p *FeishuPlugin) (string, error) {
 
 	renderPlugin.Drone.Stage.StartedTime = tools.Str2LineRaw(renderPlugin.Drone.Stage.StartedTime)
 	renderPlugin.Drone.Stage.FinishedTime = tools.Str2LineRaw(renderPlugin.Drone.Stage.FinishedTime)
+	renderPlugin.Drone.Stage.TotalStageTime = tools.Str2LineRaw(renderPlugin.Drone.Stage.TotalStageTime)
 	renderPlugin.Drone.Stage.Name = tools.Str2LineRaw(renderPlugin.Drone.Stage.Name)
 	renderPlugin.Drone.Build.Trigger = tools.Str2LineRaw(renderPlugin.Drone.Build.Trigger)
 	renderPlugin.Drone.Stage.Machine = tools.Str2LineRaw(renderPlugin.Drone.Stage.Machine)

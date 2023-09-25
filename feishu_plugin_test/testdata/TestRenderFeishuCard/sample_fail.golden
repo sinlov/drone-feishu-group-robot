@@ -42,7 +42,7 @@
       },
       {
         "tag": "markdown",
-        "content": "**Started:** 2023-01-24-03-33-26\n**Finished:** 2023-01-24-03-33-26\n**Stage details info**\nName: build\nTrigger: @hook\nMachine: CI-machine\nOS: linux\nArch: amd64\nType: docker\nKind: pipeline"
+        "content": "**Build Created At:** \n**Build Time:** 16m 46s\n**Stage details info**\nName: build\nStage Started: 2023-01-24-03-33-26\nStage Total Time: 15m 0s\nTrigger: @hook\nMachine: CI-machine\nOS: linux\nArch: amd64\nType: docker\nKind: pipeline"
       },
       {
         "tag": "hr"
