@@ -44,7 +44,7 @@ jobs:
             type=semver,pattern={{version}}
       -
         name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
       -
         name: "Login into registry as user: inputs.docker_hub_user"
         uses: docker/login-action@v2
@@ -86,7 +86,7 @@ jobs:
             type=semver,pattern={{version}}
       -
         name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
       -
         name: "Login into registry as user: inputs.docker_hub_user"
         uses: docker/login-action@v2
